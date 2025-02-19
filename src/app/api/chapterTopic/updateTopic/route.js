@@ -1,15 +1,24 @@
 import connectDB from "@/_config/connect";
-import subSyllabusModel from "@/_models/topicModel";
+import slugformatter from "@/_helper/backend/slugformatter";
+import topicModel from "@/_models/topicModel";
 import { NextResponse } from "next/server";
 
 export const POST = async (request) => {
     connectDB();
     try {
-        const { id, courseId, chapterId, topicName } = await request.json();
-        if (!id || !courseId || !chapterId || !topicName) {
+        const { id, courseId, chapterId, topicName, topicSlug } = await request.json();
+        if (!id || !courseId || !chapterId || !topicName || !topicSlug) {
             return NextResponse.json({ message: "Please provide all the fields!", status: 0 })
         }
-        const data = await subSyllabusModel.findByIdAndUpdate({ _id: id }, { courseId, chapterId, topicName });
+
+        const formattedSlug = slugformatter(topicSlug);
+
+        const isExist = await topicModel.findOne({ courseId: courseId, chapterId: chapterId, topicSlug: formattedSlug, _id: { $ne: id } });
+        if (isExist) {
+            return NextResponse.json({ message: "Topic already exist.", status: 0 });
+        }
+
+        const data = await topicModel.findByIdAndUpdate({ _id: id }, { courseId, chapterId, topicName, topicSlug: formattedSlug });
         if (!data) {
             return NextResponse.json({ message: "Unable to update!", status: 0 });
         }

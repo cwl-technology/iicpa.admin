@@ -70,7 +70,6 @@ const page = () => {
                 const res = await axios.post(`/api/livesessions/deleteLiveSession`, {
                     id: id
                 })
-                console.log(res.data);
                 if (res.data.status == 1) {
                     toast.success(res.data.message);
                     getLiveSessionData();
@@ -133,113 +132,129 @@ const page = () => {
                                             </div>
                                         </div>
 
-                                        {/* <div className="dashboad-main-card"> */}
-                                        {/* <h6 className='m-4 pt-4 dashboad-bold-font'></h6> */}
                                         <div className='row g-4 px-3'>
-                                            <div className='col-4'>
-                                                <div className='p-4 left-border left-border-1'>
-                                                    <h6 className='my-0 dashboad-bold-font'>Web Design</h6>
-                                                    <span className='text-muted d-block mb-2'>Design Learn Management System</span>
-                                                    <p className='dashboad-badge-1 dashboad-bold-font d-inline'>1-2 Hours</p>
-                                                    <div className='my-4'>
+                                            {
+                                                liveSessionData?.map((ele, ind) => {
+                                                    if (ind % 3 == 0) {
+                                                        return (
+                                                            <div className='col-4' key={ind}>
+                                                                <div className='p-4 left-border left-border-1'>
+                                                                    <div className='d-flex justify-content-between'>
+                                                                        <div>
+                                                                            <h6 className='my-0 dashboad-bold-font'>{getCourseNameById(ele.courseId)}</h6>
+                                                                            <span className='text-muted d-block mb-2'><DateFormatter date={ele.date} /> </span>
+                                                                        </div>
+                                                                        <div className=''>
+                                                                            <a href={ele.jobLink} target="_blank" className='btn btn-sm dashboad-badge-1 jobs-grid-icons'>
+                                                                                <i className="bi bi-box-arrow-up-right"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                    <p className='dashboad-badge-1 dashboad-bold-font d-inline'><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
+                                                                    <div className='my-4'>
+                                                                        <div className=''>
+                                                                            <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
+                                                                                {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
 
-                                                        <div className='d-flex align-items-end'>
-                                                            <h3 className='my-0'>12</h3>
-                                                            <span className='text-muted'>Tasks</span>
-                                                        </div>
-
-                                                        <div className='d-flex justify-content-between align-items-center'>
-                                                            <span className='text-muted'>June 08, 2021</span>
-                                                            <div>
-                                                                {/* <Link href={{
-                                                                    pathname: "/admin/course-category/edit",
-                                                                    // query: { id: ele._id }
-                                                                }} className="btn btn-secondary btn-sm  "><i className="bi bi-pencil"></i></Link>
-                                                                <Link href="#" className="btn btn-secondary btn-sm  ms-2" onClick={() => handleDelete(
-                                                                    // ele._id
-                                                                )}><i className="bi bi-trash"></i>
-                                                                </Link> */}
+                                                                            </a>
+                                                                            <Link href={{
+                                                                                pathname: "/admin/live-session/edit",
+                                                                                query: {
+                                                                                    id: ele._id
+                                                                                }
+                                                                            }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
+                                                                                <i className="bi bi-pencil"></i>
+                                                                            </Link>
+                                                                            <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
+                                                                                <i className="bi bi-trash"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className='col-4'>
-                                                <div className='p-4 left-border left-border-2'>
-                                                    <h6 className='my-0 dashboad-bold-font'>Mobile App</h6>
-                                                    <span className='text-muted d-block mb-2'>Ecommerce Application for All Devices</span>
-                                                    <p className='dashboad-badge-2 dashboad-bold-font d-inline'>1-2 Hours</p>
+                                                        )
+                                                    } else if (ind % 3 == 1) {
+                                                        return (
+                                                            <div className='col-4' key={ind}>
+                                                                <div className='p-4 left-border left-border-2'>
+                                                                    <div className='d-flex justify-content-between'>
+                                                                        <div>
+                                                                            <h6 className='my-0 dashboad-bold-font'>{getCourseNameById(ele.courseId)}</h6>
+                                                                            <span className='text-muted d-block mb-2'><DateFormatter date={ele.date} /></span>
+                                                                        </div>
+                                                                        <div className=''>
+                                                                            <a href={ele.jobLink} target="_blank" className='btn btn-sm dashboad-badge-2 jobs-grid-icons'>
+                                                                                <i className="bi bi-box-arrow-up-right"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                    <p className='dashboad-badge-2 dashboad-bold-font d-inline'><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
+                                                                    <div className='my-4'>
+                                                                    <div className=''>
+                                                                            <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
+                                                                                {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
 
-                                                    <div className='my-4'>
-                                                        <div className='d-flex align-items-end'>
-                                                            <h3 className='my-0'>14</h3>
-                                                            <span className='text-muted'>Tasks</span>
-                                                        </div>
-                                                        <span className='text-muted'>May 01, 2021</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className='col-4'>
-                                                <div className='p-4 left-border left-border-3'>
-                                                    <h6 className='my-0 dashboad-bold-font'>Design System</h6>
-                                                    <span className='text-muted d-block mb-2'>Create LMS design system on figma</span>
-                                                    <p className='dashboad-badge-3 dashboad-bold-font d-inline mb-3'>3-4 Hours</p>
+                                                                            </a>
+                                                                            <Link href={{
+                                                                                pathname: "/admin/live-session/edit",
+                                                                                query: {
+                                                                                    id: ele._id
+                                                                                }
+                                                                            }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
+                                                                                <i className="bi bi-pencil"></i>
+                                                                            </Link>
+                                                                            <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
+                                                                                <i className="bi bi-trash"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    } else {
+                                                        return (
+                                                            <div className='col-4' key={ind}>
+                                                                <div className='p-4 left-border left-border-3'>
+                                                                    <div className='d-flex justify-content-between'>
+                                                                        <div>
+                                                                            <h6 className='my-0 dashboad-bold-font'>{getCourseNameById(ele.courseId)}</h6>
+                                                                            <span className='text-muted d-block mb-2'><DateFormatter date={ele.date} /></span>
+                                                                        </div>
+                                                                        <div className=''>
+                                                                            <a href={ele.jobLink} target="_blank" className='btn btn-sm dashboad-badge-3 jobs-grid-icons'>
+                                                                                <i className="bi bi-box-arrow-up-right"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                    <p className='dashboad-badge-3 dashboad-bold-font d-inline'><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
+                                                                    <div className='my-4'>
+                                                                    <div className=''>
+                                                                            <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
+                                                                                {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
 
-                                                    <div className='my-4'>
-                                                        <div className='d-flex align-items-end'>
-                                                            <h3 className='my-0'>15</h3>
-                                                            <span className='text-muted'>Tasks</span>
-                                                        </div>
-                                                        <span className='text-muted'>September 16, 2021</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className='col-4'>
-                                                <div className='p-4 left-border left-border-1'>
-                                                    <h6 className='my-0 dashboad-bold-font'>Web Design</h6>
-                                                    <span className='text-muted d-block mb-2'>Design Learn Management System</span>
-                                                    <p className='dashboad-badge-1 dashboad-bold-font d-inline'>1-2 Hours</p>
-                                                    <div className='my-4'>
-                                                        <div className='d-flex align-items-end'>
-                                                            <h3 className='my-0'>12</h3>
-                                                            <span className='text-muted'>Tasks</span>
-                                                        </div>
-                                                        <span className='text-muted'>June 08, 2021</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className='col-4'>
-                                                <div className='p-4 left-border left-border-2'>
-                                                    <h6 className='my-0 dashboad-bold-font'>Mobile App</h6>
-                                                    <span className='text-muted d-block mb-2'>Ecommerce Application for All Devices</span>
-                                                    <p className='dashboad-badge-2 dashboad-bold-font d-inline'>1-2 Hours</p>
+                                                                            </a>
+                                                                            <Link href={{
+                                                                                pathname: "/admin/live-session/edit",
+                                                                                query: {
+                                                                                    id: ele._id
+                                                                                }
+                                                                            }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
+                                                                                <i className="bi bi-pencil"></i>
+                                                                            </Link>
+                                                                            <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
+                                                                                <i className="bi bi-trash"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    }
+                                                }
 
-                                                    <div className='my-4'>
-                                                        <div className='d-flex align-items-end'>
-                                                            <h3 className='my-0'>14</h3>
-                                                            <span className='text-muted'>Tasks</span>
-                                                        </div>
-                                                        <span className='text-muted'>May 01, 2021</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className='col-4'>
-                                                <div className='p-4 left-border left-border-3'>
-                                                    <h6 className='my-0 dashboad-bold-font'>Design System</h6>
-                                                    <span className='text-muted d-block mb-2'>Create LMS design system on figma</span>
-                                                    <p className='dashboad-badge-3 dashboad-bold-font d-inline mb-3'>3-4 Hours</p>
-
-                                                    <div className='my-4'>
-                                                        <div className='d-flex align-items-end'>
-                                                            <h3 className='my-0'>15</h3>
-                                                            <span className='text-muted'>Tasks</span>
-                                                        </div>
-                                                        <span className='text-muted'>September 16, 2021</span>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                                )
+                                            }
                                         </div>
-                                        {/* </div> */}
                                     </div>
                                 </div>
                             </div>

@@ -9,6 +9,10 @@ const chapterSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+    chapterSlug: {
+        type: String,
+        default: null
+    },
     status: {
         type: Number,
         default: 1

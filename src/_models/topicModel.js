@@ -13,6 +13,10 @@ const topicSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+    topicSlug: {
+        type: String,
+        default: null
+    },
     status: {
         type: Number,
         default: 1

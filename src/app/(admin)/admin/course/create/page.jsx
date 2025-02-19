@@ -6,11 +6,11 @@ import { useState, useRef, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
-import dynamic from "next/dynamic";
 import Link from 'next/link';
 import ButtonLoader from '@/_component/global/ButtonLoader';
 import { toast } from 'react-toastify';
 import "bootstrap-icons/font/bootstrap-icons.css";
+import dynamic from "next/dynamic";
 const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false })
 
 
@@ -98,7 +98,6 @@ const page = () => {
     const onSubmit = async (data) => {
         try {
 
-            console.log(data);
             const formdata = new FormData();
             formdata.append("courseCategory", data.courseCategory);
             formdata.append("courseName", data.courseName);
@@ -192,9 +191,9 @@ const page = () => {
                                                             className={`form-select ${errors.courseLevel ? "border-danger" : ""}`}
                                                         >
                                                             <option hidden defaultChecked value={""}>Select course level</option>
-                                                            <option value="Pro">Pro</option>
-                                                            <option value="Specailisations">Specailisations</option>
-                                                            <option value="Levels">Levels</option>
+                                                            <option value="Foundation">Foundation</option>
+                                                            <option value="Core">Core </option>
+                                                            <option value="Expert">Expert</option>
                                                         </select>
                                                         {
                                                             errors.courseLevel && <span className="help-block text-danger"><small>{errors.courseLevel.message}</small></span>

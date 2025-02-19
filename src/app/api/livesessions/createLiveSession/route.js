@@ -6,7 +6,7 @@ export const POST = async (request) => {
     connectDB();
     try {
         const { courseId, date, startTime, endTime, description } = await request.json();
-        if (!courseId || !date || !startTime || !endTime || !description) {
+        if (!courseId || !date || !startTime || !endTime) {
             return NextResponse.json({ message: "Please fill all the fields", status: 0 });
         }
         const data = new liveSessionModel({ courseId, date, startTime, endTime, description });

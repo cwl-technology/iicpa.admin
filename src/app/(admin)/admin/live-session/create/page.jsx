@@ -95,7 +95,7 @@ const page = () => {
                                                             <option hidden defaultChecked value={""}>Select Course</option>
                                                             {
                                                                 courseData?.map((ele, ind) =>
-                                                                    <option key={ind}>{ele.courseName}</option>
+                                                                    <option key={ind} value={ele._id}>{ele.courseName}</option>
                                                                 )
                                                             }
                                                             {/* {
@@ -108,6 +108,7 @@ const page = () => {
                                                         }
                                                     </div>
                                                 </div>
+                                                
                                                 <div className='col-md-6'></div>
                                                 <div className="col-md-4">
 

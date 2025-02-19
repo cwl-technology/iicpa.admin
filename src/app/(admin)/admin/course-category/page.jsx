@@ -147,6 +147,7 @@ const page = () => {
 
                                                                 </td>
                                                                 <td className="text-center">
+                                                                    
                                                                     <Link href={{
                                                                         pathname: "/admin/course-category/edit",
                                                                         query: { id: ele._id }

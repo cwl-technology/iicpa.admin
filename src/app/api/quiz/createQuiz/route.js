@@ -1,0 +1,19 @@
+import connectDB from "@/_config/connect";
+import quizModel from "@/_models/quizModel";
+import { NextResponse } from "next/server"
+
+export const POST = async (request) => {
+    try {
+        connectDB();
+        const { question, answer1, answer2, answer3, answer4, correctAnswer } = await request.json();
+        if (!question || !answer1 || !answer2 || !correctAnswer) {
+            return NextResponse.json({ message: "Please provide all the fields!", status: 0 });
+        }
+
+        const data = new quizModel({ question, answer1, answer2, answer3, answer4, correctAnswer });
+        await data.save();
+        return NextResponse.json({ message: "Quiz created successfully.", status: 1 });
+    } catch (err) {
+        return NextResponse.json({ message: "Internal server error", status: 0 });
+    }
+}

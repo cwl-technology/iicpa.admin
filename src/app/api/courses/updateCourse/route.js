@@ -27,6 +27,8 @@ export const POST = async (request) => {
         const keywords = data.get("keywords");
         const metaDescription = data.get("metaDescription");
 
+        console.log(actualPrice);
+
         simulationAndExp = JSON.parse(simulationAndExp)
         const id = data.get("id");
 
@@ -49,17 +51,17 @@ export const POST = async (request) => {
             const courseImageByteData = await courseImage.arrayBuffer();
             const courseImageBuffer = Buffer.from(courseImageByteData);
             courseImagePath = `${Date.now()}-${courseImage.name}`
-            await writeFile(`./public/uploads/course/${courseImagePath}`, courseImageBuffer);
+            await writeFile(`./public/uploads/${courseImagePath}`, courseImageBuffer);
 
-            if (fs.existsSync(`./public/uploads/course/${currentData.courseImage}`)) {
-                fs.unlinkSync(`./public/uploads/course/${currentData.courseImage}`)
+            if (fs.existsSync(`./public/uploads/${currentData.courseImage}`)) {
+                fs.unlinkSync(`./public/uploads/${currentData.courseImage}`)
             }
         } else {
             courseImagePath = courseImage
         }
 
 
-        const course = await courseModel.findByIdAndUpdate({ _id: id }, { courseCategory, courseName, courseSlug: formattedSlug, courseLevel, courseImage: courseImagePath || null, actualPrice, discount, priceAfterDiscount, courseVideoLink, courseDesc, simulationAndExpDesc, simulationAndExp, examAndCertiDesc, caseStudyDesc, title, keywords, metaDescription });
+        const course = await courseModel.findByIdAndUpdate({ _id: id }, { courseCategory, courseName, courseSlug: formattedSlug, courseLevel, courseImage: courseImagePath , actualPrice, discount, priceAfterDiscount, courseVideoLink, courseDesc, simulationAndExpDesc, simulationAndExp, examAndCertiDesc, caseStudyDesc, title, keywords, metaDescription });
 
         if (!course) {
             return NextResponse.json({ message: "Unable to update course data", status: 0 });

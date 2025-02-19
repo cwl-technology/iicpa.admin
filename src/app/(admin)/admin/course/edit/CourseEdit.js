@@ -107,16 +107,15 @@ const CourseEdit = () => {
 
     const onSubmit = async (data) => {
         try {
-
-            console.log(data.courseImage[0]);
+            console.log(actualPrice);
             const formdata = new FormData();
             formdata.append("courseCategory", data.courseCategory);
             formdata.append("courseName", data.courseName);
             formdata.append("courseSlug", data.courseSlug);
             formdata.append("courseLevel", data.courseLevel);
             formdata.append("courseImage", courseImage);
-            formdata.append("actualPrice", data.actualPrice);
-            formdata.append("discount", data.discount);
+            formdata.append("actualPrice", actualPrice);
+            formdata.append("discount", discount);
             formdata.append("priceAfterDiscount", finalPrice);
             formdata.append("courseVideoLink", data.courseVideoLink);
             formdata.append("courseDesc", courseDesc);
@@ -150,9 +149,9 @@ const CourseEdit = () => {
             if (res.data.status == 1) {
                 reset(res.data.data);
                 setExistedCourseImage(res.data.data.courseImage);
-                setActualPrice(res.data.data.actualPrice || "");
-                setDiscount(res.data.data.discount || "");
-                setFinalPrice(res.data.data.priceAfterDiscount || "");
+                setActualPrice(res.data.data.actualPrice || 0);
+                setDiscount(res.data.data.discount || 0);
+                setFinalPrice(res.data.data.priceAfterDiscount || 0);
                 setCaseStudyDecs(res.data.data.caseStudyDesc);
                 setCourseDesc(res.data.data.courseDesc);
                 setExamAndCertiDesc(res.data.data.examAndCertiDesc);
@@ -232,9 +231,9 @@ const CourseEdit = () => {
                                                             className={`form-select ${errors.courseLevel ? "border-danger" : ""}`}
                                                         >
                                                             <option hidden defaultChecked value={""}>Select course level</option>
-                                                            <option value="Pro">Pro</option>
-                                                            <option value="Specailisations">Specailisations</option>
-                                                            <option value="Levels">Levels</option>
+                                                            <option value="Foundation">Foundation</option>
+                                                            <option value="Core">Core </option>
+                                                            <option value="Expert">Expert</option>
                                                         </select>
                                                         {
                                                             errors.courseLevel && <span className="help-block text-danger"><small>{errors.courseLevel.message}</small></span>
@@ -288,7 +287,7 @@ const CourseEdit = () => {
                                                     {
                                                         courseImage ?
                                                             <img src={URL.createObjectURL(courseImage)} alt="error1" width={"100px"} /> :
-                                                            <img src={`/uploads/course/${existedCourseImage}`} alt="error2" width={"100px"} />
+                                                            existedCourseImage && <img src={`/uploads/${existedCourseImage}`} alt="error2" width={"100px"} />
                                                     }
                                                 </div>
                                                 <div className="col-md-6">

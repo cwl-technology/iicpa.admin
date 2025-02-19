@@ -169,12 +169,20 @@ const page = () => {
                                                                     }
 
                                                                 </td>
-                                                                <td>
+                                                                <td className='d-flex align-items-center'>
+                                                                    <Link href={{
+                                                                        pathname: "/admin/chapter",
+                                                                        query: {
+                                                                            courseName: ele.courseName,
+                                                                            courseId: ele._id
+                                                                        }
+                                                                    }}
+                                                                        className="btn btn-primary btn-sm" >Chapters</Link>
                                                                     <Link href={{
                                                                         pathname: "/admin/course/edit",
                                                                         query: { id: ele._id }
-                                                                    }} className="btn btn-primary btn-sm "><i className="bi bi-pencil"></i></Link>
-                                                                    <Link href="#" className="btn btn-danger btn-sm  ms-2" onClick={() => handleDelete(ele._id)}><i className="bi bi-trash"></i></Link>
+                                                                    }} className="btn btn-primary btn-sm ms-2"><i className="bi bi-pencil"></i></Link>
+                                                                    <Link href="#" className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(ele._id)}><i className="bi bi-trash"></i></Link>
                                                                 </td>
                                                             </tr>)
                                                     }

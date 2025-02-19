@@ -8,7 +8,7 @@ const page = () => {
   const router = useRouter();
 
   const onLogin = () => {
-    router.push("/");
+    router.push("/admin");
   }
   return (
     <>

@@ -1,8 +1,9 @@
 import courseModel from "@/_models/courseModel";
 import { NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
+
 import connectDB from "@/_config/connect";
 import slugformatter from "@/_helper/backend/slugformatter";
+import uploadImage from "@/_helper/backend/uploadImage";
 
 export const POST = async (request) => {
     connectDB();
@@ -29,27 +30,20 @@ export const POST = async (request) => {
 
         simulationAndExp = JSON.parse(simulationAndExp)
 
-    
+
         if (!courseCategory || !courseName || !courseSlug || !courseLevel) {
             return NextResponse.json({ message: "Please fill all the required fields", status: 0 });
         }
 
         const formattedSlug = slugformatter(courseSlug);
-
         const isExist = await courseModel.findOne({ courseSlug: formattedSlug });
         if (isExist) {
             return NextResponse.json({ message: "Course already exist.", status: 0 });
         }
 
-        let courseImagePath;
-        if (courseImage != "undefined") {
-            const courseImageByteData = await courseImage.arrayBuffer();
-            const courseImageBuffer = Buffer.from(courseImageByteData);
-            courseImagePath = `${Date.now()}-${courseImage.name}`
-            await writeFile(`./public/uploads/course/${courseImagePath}`, courseImageBuffer);
-        }
+        const courseImagePath = await uploadImage(courseImage);
 
-        const course = new courseModel({ courseCategory, courseName, courseSlug: formattedSlug, courseLevel, courseImage: courseImagePath || null, actualPrice, discount, priceAfterDiscount, courseVideoLink, courseDesc, simulationAndExpDesc, simulationAndExp, examAndCertiDesc, caseStudyDesc, title, keywords, metaDescription });
+        const course = new courseModel({ courseCategory, courseName, courseSlug: formattedSlug, courseLevel, courseImage: courseImagePath , actualPrice, discount, priceAfterDiscount, courseVideoLink, courseDesc, simulationAndExpDesc, simulationAndExp, examAndCertiDesc, caseStudyDesc, title, keywords, metaDescription });
         await course.save();
         return NextResponse.json({ message: "Course created successfully...", status: 1 });
     } catch (err) {

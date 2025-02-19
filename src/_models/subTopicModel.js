@@ -17,6 +17,10 @@ const subTopicSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+    subTopicSlug: {
+        type: String,
+        default: null
+    },
     subTopicImage: {
         type: String,
         default: null

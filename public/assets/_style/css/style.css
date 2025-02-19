@@ -47522,3 +47522,10 @@ img.online {
   flex-direction: column;
   justify-content: center;
 }
+
+.jobs-grid-icons{
+  font-size: 14px;
+}
+.jobs-grid-icons-2{
+  font-size: 12px;
+}
