@@ -2,15 +2,25 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
 
 export default function Header() {
   const [navMenuOpen, setNavMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const session = useSession();
+  console.log(session);
+
+
+
   const toggleMenu = () => {
     setNavMenuOpen((prev) => !prev);
   };
 
+  const handleSignOut = async () => {
+    await signOut()
+  }
 
-  const [scrolled, setScrolled] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 100) {
@@ -25,6 +35,10 @@ export default function Header() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+
+
+
 
   return (
     <>
@@ -80,19 +94,38 @@ export default function Header() {
                       className="main-menu-two__search searcher-toggler-box icon-search"
                     ></a>
                   </div>
-                  <div className="main-menu-two__signin-reg">
-                    <div className="main-menu-two__signin-reg-icon">
-                      <span className="icon-user-plus"></span>
-                    </div>
-                    <div className="main-menu-two__signin-reg-content">
-                      <Link href="/login" className="main-menu-two__signin">
-                        Sign in
-                      </Link>
-                      <Link href="/login" className="main-menu-two__reg">
-                        Register
-                      </Link>
-                    </div>
-                  </div>
+                  {
+                    session?.status != "authenticated" ?
+                      <div className="main-menu-two__signin-reg">
+                        <div className="main-menu-two__signin-reg-icon">
+                          <span className="icon-user-plus"></span>
+                        </div>
+                        <div className="main-menu-two__signin-reg-content">
+                          <Link href="/login" className="main-menu-two__signin">
+                            Sign in
+                          </Link>
+                          <Link href="/login" className="main-menu-two__reg">
+                            Register
+                          </Link>
+                        </div>
+                      </div>
+                      : <div className="main-menu-two__signin-reg">
+                        <div className="main-menu-two__signin-reg-icon">
+                          <span>
+                            <i className="bi bi-box-arrow-left"></i>
+                          </span>
+                        </div>
+                        <div className="main-menu-two__signin-reg-content">
+                          <Link href="#" className="main-menu-two__signin" onClick={handleSignOut}>
+                            Logout
+                          </Link>
+                          <Link href="#" className="main-menu-two__reg">
+                            {session?.data?.user?.name}
+                          </Link>
+                        </div>
+                      </div>
+                  }
+
                   <div className="main-menu-two__support-box">
                     <p className="main-menu-two__support-text">
                       {" "}
@@ -165,19 +198,37 @@ export default function Header() {
                         className="main-menu-two__search searcher-toggler-box icon-search"
                       ></a>
                     </div>
-                    <div className="main-menu-two__signin-reg">
-                      <div className="main-menu-two__signin-reg-icon">
-                        <span className="icon-user-plus"></span>
-                      </div>
-                      <div className="main-menu-two__signin-reg-content">
-                        <Link href="/login" className="main-menu-two__signin">
-                          Sign in
-                        </Link>
-                        <Link href="/login" className="main-menu-two__reg">
-                          Register
-                        </Link>
-                      </div>
-                    </div>
+                    {
+                      session?.status != "authenticated" ?
+                        <div className="main-menu-two__signin-reg">
+                          <div className="main-menu-two__signin-reg-icon">
+                            <span className="icon-user-plus"></span>
+                          </div>
+                          <div className="main-menu-two__signin-reg-content">
+                            <Link href="/login" className="main-menu-two__signin">
+                              Sign in
+                            </Link>
+                            <Link href="/login" className="main-menu-two__reg">
+                              Register
+                            </Link>
+                          </div>
+                        </div>
+                        : <div className="main-menu-two__signin-reg">
+                          <div className="main-menu-two__signin-reg-icon">
+                            <span>
+                              <i className="bi bi-box-arrow-left"></i>
+                            </span>
+                          </div>
+                          <div className="main-menu-two__signin-reg-content">
+                            <Link href="#" className="main-menu-two__signin" onClick={handleSignOut}>
+                              Logout
+                            </Link>
+                            <Link href="#" className="main-menu-two__reg">
+                              {session?.data?.user?.name}
+                            </Link>
+                          </div>
+                        </div>
+                    }
                     <div className="main-menu-two__support-box">
                       <p className="main-menu-two__support-text">
                         {" "}
@@ -236,7 +287,7 @@ export default function Header() {
               <li>
                 <Link href="/blog">Blog</Link>
               </li >
-              
+
               <li>
                 <Link href="/contact">Contact</Link>
               </li>

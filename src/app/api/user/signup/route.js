@@ -6,8 +6,8 @@ import connectDB from "@/_config/connect";
 export const POST = async (request) => {
     connectDB();
     try {
-        const { name, email, password } = await request.json();
-        if (!name || !email || !password) {
+        const { name, phone, email, password } = await request.json();
+        if (!name || !phone || !email || !password) {
             return NextResponse.json({ message: "Please fill all the fields", status: 0 })
         }
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -20,7 +20,7 @@ export const POST = async (request) => {
         }
 
         const hassedPassword = await bcrypt.hash(password, 10);
-        const newUser = new userModel({ name, email, password: hassedPassword });
+        const newUser = new userModel({ name, phone, email, password: hassedPassword });
         await newUser.save();
         return NextResponse.json({ message: "User registered successfully.", status: 1 })
     } catch (err) {

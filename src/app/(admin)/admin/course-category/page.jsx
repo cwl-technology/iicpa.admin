@@ -92,7 +92,9 @@ const page = () => {
     }, [])
     useEffect(() => {
         if (courseCategoryData) {
-            new DataTable("#myTable");
+            new DataTable("#myTable",{
+                paging: false
+            });
         }
     }, [courseCategoryData]);
 

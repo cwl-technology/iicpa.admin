@@ -153,7 +153,7 @@ const SubTopicCreate = () => {
                                                         image ?
                                                             <img src={URL.createObjectURL(image)} alt="error" width={"100px"} /> :
                                                             currentImage &&
-                                                            <img src={`/uploads/syllabus/image/${currentImage}`} alt="error" width={"100px"} />
+                                                            <img src={`/uploads/${currentImage}`} alt="error" width={"100px"} />
                                                     }
                                                 </div>
                                                 <div className="col-md-6">

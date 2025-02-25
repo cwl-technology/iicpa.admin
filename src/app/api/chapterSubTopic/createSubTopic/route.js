@@ -3,6 +3,7 @@ import subTopicModel from "@/_models/subTopicModel";
 import { NextResponse } from "next/server";
 import { writeFile } from "fs/promises";
 import slugformatter from "@/_helper/backend/slugformatter";
+import uploadImage from "@/_helper/backend/uploadImage";
 
 export const POST = async (request) => {
     connectDB();
@@ -30,23 +31,9 @@ export const POST = async (request) => {
             return NextResponse.json({ message: "Sub topic already exist", status: 0 });
         }
 
-        let subTopicImagePath;
-        if (subTopicImage != "undefined") {
-            const subTopicImageByteData = await subTopicImage.arrayBuffer();
-            const subTopicImageBuffer = Buffer.from(subTopicImageByteData);
-            subTopicImagePath = `${Date.now()}-${subTopicImage.name}`
-            await writeFile(`./public/uploads/syllabus/image/${subTopicImagePath}`, subTopicImageBuffer);
-        }
-
-        let subTopicVideoPath;
-        if (subTopicVideo != "undefined") {
-            const subTopicVideoByteData = await subTopicVideo.arrayBuffer();
-            const subTopicVideoBuffer = Buffer.from(subTopicVideoByteData);
-            subTopicVideoPath = `${Date.now()}-${subTopicVideo.name}`
-            await writeFile(`./public/uploads/syllabus/video/${subTopicVideoPath}`, subTopicVideoBuffer);
-        }
-
-
+        const subTopicImagePath = await uploadImage(subTopicImage);
+        const subTopicVideoPath = await uploadImage(subTopicVideo);
+        
         const data = new subTopicModel({ courseId, chapterId, topicId, subTopicName, subTopicSlug: formattedSlug, subTopicImage: subTopicImagePath || null, subTopicVideo: subTopicVideoPath || null, subTopicDescription });
         await data.save();
         return NextResponse.json({ message: "Created successfully.", status: 1 });

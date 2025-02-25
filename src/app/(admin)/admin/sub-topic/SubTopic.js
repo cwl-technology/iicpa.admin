@@ -22,9 +22,39 @@ const SubTopic = () => {
     const chapterId = searchParams.get("chapterId");
     const topicId = searchParams.get("topicId");
 
+
+    //Custom Pagination 
+    const [pagiStartInd, setPagiStartInd] = useState(0);
+    const [pagiEndInd, setPagiEndInd] = useState(9);
+    const [currentPageNum, setCurrentPageNum] = useState(1)
+    const [totalPageNum, setTotalPageNum] = useState()
+
+    const handlePaginationNext = (e) => {
+        e.preventDefault();
+        if (pagiEndInd < subTopicData?.length - 1) {
+            setPagiStartInd((prev) => prev + 10);
+            setPagiEndInd((prev) => prev + 10);
+            setCurrentPageNum(currentPageNum + 1)
+        }
+    }
+
+    const handlePaginationPrev = (e) => {
+        e.preventDefault();
+        if (pagiStartInd > 0) {
+            setPagiStartInd((prev) => prev - 10);
+            setPagiEndInd((prev) => prev - 10);
+            setCurrentPageNum(currentPageNum - 1)
+        }
+    }
+
     useEffect(() => {
-        getSubTopicData();
-    }, [])
+        if (subTopicData) {
+            new DataTable("#myTable", {
+                paging: false
+            });
+        }
+    }, [subTopicData]);
+
 
 
     const getSubTopicData = async () => {
@@ -41,12 +71,6 @@ const SubTopic = () => {
             console.log(err);
         }
     }
-
-    useEffect(() => {
-        if (subTopicData) {
-            new DataTable("#myTable");
-        }
-    }, [subTopicData]);
 
 
     const handleDelete = async (id) => {
@@ -110,6 +134,19 @@ const SubTopic = () => {
         }
     }
 
+
+
+    useEffect(() => {
+        if (subTopicData) {
+            let total = subTopicData?.length;
+            let count =  Math.ceil(total / 10);
+            setTotalPageNum(count)
+        }
+    }, [subTopicData])
+
+    useEffect(() => {
+        getSubTopicData();
+    }, [])
     return (
         <>
             <div className="content-wrapper">
@@ -158,7 +195,7 @@ const SubTopic = () => {
 
                                         <div className="table-responsive">
 
-                                            <table id="myTable" className="text-fade table table-bordered display" >
+                                            <table id="myTable" className="text-fade table table-bordered display" style={{ width: "100%" }}>
                                                 <thead>
 
                                                     <tr className="text-dark">
@@ -173,53 +210,75 @@ const SubTopic = () => {
                                                 </thead>
                                                 <tbody>
                                                     {
-                                                        subTopicData?.map((ele, ind) =>
-                                                            <tr key={ind}>
-                                                                <td className="text-dark">{ind + 1}</td>
-                                                                <td>{courseName}</td>
-                                                                <td>{chapterName}</td>
-                                                                <td>{topicName}</td>
-                                                                <td>{ele.subTopicName}</td>
-                                                                <td>
-                                                                    {
-                                                                        ele.status == 1 ?
-                                                                            <p className="mb-0"><span className="badge badge-success-light" style={{ cursor: "pointer" }} onClick={() => handleChangeStatus(ele._id, ele.status)}> Active</span></p>
-                                                                            :
-                                                                            <p className="mb-0"><span className="badge badge-danger-light" style={{ cursor: "pointer" }} onClick={() => handleChangeStatus(ele._id, ele.status)}> Inctive</span></p>
-                                                                    }
+                                                        subTopicData?.map((ele, ind) => {
+                                                            if (ind >= pagiStartInd && ind <= pagiEndInd)
+                                                                return (
+                                                                    <tr key={ind}>
+                                                                        <td className="text-dark">{ind + 1}</td>
+                                                                        <td>{courseName}</td>
+                                                                        <td>{chapterName}</td>
+                                                                        <td>{topicName}</td>
+                                                                        <td>{ele.subTopicName}</td>
 
-                                                                </td>
-                                                                <td className='d-flex align-items-center'>
-                                                                    {/* <Link href={{
-                                                                        pathname: "/admin/sub-topic/edit",
-                                                                        query: { 
-                                                                            id: ele._id,
-                                                                            courseName: courseName,
-                                                                            courseId: courseId,
-                                                                            chapterName: chapterName,
-                                                                            chapterId: chapterId,
-                                                                            topicName: topicName,
-                                                                            topicId: topicId,
-                                                                        }
-                                                                    }} className="btn btn-primary btn-sm ms-2">Quiz</Link> */}
-                                                                    <Link href={{
-                                                                        pathname: "/admin/sub-topic/edit",
-                                                                        query: {
-                                                                            id: ele._id,
-                                                                            courseName: courseName,
-                                                                            courseId: courseId,
-                                                                            chapterName: chapterName,
-                                                                            chapterId: chapterId,
-                                                                            topicName: topicName,
-                                                                            topicId: topicId,
-                                                                        }
-                                                                    }} className="btn btn-primary btn-sm ms-2"><i className="bi bi-pencil"></i></Link>
-                                                                    <Link href="#" className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(ele._id)}><i className="bi bi-trash"></i></Link>
-                                                                </td>
-                                                            </tr>)
+                                                                        <td>
+                                                                            {
+                                                                                ele.status == 1 ?
+                                                                                    <p className="mb-0"><span className="badge badge-success-light" style={{ cursor: "pointer" }} onClick={() => handleChangeStatus(ele._id, ele.status)}> Active</span></p>
+                                                                                    :
+                                                                                    <p className="mb-0"><span className="badge badge-danger-light" style={{ cursor: "pointer" }} onClick={() => handleChangeStatus(ele._id, ele.status)}> Inctive</span></p>
+                                                                            }
+                                                                        </td>
+                                                                        <td >
+                                                                            <div className='d-flex align-items-center'>
+                                                                                <Link href={{
+                                                                                    pathname: "/admin/quiz",
+                                                                                    query: {
+                                                                                        courseName: courseName,
+                                                                                        courseId: courseId,
+                                                                                        chapterName: chapterName,
+                                                                                        chapterId: chapterId,
+                                                                                        topicName: topicName,
+                                                                                        topicId: topicId,
+                                                                                        subTopicName: ele.topicName,
+                                                                                        subTopicId: ele._id,
+                                                                                    }
+                                                                                }} className="btn btn-primary btn-sm ms-2">Quiz</Link>
+                                                                                <Link
+                                                                                    href={{
+                                                                                        pathname: "/admin/sub-topic/edit",
+                                                                                        query: {
+                                                                                            id: ele._id,
+                                                                                            courseName: courseName,
+                                                                                            courseId: courseId,
+                                                                                            chapterName: chapterName,
+                                                                                            chapterId: chapterId,
+                                                                                            topicName: topicName,
+                                                                                            topicId: topicId,
+                                                                                        }
+                                                                                    }}
+                                                                                    // onClick={(e) => handleTestId(e, ele._id, ind)}
+                                                                                    className="btn btn-primary btn-sm ms-2"><i className="bi bi-pencil"></i></Link>
+                                                                                <Link href="#" className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(ele._id)}><i className="bi bi-trash"></i></Link>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                )
+                                                        })
                                                     }
                                                 </tbody>
                                             </table>
+                                            {subTopicData?.length > 10 &&
+                                                <div className='d-flex gap-2 justify-content-between'>
+                                                    <div>
+                                                        <p>Showing {currentPageNum} to {parseInt(totalPageNum, 10)} of {parseInt(totalPageNum, 10)} entries
+                                                        </p>
+                                                    </div>
+                                                    <div>
+                                                        <a href='#' className='btn btn-primary btn-outline px-4 btn-sm' onClick={(e) => handlePaginationPrev(e)}>Prev</a>
+                                                        <a href='#' className='btn btn-primary  px-4 btn-sm ms-2' onClick={(e) => handlePaginationNext(e)}>Next</a>
+                                                    </div>
+                                                </div>
+                                            }
                                         </div>
                                     </div>
                                 </div>

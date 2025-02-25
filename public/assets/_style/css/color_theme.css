@@ -701,7 +701,8 @@ a.text-lighter:focus {
 }
 
 .text-fade {
-  color: #a1a4b5 !important;
+  /* color: #a1a4b5 !important; */
+  color: #6c6e75 !important;
 }
 
 a.text-fade:hover,
@@ -4983,16 +4984,16 @@ Theme Info Color
 }
 
 .theme-info .btn-outline.btn-primary {
-  color: #733aeb;
+  color: #121e4e;
   background-color: transparent;
-  border-color: #733aeb !important;
+  border-color: #121e4e !important;
 }
 
 .theme-info .btn-outline.btn-primary:hover,
 .theme-info .btn-outline.btn-primary:active,
 .theme-info .btn-outline.btn-primary.active {
-  background-color: #5115d1 !important;
-  border-color: #5115d1 !important;
+  background-color: #121e4e !important;
+  border-color: #121e4e !important;
   color: #ffffff !important;
 }
 

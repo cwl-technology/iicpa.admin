@@ -33,16 +33,16 @@ const page = () => {
         <>
             
             <div className=''>
-                <div className='detail-syllabus text-center my-3'>
+                <div className='detail-syllabus text-center my-5'>
                     <h2>Detailed syllabus</h2>
                 </div>
                 <div className=' px-5 py-3'>
                 {
                     syllabusData?.map((chapter, index) =>
                         <div key={index} className=''>
-                            <div className='chapter d-flex mt-5 mb-3'>
-                                <h4>Chapter {index + 1}:</h4>
-                                <h4 className='chapter-name'>{chapter?.chapterName}</h4>
+                            <div className='chapter d-flex mt-0 mb-3'>
+                                <h3>Chapter {index + 1}:</h3>
+                                <h2 className='chapter-name'>{chapter?.chapterName}</h2>
                             </div>
                             <div className='row'>
                                 {chapter?.topics?.map((topic, ind) =>
@@ -51,7 +51,7 @@ const page = () => {
 
                                             <div className="courses-three__content py-4">
                                                 <div className="courses-three__price-and-review mb-3">
-                                                    <h4 className="courses-three__price">{topic?.topicName}</h4>
+                                                    <h5 className="courses-three__price">{topic?.topicName}</h5>
                                                 </div>
                                                 <ul className="card-text">
                                                     {topic?.subtopic?.map((subTopic, i) =>

@@ -1,4 +1,5 @@
 import connectDB from "@/_config/connect";
+import quizModel from "@/_models/quizModel";
 import { NextResponse } from "next/server";
 
 export const POST = async (request) => {

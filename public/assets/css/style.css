@@ -2440,3 +2440,7 @@ ul {
   background: url("/assets/images/backgrounds/syllabus-bg2.jpg");
   /* background-size: cover; */
 }
+
+.auth-page-logo img{
+    width: 350px;
+}

@@ -1,9 +1,6 @@
-import { SessionProvider } from "next-auth/react";
-
-import Footer from "@/_component/main/Footer";
-import Header from "@/_component/main/Header";
-import Newsletter from "@/_component/main/Newsletter";
+import { SessionProvider } from "next-auth/react"
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { Toaster } from "react-hot-toast";
 
 
 export const metadata = {
@@ -84,25 +81,22 @@ export default function RootLayout({ children }) {
 
 
       </head>
-      <SessionProvider>
-        <body className="custom-cursor">
-          <div className="custom-cursor__cursor"></div>
-          <div className="custom-cursor__cursor-two"></div>
-          <div className="page-wrapper">
+      <body className="custom-cursor">
+        <div className="custom-cursor__cursor"></div>
+        <div className="custom-cursor__cursor-two"></div>
+        <div className="page-wrapper">
 
-            <Header />
-            {/* <div className="stricky-header stricked-menu main-menu">
+          {/* <div className="stricky-header stricked-menu main-menu">
             <div className="sticky-header__content"></div>
           </div> */}
 
-
+          <SessionProvider>
             {children}
+          </SessionProvider>
 
-            <Newsletter />
-            <Footer />
-          </div>
-        </body>
-      </SessionProvider>
+        </div>
+        <Toaster />
+      </body>
     </html>
   );
 }

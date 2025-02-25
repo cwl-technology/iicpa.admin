@@ -47,9 +47,44 @@ const page = () => {
         }
     }
 
+    //Custom Pagination 
+    const [pagiStartInd, setPagiStartInd] = useState(0);
+    const [pagiEndInd, setPagiEndInd] = useState(9);
+    const [currentPageNum, setCurrentPageNum] = useState(1)
+    const [totalPageNum, setTotalPageNum] = useState()
+
+    const handlePaginationNext = (e) => {
+        e.preventDefault();
+        if (pagiEndInd < courseData?.length - 1) {
+            setPagiStartInd((prev) => prev + 10);
+            setPagiEndInd((prev) => prev + 10);
+            setCurrentPageNum(currentPageNum + 1)
+        }
+    }
+
+    const handlePaginationPrev = (e) => {
+        e.preventDefault();
+        if (pagiStartInd > 0) {
+            setPagiStartInd((prev) => prev - 10);
+            setPagiEndInd((prev) => prev - 10);
+            setCurrentPageNum(currentPageNum - 1)
+        }
+    }
+
+
+    useEffect(() => {
+            if (courseData) {
+                let total = courseData?.length;
+                let count =  Math.ceil(total / 10);
+                setTotalPageNum(count)
+            }
+        }, [courseData])
+
     useEffect(() => {
         if (courseData) {
-            new DataTable("#myTable");
+            new DataTable("#myTable", {
+                paging: false
+            });
         }
     }, [courseData]);
 
@@ -133,7 +168,6 @@ const page = () => {
                                                 <div className="add-order text-xl-end mt-xl-0 mt-2">
 
                                                     <Link href="/admin/course/create" className="btn btn-primary mb-2 me-2"><i className="bi bi-plus-lg"></i> Add Course</Link>
-                                                    <Link href="#" className="btn btn-primary-light mb-2">Export</Link>
                                                 </div>
                                             </div>
                                         </div>
@@ -156,6 +190,9 @@ const page = () => {
                                                 <tbody>
                                                     {
                                                         courseData?.map((ele, ind) =>
+                                                            {
+                                                                if (ind >= pagiStartInd && ind <= pagiEndInd)
+                                                                    return (
                                                             <tr key={ind}>
                                                                 <td className="text-dark">{ind + 1}</td>
                                                                 <td>{getCourseCategoryById(ele.courseCategory)}</td>
@@ -184,10 +221,22 @@ const page = () => {
                                                                     }} className="btn btn-primary btn-sm ms-2"><i className="bi bi-pencil"></i></Link>
                                                                     <Link href="#" className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(ele._id)}><i className="bi bi-trash"></i></Link>
                                                                 </td>
-                                                            </tr>)
+                                                            </tr>)})
                                                     }
                                                 </tbody>
                                             </table>
+                                            {courseData?.length > 10 &&
+                                                <div className='d-flex gap-2 justify-content-between'>
+                                                    <div>
+                                                        <p>Showing {currentPageNum} to {parseInt(totalPageNum, 10)} of {parseInt(totalPageNum, 10)} entries
+                                                        </p>
+                                                    </div>
+                                                    <div>
+                                                        <a href='#' className='btn btn-primary btn-outline px-4 btn-sm' onClick={(e) => handlePaginationPrev(e)}>Prev</a>
+                                                        <a href='#' className='btn btn-primary  px-4 btn-sm ms-2' onClick={(e) => handlePaginationNext(e)}>Next</a>
+                                                    </div>
+                                                </div>
+                                            }
                                         </div>
                                     </div>
                                 </div>

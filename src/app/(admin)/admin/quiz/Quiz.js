@@ -17,6 +17,8 @@ const Quiz = () => {
     const searchParams = useSearchParams();
     const courseName = searchParams.get("courseName");
     const chapterName = searchParams.get("chapterName");
+    const topicName = searchParams.get("topicName");
+    const subTopicName = searchParams.get("subTopicName");
     const courseId = searchParams.get("courseId");
     const chapterId = searchParams.get("chapterId");
     const topicId = searchParams.get("topicId");
@@ -32,10 +34,10 @@ const Quiz = () => {
             const res = await axios.post(`/api/quiz/getAllQuiz`, {
                 courseId: courseId,
                 chapterId: chapterId,
-                topicId:topicId,
-                subTopicId:subTopicId
-
+                topicId: topicId,
+                subTopicId: subTopicId
             });
+            console.log(res.data);
             if (res.data.status == 1) {
                 setQuizData(res.data.data);
             }
@@ -45,10 +47,12 @@ const Quiz = () => {
     }
 
     useEffect(() => {
-        if (topicData) {
-            new DataTable("#myTable");
+        if (quizData) {
+            new DataTable("#myTable", {
+                paging: false
+            });
         }
-    }, [topicData]);
+    }, [quizData]);
 
 
     const handleDelete = async (id) => {
@@ -69,12 +73,12 @@ const Quiz = () => {
 
         if (result.isConfirmed) {
             try {
-                const res = await axios.post(`/api/chapterTopic/deleteTopic`, {
+                const res = await axios.post(`/api/quiz/deleteQuiz`, {
                     id: id
                 })
                 if (res.data.status == 1) {
                     toast.success(res.data.message);
-                    getTopicData();
+                    getQuizData();
                 }
             } catch (err) {
                 console.log(err);
@@ -98,13 +102,13 @@ const Quiz = () => {
         })
         if (result.isConfirmed) {
             try {
-                const res = await axios.post(`/api/chapterTopic/changeStatus`, {
+                const res = await axios.post(`/api/quiz/changeStatus`, {
                     id: id,
                     status: status
                 })
-
+                console.log(res.data);
                 if (res.data.status === 1) {
-                    getTopicData();
+                    getQuizData();
                 }
             } catch (err) {
                 console.log(err);
@@ -130,14 +134,31 @@ const Quiz = () => {
                                                 <div className="add-order text-xl-end mt-xl-0 mt-2">
 
                                                     <Link href={{
-                                                        pathname: "/admin/topic/create",
+                                                        pathname: "/admin/quiz/create",
                                                         query: {
                                                             courseName: courseName,
                                                             courseId: courseId,
                                                             chapterName: chapterName,
-                                                            chapterId: chapterId
+                                                            chapterId: chapterId,
+                                                            topicName: topicName,
+                                                            topicId: topicId,
+                                                            subTopicName: subTopicName,
+                                                            subTopicId: subTopicId,
                                                         }
-                                                    }} className="btn btn-primary mb-2 me-2"><i className="bi bi-plus-lg"></i> Add Topic</Link>
+                                                    }} className="btn btn-primary mb-2 me-2"><i className="bi bi-plus-lg"></i> Add Quiz</Link>
+                                                    <Link href={{
+                                                        pathname: "/admin/topic",
+                                                        query: {
+                                                            courseName: courseName,
+                                                            courseId: courseId,
+                                                            chapterName: chapterName,
+                                                            chapterId: chapterId,
+                                                            topicName: topicName,
+                                                            topicId: topicId,
+                                                        }
+                                                    }}
+
+                                                        className="btn btn-primary-light mb-2">View Sub Topic</Link>
 
                                                 </div>
                                             </div>
@@ -152,21 +173,17 @@ const Quiz = () => {
 
                                                     <tr className="text-dark">
                                                         <th>Sr. No.</th>
-                                                        <th>Course Name</th>
-                                                        <th>Chapter Name</th>
-                                                        <th>Topic Name</th>
+                                                        <th>Question</th>
                                                         <th>Status</th>
                                                         <th >Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {
-                                                        topicData?.map((ele, ind) =>
+                                                        quizData?.map((ele, ind) =>
                                                             <tr key={ind}>
                                                                 <td className="text-dark">{ind + 1}</td>
-                                                                <td>{courseName}</td>
-                                                                <td>{chapterName}</td>
-                                                                <td>{ele.topicName}</td>
+                                                                <td>{ele.question}</td>
                                                                 <td>
                                                                     {
                                                                         ele.status == 1 ?
@@ -176,29 +193,24 @@ const Quiz = () => {
                                                                     }
 
                                                                 </td>
-                                                                <td className='d-flex align-items-center'>
-                                                                    <Link href={{
-                                                                        pathname: "/admin/sub-topic",
-                                                                        query: {
-                                                                            courseName: courseName,
-                                                                            courseId: courseId,
-                                                                            chapterName: chapterName,
-                                                                            chapterId: chapterId,
-                                                                            topicName: ele.topicName,
-                                                                            topicId: ele._id
-                                                                        }
-                                                                    }} className="btn btn-primary btn-sm">Sub Topics</Link>
-                                                                    <Link href={{
-                                                                        pathname: "/admin/topic/edit",
-                                                                        query: {
-                                                                            id: ele._id,
-                                                                            courseName: courseName,
-                                                                            courseId: courseId,
-                                                                            chapterName: chapterName,
-                                                                            chapterId: chapterId,
-                                                                        }
-                                                                    }} className="btn btn-primary btn-sm ms-2"><i className="bi bi-pencil"></i></Link>
-                                                                    <Link href="#" className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(ele._id)}><i className="bi bi-trash"></i></Link>
+                                                                <td >
+                                                                    <div className='d-flex align-items-center'>
+                                                                        <Link href={{
+                                                                            pathname: "/admin/quiz/edit",
+                                                                            query: {
+                                                                                id: ele._id,
+                                                                                courseName: courseName,
+                                                                                courseId: courseId,
+                                                                                chapterName: chapterName,
+                                                                                chapterId: chapterId,
+                                                                                topicName: topicName,
+                                                                                topicId: topicId,
+                                                                                subTopicName: subTopicName,
+                                                                                subTopicId: subTopicId,
+                                                                            }
+                                                                        }} className="btn btn-primary btn-sm ms-2"><i className="bi bi-pencil"></i></Link>
+                                                                        <Link href="#" className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(ele._id)}><i className="bi bi-trash"></i></Link>
+                                                                    </div>
                                                                 </td>
                                                             </tr>)
                                                     }

@@ -1,9 +1,8 @@
 import courseModel from "@/_models/courseModel";
 import { NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
 import connectDB from "@/_config/connect";
-import fs from "fs";
 import slugformatter from "@/_helper/backend/slugformatter";
+import updateImage from "@/_helper/backend/updateImage";
 
 export const POST = async (request) => {
     connectDB();
@@ -27,8 +26,7 @@ export const POST = async (request) => {
         const keywords = data.get("keywords");
         const metaDescription = data.get("metaDescription");
 
-        console.log(actualPrice);
-
+    
         simulationAndExp = JSON.parse(simulationAndExp)
         const id = data.get("id");
 
@@ -46,21 +44,8 @@ export const POST = async (request) => {
             return NextResponse.json({ message: "Course already exist.", status: 0 });
         }
 
-        let courseImagePath;
-        if (courseImage != currentData.courseImage) {
-            const courseImageByteData = await courseImage.arrayBuffer();
-            const courseImageBuffer = Buffer.from(courseImageByteData);
-            courseImagePath = `${Date.now()}-${courseImage.name}`
-            await writeFile(`./public/uploads/${courseImagePath}`, courseImageBuffer);
-
-            if (fs.existsSync(`./public/uploads/${currentData.courseImage}`)) {
-                fs.unlinkSync(`./public/uploads/${currentData.courseImage}`)
-            }
-        } else {
-            courseImagePath = courseImage
-        }
-
-
+        const courseImagePath = await updateImage(courseImage,currentData.courseImage)
+        
         const course = await courseModel.findByIdAndUpdate({ _id: id }, { courseCategory, courseName, courseSlug: formattedSlug, courseLevel, courseImage: courseImagePath , actualPrice, discount, priceAfterDiscount, courseVideoLink, courseDesc, simulationAndExpDesc, simulationAndExp, examAndCertiDesc, caseStudyDesc, title, keywords, metaDescription });
 
         if (!course) {

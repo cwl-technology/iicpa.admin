@@ -36,11 +36,45 @@ const Chapter = () => {
         }
     }
 
+    //Custom Pagination 
+    const [pagiStartInd, setPagiStartInd] = useState(0);
+    const [pagiEndInd, setPagiEndInd] = useState(9);
+    const [currentPageNum, setCurrentPageNum] = useState(1)
+    const [totalPageNum, setTotalPageNum] = useState()
+
+    const handlePaginationNext = (e) => {
+        e.preventDefault();
+        if (pagiEndInd < chapterData?.length - 1) {
+            setPagiStartInd((prev) => prev + 10);
+            setPagiEndInd((prev) => prev + 10);
+            setCurrentPageNum(currentPageNum + 1)
+        }
+    }
+
+    const handlePaginationPrev = (e) => {
+        e.preventDefault();
+        if (pagiStartInd > 0) {
+            setPagiStartInd((prev) => prev - 10);
+            setPagiEndInd((prev) => prev - 10);
+            setCurrentPageNum(currentPageNum - 1)
+        }
+    }
+
     useEffect(() => {
         if (chapterData) {
-            new DataTable("#myTable");
+            new DataTable("#myTable", {
+                paging: false
+            });
         }
     }, [chapterData]);
+
+    useEffect(() => {
+        if (chapterData) {
+            let total = chapterData?.length;
+            let count = Math.ceil(total / 10);
+            setTotalPageNum(count)
+        }
+    }, [chapterData])
 
 
     const handleDelete = async (id) => {
@@ -149,45 +183,63 @@ const Chapter = () => {
                                                 </thead>
                                                 <tbody>
                                                     {
-                                                        chapterData?.map((ele, ind) =>
-                                                            <tr key={ind}>
-                                                                <td className="text-dark">{ind + 1}</td>
-                                                                <td>{courseName}</td>
-                                                                <td>{ele.chapterName}</td>
-                                                                <td>
-                                                                    {
-                                                                        ele.status == 1 ?
-                                                                            <p className="mb-0"><span className="badge badge-success-light" style={{ cursor: "pointer" }} onClick={() => handleChangeStatus(ele._id, ele.status)}> Active</span></p>
-                                                                            :
-                                                                            <p className="mb-0"><span className="badge badge-danger-light" style={{ cursor: "pointer" }} onClick={() => handleChangeStatus(ele._id, ele.status)}> Inctive</span></p>
-                                                                    }
+                                                        chapterData?.map((ele, ind) => {
+                                                            if (ind >= pagiStartInd && ind <= pagiEndInd)
+                                                                return (
+                                                                    <tr key={ind}>
+                                                                        <td className="text-dark">{ind + 1}</td>
+                                                                        <td>{courseName}</td>
+                                                                        <td>{ele.chapterName}</td>
+                                                                        <td>
+                                                                            {
+                                                                                ele.status == 1 ?
+                                                                                    <p className="mb-0"><span className="badge badge-success-light" style={{ cursor: "pointer" }} onClick={() => handleChangeStatus(ele._id, ele.status)}> Active</span></p>
+                                                                                    :
+                                                                                    <p className="mb-0"><span className="badge badge-danger-light" style={{ cursor: "pointer" }} onClick={() => handleChangeStatus(ele._id, ele.status)}> Inctive</span></p>
+                                                                            }
 
-                                                                </td>
-                                                                <td className='d-flex align-items-center'>
-                                                                    <Link href={{
-                                                                        pathname: "/admin/topic",
-                                                                        query: {
-                                                                            courseName: courseName,
-                                                                            courseId: courseId,
-                                                                            chapterName: ele.chapterName,
-                                                                            chapterId: ele._id,
-                                                                        }
-                                                                    }}
-                                                                        className="btn btn-primary btn-sm">Topics</Link>
-                                                                    <Link href={{
-                                                                        pathname: "/admin/chapter/edit",
-                                                                        query: {
-                                                                            id: ele._id,
-                                                                            courseName: courseName,
-                                                                            courseId: courseId,
-                                                                        }
-                                                                    }} className="btn btn-primary btn-sm ms-2"><i className="bi bi-pencil"></i></Link>
-                                                                    <Link href="#" className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(ele._id)}><i className="bi bi-trash"></i></Link>
-                                                                </td>
-                                                            </tr>)
+                                                                        </td>
+                                                                        <td >
+                                                                            <div className='d-flex align-items-center'>
+                                                                                <Link href={{
+                                                                                    pathname: "/admin/topic",
+                                                                                    query: {
+                                                                                        courseName: courseName,
+                                                                                        courseId: courseId,
+                                                                                        chapterName: ele.chapterName,
+                                                                                        chapterId: ele._id,
+                                                                                    }
+                                                                                }}
+                                                                                    className="btn btn-primary btn-sm">Topics</Link>
+                                                                                <Link href={{
+                                                                                    pathname: "/admin/chapter/edit",
+                                                                                    query: {
+                                                                                        id: ele._id,
+                                                                                        courseName: courseName,
+                                                                                        courseId: courseId,
+                                                                                    }
+                                                                                }} className="btn btn-primary btn-sm ms-2"><i className="bi bi-pencil"></i></Link>
+                                                                                <Link href="#" className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(ele._id)}><i className="bi bi-trash"></i></Link>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                )
+                                                        })
                                                     }
                                                 </tbody>
                                             </table>
+                                            {chapterData?.length > 10 &&
+                                                <div className='d-flex gap-2 justify-content-between'>
+                                                    <div>
+                                                        <p>Showing {currentPageNum} to {parseInt(totalPageNum, 10)} of {parseInt(totalPageNum, 10)} entries
+                                                        </p>
+                                                    </div>
+                                                    <div>
+                                                        <a href='#' className='btn btn-primary btn-outline px-4 btn-sm' onClick={(e) => handlePaginationPrev(e)}>Prev</a>
+                                                        <a href='#' className='btn btn-primary  px-4 btn-sm ms-2' onClick={(e) => handlePaginationNext(e)}>Next</a>
+                                                    </div>
+                                                </div>
+                                            }
                                         </div>
                                     </div>
                                 </div>

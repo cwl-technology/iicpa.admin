@@ -13,6 +13,10 @@ const adminSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+    role:{
+        type:String,
+        default:"Admin"
+    }
 
 })
 
