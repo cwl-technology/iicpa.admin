@@ -1,4 +1,5 @@
 import { SessionProvider } from "next-auth/react"
+import { Toaster } from "react-hot-toast";
 
 export const metadata = {
     title: 'Admin Login | IICPA'
@@ -27,6 +28,7 @@ export default function AdminLoginLayout({ children }) {
                 <SessionProvider>
                     {children}
                 </SessionProvider>
+            <Toaster/>
             </body>
         </html>
     );

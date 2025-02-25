@@ -1,14 +1,31 @@
 "use client"
 
+import ButtonLoader from '@/_component/global/ButtonLoader'
+import axios from 'axios'
+import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import React from 'react'
+import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
 
 const page = () => {
 
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm()
   const router = useRouter();
 
-  const onLogin = () => {
-    router.push("/admin");
+  const onSubmit = async (data) => {
+    try {
+      const res = await axios.post("/api/admin/login", data);
+      if (res.data.status == 1) {
+        toast.success(res.data.message);
+        await signIn("credentials", { id: res.data.data.id, name: res.data.data.name, role: res.data.data.role, redirect: false })
+        router.push("/admin");
+      } else {
+        toast.error(res.data.message);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   }
   return (
     <>
@@ -26,23 +43,43 @@ const page = () => {
                   <div className="p-40">
                     <form action="https://edulearn-lms-admin-template.multipurposethemes.com/template/vertical/main/index.html" method="post">
                       <div className="form-group">
-                        <div className="input-group mb-3">
-                          <span className="input-group-text bg-transparent"><i className="text-fade ti-user"></i></span>
-                          <input type="text" className="form-control ps-15 bg-transparent" placeholder="Username" required />
+                        <div className={`${errors.email ? "input-group mb-0" : "input-group mb-3"}`}>
+                          <span className={`${errors.email ? "input-group-text  bg-transparent border-danger" : "input-group-text  bg-transparent"}`}><i className="text-fade ti-user"></i></span>
+                          <input type="text" placeholder="Enter the email" {...register("email", {
+                            required: {
+                              value: true,
+                              message: "Email is required!"
+                            },
+                            pattern: {
+                              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                              message: "Invalid email!"
+                            }
+                          })} className={`${errors.email ? "border-danger form-control ps-15 bg-transparent " : "form-control ps-15 bg-transparent"}`} />
                         </div>
+                        {
+                          errors.email && <p className='text-danger small'>{errors.email.message}</p>
+                        }
                       </div>
                       <div className="form-group">
-                        <div className="input-group mb-3">
-                          <span className="input-group-text  bg-transparent"><i className="text-fade ti-lock"></i></span>
-                          <input type="password" className="form-control ps-15 bg-transparent" placeholder="Password" required />
+                        <div className={`${errors.password ? "input-group mb-0" : "input-group mb-3"}`}>
+                          <span className={`${errors.password ? "input-group-text  bg-transparent border-danger" : "input-group-text  bg-transparent"}`}><i className="text-fade ti-lock"></i></span>
+                          <input type="password" placeholder="Password" {...register("password", {
+                            required: {
+                              value: true,
+                              message: "Password is required!"
+                            }
+                          })} className={`${errors.password ? "border-danger form-control ps-15 bg-transparent" : "form-control ps-15 bg-transparent"}`} />
                         </div>
+                        {
+                          errors.password && <p className='text-danger small'>{errors.password.message}</p>
+                        }
                       </div>
                       <div className="row">
                         <div className="col-6">
-                          <div className="checkbox">
+                          {/* <div className="checkbox">
                             <label htmlFor="basic_checkbox_1">Remember Me</label>
                             <input type="checkbox" id="basic_checkbox_1" />
-                          </div>
+                          </div> */}
                         </div>
                         {/* <!-- /.col --> */}
                         <div className="col-6">
@@ -52,23 +89,12 @@ const page = () => {
                         </div>
                         {/* <!-- /.col --> */}
                         <div className="col-12 text-center">
-                          <button type="submit" className="btn btn-primary w-p100 mt-10" onClick={onLogin}>SIGN IN</button>
+                          <button type="submit" className="btn btn-primary w-p100 mt-10" onClick={handleSubmit(onSubmit)} disabled={isSubmitting}>{isSubmitting?<ButtonLoader/>:"SIGN IN"}</button>
                         </div>
                         {/* <!-- /.col --> */}
                       </div>
                     </form>
-                    <div className="text-center">
-                      <p className="mt-15 mb-0 text-fade">Don't have an account? <a href="auth_register.html" className="text-primary ms-5">Sign Up</a></p>
-                    </div>
 
-                    <div className="text-center">
-                      <p className="mt-20 text-fade">- Sign With -</p>
-                      <p className="gap-items-2 mb-0">
-                        <a className="waves-effect waves-circle btn btn-social-icon btn-circle btn-facebook-light" href="#"><i className="fa fa-facebook"></i></a>
-                        <a className="waves-effect waves-circle btn btn-social-icon btn-circle btn-twitter-light" href="#"><i className="fa fa-twitter"></i></a>
-                        <a className="waves-effect waves-circle btn btn-social-icon btn-circle btn-instagram-light" href="#"><i className="fa fa-instagram"></i></a>
-                      </p>
-                    </div>
                   </div>
                 </div>
               </div>

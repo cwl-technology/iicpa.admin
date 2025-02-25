@@ -95,7 +95,7 @@ export default function Header() {
                     ></a>
                   </div>
                   {
-                    session?.status != "authenticated" ?
+                    session?.data?.user?.role != "User" ?
                       <div className="main-menu-two__signin-reg">
                         <div className="main-menu-two__signin-reg-icon">
                           <span className="icon-user-plus"></span>
@@ -199,7 +199,7 @@ export default function Header() {
                       ></a>
                     </div>
                     {
-                      session?.status != "authenticated" ?
+                      session?.data?.user?.role != "User" ?
                         <div className="main-menu-two__signin-reg">
                           <div className="main-menu-two__signin-reg-icon">
                             <span className="icon-user-plus"></span>

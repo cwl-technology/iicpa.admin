@@ -1,6 +1,7 @@
 "use client"
 
 
+import { signOut } from 'next-auth/react';
 import React, { useState } from 'react'
 
 const Header = ({ toggleSidebar, toggleTheme, sidebar, lightheme }) => {
@@ -15,8 +16,8 @@ const Header = ({ toggleSidebar, toggleTheme, sidebar, lightheme }) => {
         setIsOpen(!isOpen);
     };
 
-    const handleLogout = () => {
-        window.location.href = "/logout";
+    const handleLogout = async () => {
+        await signOut();
     };
 
     return (
@@ -159,8 +160,8 @@ const Header = ({ toggleSidebar, toggleTheme, sidebar, lightheme }) => {
                                         <img src="/assets/images/avatar/avatar-13.png"
                                             className="avatar rounded-circle bg-primary-light h-40 w-40"
                                             alt="" />
-                                        <div className="text-end me-10 ">
-                                            <p className="pt-5 fs-14 mb-1 fw-700">Nil Yeager</p>
+                                        <div className="text-end me-10 ms-2">
+                                            <p className="pt-5 fs-14 mb-1 fw-700">IICPA</p>
                                             <small className="fs-10 mb-0  text-uppercase text-mute">Admin</small>
                                         </div>
 
