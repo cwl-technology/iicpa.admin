@@ -1,11 +1,12 @@
 import connectDB from "@/_config/connect";
-import roleModel from "@/_models/roleModel";
+import adminModel from "@/_models/adminModel";
 import { NextResponse } from "next/server"
 
-export const GET = async () => {
-    connectDB()
+export const POST = async (request) => {
+    connectDB();
     try {
-        const data = await roleModel.find({ roleType: 2 });
+        const { id } = await request.json();
+        const data = await adminModel.findById({ _id: id }).select("-password");
         if (!data) {
             return res.json({ message: "Unable to get data", status: 0 });
         }

@@ -13,9 +13,24 @@ const adminSchema = new mongoose.Schema({
         type: String,
         default: null
     },
-    role:{
+    //for next auth
+    role: {
+        type: String,
+        default: "Admin"
+    },
+    //For not going on frontend
+    roleType: {
+        type: Number,
+        default: 2
+    },
+    //for getting permission data
+    roleId:{
         type:String,
-        default:"Admin"
+        default:null
+    },
+    status: {
+        type: Number,
+        default: 1
     }
 
 })

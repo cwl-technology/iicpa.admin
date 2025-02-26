@@ -4,6 +4,8 @@
 
 import Header from "@/_component/admin/Header";
 import Sidebar from "@/_component/admin/Sidebar";
+import PermissionProvider from "@/_context/PermissionContext";
+import { SessionProvider } from "next-auth/react";
 import { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { ToastContainer } from "react-toastify";
@@ -42,12 +44,15 @@ export default function AdminLayout({ children }) {
       </head>
 
       <body className={`${sidebar ? "light-skin sidebar-mini theme-info fixed sidebar-collapse" : "light-skin sidebar-mini theme-info fixed"} ${lightheme ? "sidebar-mini theme-info fixed dark-skin" : "sidebar-mini theme-info fixed light-skin"}`}>
-
-        <div className="wrapper">
-          <Header toggleSidebar={toggleSidebar} toggleTheme={toggleTheme} sidebar={sidebar} lightheme={lightheme} />
-          <Sidebar />
-          {children}
-        </div>
+        <SessionProvider>
+          <PermissionProvider>
+            <div className="wrapper">
+              <Header toggleSidebar={toggleSidebar} toggleTheme={toggleTheme} sidebar={sidebar} lightheme={lightheme} />
+              <Sidebar />
+              {children}
+            </div>
+          </PermissionProvider>
+        </SessionProvider>
         <ToastContainer
           position="top-right"
           autoClose={5000}

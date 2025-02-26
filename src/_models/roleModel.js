@@ -4,6 +4,10 @@ const roleSchema = new mongoose.Schema({
     roleName: {
         type: String,
         default: null
+    },
+    roleType: {
+        type: Number,
+        default: 2
     }
 });
 

@@ -1,7 +1,7 @@
 "use client"
 
 
-import React from 'react'
+import React, { useContext } from 'react'
 import { DataTable } from 'simple-datatables'
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Link from 'next/link';
@@ -9,16 +9,30 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { PermissionContext } from '@/_context/PermissionContext';
+import { useRouter } from 'next/navigation';
 
 const page = () => {
 
     const [courseCategory, setCourseCategory] = useState();
     const [courseData, setCourseData] = useState();
+    const router = useRouter();
+
+
+    //Permission Logic
+    const menuId = "67a1c4aabaf5937f5c93a983"
+    const { permission } = useContext(PermissionContext);
+    const getPermissionsBymenuId = (serviceNumber) => {
+        const permissions = permission?.find((ele) => ele.menuId == menuId)
+        return permissions?.[serviceNumber] || null;
+    }
 
     useEffect(() => {
-        getCourseCategoryList();
-        getCourseData();
+        if(!getPermissionsBymenuId("service_2")){
+            router.push("/admin")
+        }
     }, [])
+
 
     const getCourseCategoryList = async () => {
         try {
@@ -46,47 +60,6 @@ const page = () => {
             console.log(err);
         }
     }
-
-    //Custom Pagination 
-    const [pagiStartInd, setPagiStartInd] = useState(0);
-    const [pagiEndInd, setPagiEndInd] = useState(9);
-    const [currentPageNum, setCurrentPageNum] = useState(1)
-    const [totalPageNum, setTotalPageNum] = useState()
-
-    const handlePaginationNext = (e) => {
-        e.preventDefault();
-        if (pagiEndInd < courseData?.length - 1) {
-            setPagiStartInd((prev) => prev + 10);
-            setPagiEndInd((prev) => prev + 10);
-            setCurrentPageNum(currentPageNum + 1)
-        }
-    }
-
-    const handlePaginationPrev = (e) => {
-        e.preventDefault();
-        if (pagiStartInd > 0) {
-            setPagiStartInd((prev) => prev - 10);
-            setPagiEndInd((prev) => prev - 10);
-            setCurrentPageNum(currentPageNum - 1)
-        }
-    }
-
-
-    useEffect(() => {
-            if (courseData) {
-                let total = courseData?.length;
-                let count =  Math.ceil(total / 10);
-                setTotalPageNum(count)
-            }
-        }, [courseData])
-
-    useEffect(() => {
-        if (courseData) {
-            new DataTable("#myTable", {
-                paging: false
-            });
-        }
-    }, [courseData]);
 
 
     const handleDelete = async (id) => {
@@ -150,6 +123,59 @@ const page = () => {
             }
         }
     }
+
+    useEffect(() => {
+        if (courseData) {
+            new DataTable("#myTable", {
+                paging: false
+            });
+        }
+    }, [courseData]);
+
+
+    useEffect(() => {
+        getCourseCategoryList();
+        getCourseData();
+    }, [])
+
+
+
+
+    //Custom Pagination 
+    const [pagiStartInd, setPagiStartInd] = useState(0);
+    const [pagiEndInd, setPagiEndInd] = useState(9);
+    const [currentPageNum, setCurrentPageNum] = useState(1)
+    const [totalPageNum, setTotalPageNum] = useState()
+
+    const handlePaginationNext = (e) => {
+        e.preventDefault();
+        if (pagiEndInd < courseData?.length - 1) {
+            setPagiStartInd((prev) => prev + 10);
+            setPagiEndInd((prev) => prev + 10);
+            setCurrentPageNum(currentPageNum + 1)
+        }
+    }
+
+    const handlePaginationPrev = (e) => {
+        e.preventDefault();
+        if (pagiStartInd > 0) {
+            setPagiStartInd((prev) => prev - 10);
+            setPagiEndInd((prev) => prev - 10);
+            setCurrentPageNum(currentPageNum - 1)
+        }
+    }
+
+    useEffect(() => {
+        if (courseData) {
+            let total = courseData?.length;
+            let count = Math.ceil(total / 10);
+            setTotalPageNum(count)
+        }
+    }, [courseData])
+
+
+
+
     return (
         <>
             <div className="content-wrapper">
@@ -166,8 +192,10 @@ const page = () => {
                                             </div>
                                             <div className="col-xl-4">
                                                 <div className="add-order text-xl-end mt-xl-0 mt-2">
-
-                                                    <Link href="/admin/course/create" className="btn btn-primary mb-2 me-2"><i className="bi bi-plus-lg"></i> Add Course</Link>
+                                                    {
+                                                        getPermissionsBymenuId("service_1") &&
+                                                        <Link href="/admin/course/create" className="btn btn-primary mb-2 me-2"><i className="bi bi-plus-lg"></i> Add Course</Link>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -183,45 +211,59 @@ const page = () => {
                                                         <th>Sr. No.</th>
                                                         <th>Course Category</th>
                                                         <th>Course Name</th>
-                                                        <th>Status</th>
+                                                        {
+                                                            getPermissionsBymenuId("service_5") &&
+                                                            <th>Status</th>
+                                                        }
                                                         <th style={{ width: "125px" }}>Action</th>
+
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {
-                                                        courseData?.map((ele, ind) =>
-                                                            {
-                                                                if (ind >= pagiStartInd && ind <= pagiEndInd)
-                                                                    return (
-                                                            <tr key={ind}>
-                                                                <td className="text-dark">{ind + 1}</td>
-                                                                <td>{getCourseCategoryById(ele.courseCategory)}</td>
-                                                                <td>{ele.courseName}</td>
-                                                                <td>
-                                                                    {
-                                                                        ele.status == 1 ?
-                                                                            <p className="mb-0"><span className="badge badge-success-light" style={{ cursor: "pointer" }} onClick={() => handleChangeStatus(ele._id, ele.status)}> Active</span></p>
-                                                                            :
-                                                                            <p className="mb-0"><span className="badge badge-danger-light" style={{ cursor: "pointer" }} onClick={() => handleChangeStatus(ele._id, ele.status)}> Inctive</span></p>
-                                                                    }
+                                                        courseData?.map((ele, ind) => {
+                                                            if (ind >= pagiStartInd && ind <= pagiEndInd)
+                                                                return (
+                                                                    <tr key={ind}>
+                                                                        <td className="text-dark">{ind + 1}</td>
+                                                                        <td>{getCourseCategoryById(ele.courseCategory)}</td>
+                                                                        <td>{ele.courseName}</td>
+                                                                        {
+                                                                            getPermissionsBymenuId("service_5") &&
+                                                                            <td>
+                                                                                {
+                                                                                    ele.status == 1 ?
+                                                                                        <p className="mb-0"><span className="badge badge-success-light" style={{ cursor: "pointer" }} onClick={() => handleChangeStatus(ele._id, ele.status)}> Active</span></p>
+                                                                                        :
+                                                                                        <p className="mb-0"><span className="badge badge-danger-light" style={{ cursor: "pointer" }} onClick={() => handleChangeStatus(ele._id, ele.status)}> Inctive</span></p>
+                                                                                }
 
-                                                                </td>
-                                                                <td className='d-flex align-items-center'>
-                                                                    <Link href={{
-                                                                        pathname: "/admin/chapter",
-                                                                        query: {
-                                                                            courseName: ele.courseName,
-                                                                            courseId: ele._id
+                                                                            </td>
                                                                         }
-                                                                    }}
-                                                                        className="btn btn-primary btn-sm" >Chapters</Link>
-                                                                    <Link href={{
-                                                                        pathname: "/admin/course/edit",
-                                                                        query: { id: ele._id }
-                                                                    }} className="btn btn-primary btn-sm ms-2"><i className="bi bi-pencil"></i></Link>
-                                                                    <Link href="#" className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(ele._id)}><i className="bi bi-trash"></i></Link>
-                                                                </td>
-                                                            </tr>)})
+
+                                                                        <td className='d-flex align-items-center'>
+                                                                            <Link href={{
+                                                                                pathname: "/admin/chapter",
+                                                                                query: {
+                                                                                    courseName: ele.courseName,
+                                                                                    courseId: ele._id
+                                                                                }
+                                                                            }}
+                                                                                className="btn btn-primary btn-sm" >Chapters</Link>
+                                                                            {
+                                                                                getPermissionsBymenuId("service_3") &&
+                                                                                <Link href={{
+                                                                                    pathname: "/admin/course/edit",
+                                                                                    query: { id: ele._id }
+                                                                                }} className="btn btn-primary btn-sm ms-2"><i className="bi bi-pencil"></i></Link>
+                                                                            }
+                                                                            {
+                                                                                getPermissionsBymenuId("service_4") &&
+                                                                                <Link href="#" className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(ele._id)}><i className="bi bi-trash"></i></Link>
+                                                                            }
+                                                                        </td>
+                                                                    </tr>)
+                                                        })
                                                     }
                                                 </tbody>
                                             </table>

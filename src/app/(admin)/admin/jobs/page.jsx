@@ -1,17 +1,20 @@
 "use client"
 
 
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useEffect } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
+import { PermissionContext } from '@/_context/PermissionContext';
+import { useRouter } from 'next/navigation';
 
 const page = () => {
     const [jobData, setJobData] = useState();
     const [experienceData, setExperienceData] = useState();
+    const router = useRouter();
 
     const getJobData = async () => {
         try {
@@ -102,6 +105,23 @@ const page = () => {
         }
     }
 
+
+    //Permission Logic
+    const menuId = "67a1c4aabaf5937f5c93a983"
+    const { permission } = useContext(PermissionContext);
+    const getPermissionsBymenuId = (serviceNumber) => {
+        const permissions = permission?.find((ele) => ele.menuId == menuId)
+        return permissions?.[serviceNumber] || null;
+    }
+
+    useEffect(() => {
+        if (!getPermissionsBymenuId("service_2")) {
+            router.replace("/admin")
+        }
+    }, [])
+
+
+
     useEffect(() => {
         getExperienceData();
         getJobData();
@@ -123,8 +143,10 @@ const page = () => {
                                             </div>
                                             <div className="col-xl-4">
                                                 <div className="add-live-sesssion text-xl-end mt-xl-0 mt-2">
-
-                                                    <Link href="/admin/jobs/create" className="btn btn-primary mb-2 me-2"><i className="bi bi-plus-lg"></i> Add Jobs</Link>
+                                                    {
+                                                        getPermissionsBymenuId("67b6f80560e29568dd1f730c", "service_1") &&
+                                                        <Link href="/admin/jobs/create" className="btn btn-primary mb-2 me-2"><i className="bi bi-plus-lg"></i> Add Jobs</Link>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>

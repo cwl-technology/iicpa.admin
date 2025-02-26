@@ -1,7 +1,9 @@
+import connectDB from "@/_config/connect";
 import permissionsModel from "@/_models/permissionsModel";
 import { NextResponse } from "next/server";
 
 export const POST = async (request) => {
+    connectDB();
     try {
         const { roleId } = await request.json();
         const data = await permissionsModel.find({ roleId: roleId });

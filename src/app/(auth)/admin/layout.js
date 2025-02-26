@@ -28,7 +28,7 @@ export default function AdminLoginLayout({ children }) {
                 <SessionProvider>
                     {children}
                 </SessionProvider>
-            <Toaster/>
+                <Toaster />
             </body>
         </html>
     );

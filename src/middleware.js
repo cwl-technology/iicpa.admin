@@ -19,18 +19,22 @@ export async function middleware(request) {
         return NextResponse.next();
     }
 
-    console.log(token);
     if (!token) {
         if (pathname.startsWith("/admin")) {
             return NextResponse.redirect(new URL('/admin/admin-login', request.url))
+        }
+        if (pathname.startsWith("/course")) {
+            return NextResponse.redirect(new URL('/login', request.url))
         }
     }
 
     if (token.role !== "Admin" && pathname.startsWith("/admin")) {
         return NextResponse.redirect(new URL('/admin/admin-login', request.url))
+    } else if (token.role !== "User" && pathname.startsWith("/course")) {
+        return NextResponse.redirect(new URL('/login', request.url))
     }
 }
 
 export const config = {
-    matcher: '/admin/:path*',
+    matcher: ['/admin/:path*', '/course/:path*',]
 }

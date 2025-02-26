@@ -24,10 +24,11 @@ export const POST = async (request) => {
         }
 
         return NextResponse.json({
-            message: "Admin logged in successfully", status: 1, data: {
+            message: "Logged in successfully", status: 1, data: {
                 id: isExist._id,
                 name: isExist.name,
-                role: isExist.role
+                role: isExist.role,
+                roleId:isExist.roleId
             }
         });
     } catch (err) {
