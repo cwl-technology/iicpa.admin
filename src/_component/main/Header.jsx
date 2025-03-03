@@ -1,26 +1,24 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { CartContext } from "@/_context/CartContext";
+import axios from "axios";
 
 export default function Header() {
   const [navMenuOpen, setNavMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const session = useSession();
-  console.log(session);
-
+  const userId = session?.data?.user?.id
+  const { cartNumber, setCartNumber } = useContext(CartContext);
 
 
   const toggleMenu = () => {
     setNavMenuOpen((prev) => !prev);
   };
 
-  const handleSignOut = async () => {
-    await signOut()
-  }
-
-
+  
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 100) {
@@ -37,7 +35,23 @@ export default function Header() {
   }, []);
 
 
+  const getCartData = async () => {
+    try {
+      const res = await axios.post("/api/cart/getCartData", { userId: userId });
+      if (res.data.status == 1) {
+        console.log(res.data.data.length);
+        setCartNumber(res.data.data.length);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
+  useEffect(() => {
+    if (userId) {
+      getCartData();
+    }
+  }, [userId])
 
 
   return (
@@ -53,7 +67,7 @@ export default function Header() {
                       <img
                         src="/assets/images/resources/logo-2-new.webp"
                         alt=""
-                        width={120}
+                        width={140}
                       />
                     </a>
                   </div>
@@ -88,12 +102,15 @@ export default function Header() {
                   </ul>
                 </div>
                 <div className="main-menu-two__right">
-                  <div className="main-menu-two__search-box">
-                    <a
-                      href="#"
-                      className="main-menu-two__search searcher-toggler-box icon-search"
-                    ></a>
-                  </div>
+                  {
+                    session?.data?.user?.role == "User" &&
+                    <div className="cart-hover">
+                      <span className="cart-badge">{cartNumber}</span>
+                      <div className="main-menu-two__search-box">
+                        <Link href="/cart" className="main-cart-icon"><i className="bi bi-cart2"></i></Link>
+                      </div>
+                    </div>
+                  }
                   {
                     session?.data?.user?.role != "User" ?
                       <div className="main-menu-two__signin-reg">
@@ -109,21 +126,34 @@ export default function Header() {
                           </Link>
                         </div>
                       </div>
-                      : <div className="main-menu-two__signin-reg">
-                        <div className="main-menu-two__signin-reg-icon">
-                          <span>
-                            <i className="bi bi-box-arrow-left"></i>
-                          </span>
-                        </div>
-                        <div className="main-menu-two__signin-reg-content">
-                          <Link href="#" className="main-menu-two__signin" onClick={handleSignOut}>
-                            Logout
+                      :
+                      <div>
+                        <div className="courses-three__btn-box">
+                          <Link href="/profile" className="thm-btn-two">
+                            <span className="px-3 py-1">Profile</span>
                           </Link>
-                          <Link href="#" className="main-menu-two__reg">
-                            {session?.data?.user?.name}
+                          <Link href="/lab" className="thm-btn-two">
+                            <span className="px-3 py-1 ms-1">Lab</span>
                           </Link>
                         </div>
+                        
                       </div>
+                    // : <div className="main-menu-two__signin-reg">
+                    //   <div className="main-menu-two__signin-reg-icon">
+                    //     <span>
+                    //       <i className="bi bi-box-arrow-left"></i>
+                    //     </span>
+                    //   </div>
+                    //   <div className="main-menu-two__signin-reg-content">
+                    //     <Link href="#" className="main-menu-two__signin" onClick={handleSignOut}>
+                    //       Logout
+                    //     </Link>
+                    //     <Link href="#" className="main-menu-two__reg">
+                    //       {session?.data?.user?.name}
+                    //     </Link>
+                    //   </div>
+                    // </div>
+
                   }
 
                   <div className="main-menu-two__support-box">
@@ -135,14 +165,13 @@ export default function Header() {
                       <a href="tel:1212345678900">+12 (123) 456 78900</a>
                     </h5>
                   </div>
+
                 </div>
               </div>
             </div>
           </div>
         </nav>
       </header>
-
-
 
 
       <div className={scrolled ? "stricky-header stricked-menu main-menu stricky-fixed" : "stricky-header stricked-menu main-menu"}>
@@ -157,7 +186,7 @@ export default function Header() {
                         <img
                           src="/assets/images/resources/logo-2-new.webp"
                           alt=""
-                          width={120}
+                          width={140}
                         />
                       </a>
                     </div>
@@ -192,12 +221,16 @@ export default function Header() {
                     </ul>
                   </div>
                   <div className="main-menu-two__right">
-                    <div className="main-menu-two__search-box">
-                      <a
-                        href="#"
-                        className="main-menu-two__search searcher-toggler-box icon-search"
-                      ></a>
-                    </div>
+                    {
+                      session?.data?.user?.role == "User" &&
+                      <div className="cart-hover">
+                        <span className="cart-badge">{cartNumber}</span>
+                        <div className="main-menu-two__search-box">
+                          <Link href="/cart" className="main-cart-icon"><i className="bi bi-cart2"></i></Link>
+                        </div>
+                      </div>
+                    }
+
                     {
                       session?.data?.user?.role != "User" ?
                         <div className="main-menu-two__signin-reg">
@@ -213,21 +246,17 @@ export default function Header() {
                             </Link>
                           </div>
                         </div>
-                        : <div className="main-menu-two__signin-reg">
-                          <div className="main-menu-two__signin-reg-icon">
-                            <span>
-                              <i className="bi bi-box-arrow-left"></i>
-                            </span>
-                          </div>
-                          <div className="main-menu-two__signin-reg-content">
-                            <Link href="#" className="main-menu-two__signin" onClick={handleSignOut}>
-                              Logout
-                            </Link>
-                            <Link href="#" className="main-menu-two__reg">
-                              {session?.data?.user?.name}
-                            </Link>
-                          </div>
+                        : <div>
+                        <div className="courses-three__btn-box">
+                          <Link href="/profile" className="thm-btn-two">
+                            <span className="px-3 py-1">Profile</span>
+                          </Link>
+                          <Link href="/lab" className="thm-btn-two">
+                            <span className="px-3 py-1 ms-1">Lab</span>
+                          </Link>
                         </div>
+                        
+                      </div>
                     }
                     <div className="main-menu-two__support-box">
                       <p className="main-menu-two__support-text">
@@ -245,8 +274,6 @@ export default function Header() {
           </nav>
         </div>
       </div>
-
-
 
 
       <div className={`${navMenuOpen ? "mobile-nav__wrapper expanded" : "mobile-nav__wrapper"}`}>

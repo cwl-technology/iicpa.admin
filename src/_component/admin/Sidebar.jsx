@@ -31,6 +31,7 @@ const Sidebar = () => {
     }
 
 
+    console.log(permission);
     const getPermissionsBymenuId = (menuId) => {
         const permissions = permission?.find((ele) => ele.menuId == menuId)
         return permissions?.service_2 || null;

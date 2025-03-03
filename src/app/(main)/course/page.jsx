@@ -1,6 +1,7 @@
 "use client"
 
 import BreadCrumb from '@/_component/main/BreadCrumb';
+import CurrencyFormatter from '@/_helper/frontend/CurrencyFormatter';
 import axios from 'axios';
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
@@ -9,6 +10,12 @@ import React, { useEffect, useState } from 'react'
 const Page = () => {
     const [courseCateogry, setCourseCateogory] = useState();
     const [course, setCourse] = useState();
+    const [searchValue, setSearchValue] = useState("");
+
+
+    const handleSearch = () => {
+
+    }
 
     const getCourseCategoryData = async () => {
         try {
@@ -24,7 +31,6 @@ const Page = () => {
     const getCourseData = async () => {
         try {
             const res = await axios.get("/api/courses/getAllActiveCourses");
-            console.log(res.data);
             if (res.data.status == 1) {
                 setCourse(res.data.data);
             }
@@ -40,7 +46,7 @@ const Page = () => {
 
     return (
         <>
-            <BreadCrumb title={"Course"}/>
+            <BreadCrumb title={"Course"} />
 
             <section className="course-grid">
                 <div className="container">
@@ -57,9 +63,9 @@ const Page = () => {
                                         </div>
                                         <p className="course-grid__search-text">With the release of Letraset sheets containi
                                             Lorem Ipsum passages</p>
-                                        <form action="#">
-                                            <input type="search" placeholder="Find by Course Name" />
-                                            <button type="submit"><i className="icon-search"></i>Search</button>
+                                        <form action="#" className='form-search-course'>
+                                            <input type="search" placeholder="Find by Course Name" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
+                                            <button type="submit" className='pe-none'><i className="icon-search"></i></button>
                                         </form>
                                     </div>
 
@@ -73,14 +79,16 @@ const Page = () => {
                                         <ul className="list-unstyled course-grid__list-item">
                                             {
                                                 courseCateogry?.map((ele, ind) =>
-                                                    <li key={ind}>
+                                                    <li key={ind} className='active'>
                                                         <div className="course-grid__list-check"></div>
                                                         <p className="course-grid__list-text">{ele.categoryName}</p>
                                                     </li>
                                                 )
                                             }
-
                                         </ul>
+
+
+
                                     </div>
                                     <div className="course-grid__skill course-grid__single">
                                         <div className="course-grid__title-box">
@@ -147,8 +155,8 @@ const Page = () => {
                                                                     </div>
                                                                 </div>
 
-                                                                <div className="courses-two__review">
-                                                                    <p><i className="icon-star"></i> 4.5 <span>(129 Reviews)</span></p>
+                                                                <div className="courses-two__review thn-btn">
+                                                                    <p> {ele.discount}% OFF</p>
                                                                 </div>
                                                             </div>
                                                             <h3 className="courses-two__title"><Link href={`/course/${ele.courseSlug}`}>{ele.courseName}</Link></h3>
@@ -160,8 +168,8 @@ const Page = () => {
                                                                     </Link>
                                                                 </div>
                                                                 <div className="courses-two__doller">
-                                                                    <p className='mb-0'><i className="bi bi-currency-rupee"></i>{ele.priceAfterDiscount}</p>
-                                                                    <del><i className="bi bi-currency-rupee"></i>{ele.actualPrice}</del>
+                                                                    <p className='mb-0'>{<CurrencyFormatter price={ele.priceAfterDiscount} />}</p>
+                                                                    <del>{<CurrencyFormatter price={ele.actualPrice} />}</del>
                                                                 </div>
                                                                 {/* <div className='thm-btn-two'>
                                                                     <span>5% OFF</span>

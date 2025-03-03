@@ -23,18 +23,18 @@ export async function middleware(request) {
         if (pathname.startsWith("/admin")) {
             return NextResponse.redirect(new URL('/admin/admin-login', request.url))
         }
-        if (pathname.startsWith("/course")) {
+        if (pathname.startsWith("/course") || pathname.startsWith("/jobs") || pathname.startsWith("/cart")) {
             return NextResponse.redirect(new URL('/login', request.url))
         }
     }
 
     if (token.role !== "Admin" && pathname.startsWith("/admin")) {
         return NextResponse.redirect(new URL('/admin/admin-login', request.url))
-    } else if (token.role !== "User" && pathname.startsWith("/course")) {
+    } else if (token.role !== "User" && (pathname.startsWith("/course") || pathname.startsWith("/cart") || pathname.startsWith("/jobs"))) {
         return NextResponse.redirect(new URL('/login', request.url))
     }
 }
 
 export const config = {
-    matcher: ['/admin/:path*', '/course/:path*',]
+    matcher: ['/admin/:path*', '/course/:path*', '/cart/:path*', '/jobs/:path*',]
 }

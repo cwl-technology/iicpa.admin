@@ -20,6 +20,8 @@ const Header = ({ toggleSidebar, toggleTheme, sidebar, lightheme }) => {
         await signOut();
     };
 
+    
+
     return (
         <>
             <header className="main-header">
@@ -169,8 +171,8 @@ const Header = ({ toggleSidebar, toggleTheme, sidebar, lightheme }) => {
                                 </a>
                                 {isOpen && (
                                     <ul className="dropdown-menu dropdown-menu-end show">
-                                        <li>
-                                            <button className="dropdown-item" onClick={handleLogout}>
+                                        <li className='d-flex justify-content-center'>
+                                            <button className="dropdown-item px-3" onClick={handleLogout}>
                                                 <i className="fas fa-sign-out-alt me-2"></i> Logout
                                             </button>
                                         </li>

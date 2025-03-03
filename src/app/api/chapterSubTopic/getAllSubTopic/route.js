@@ -5,8 +5,8 @@ import { NextResponse } from "next/server";
 export const POST = async (request) => {
     connectDB();
     try {
-        const { courseId, topicId, subTopicId } = await request.json();
-        const data = await subTopicModel.find({ courseId, topicId, subTopicId });
+        const { courseId, topicId, chapterId } = await request.json();
+        const data = await subTopicModel.find({ courseId, topicId, chapterId });
         if (!data) {
             return NextResponse.json({ message: "Unable to get data", status: 0 });
         }

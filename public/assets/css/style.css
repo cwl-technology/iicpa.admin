@@ -1318,7 +1318,7 @@ ul {
 
 .stricky-header {
   position: fixed;
-  z-index: 999991;
+  z-index: 999;
   top: 0;
   left: 0;
   background-color: #fff;
@@ -2436,11 +2436,124 @@ ul {
   color: rgb(0, 79, 0);
 }
 
-.syllabus-container{
+.syllabus-container {
   background: url("/assets/images/backgrounds/syllabus-bg2.jpg");
   /* background-size: cover; */
 }
 
-.auth-page-logo img{
-    width: 350px;
+.auth-page-logo img {
+  width: 350px;
+}
+
+.main-cart-icon {
+  font-size: 22px;
+}
+
+
+/* Profile Section  */
+
+.user-card {
+  background-color: rgb(255, 255, 255);
+  padding: 30px 15px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 2px 2px #bcbbbb;
+}
+
+.user-card .user-card-body .user-profile {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+  position: relative;
+}
+
+.uplode-picture {
+  display: flex;
+  justify-content: center;
+  font-size: 85px;
+  color: #58baab;
+  border: 2px solid black;
+  border-radius: 100%;
+  width: 130px;
+  height: 130px;
+  align-items: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.user-card .user-card-body .user-information {
+  margin-top: 20px;
+}
+
+.user-card .user-card-body .user-btn .user-logout {
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 20px;
+  border: 1px solid black;
+  border-radius: 15px;
+  background-color: white;
+  color: #047857;
+  padding: 8px 20px 8px 20px;
+}
+
+.box-profile .profile-list {
+  display: flex;
+  gap: 2px;
+  padding: 0;
+  /* margin-top: 20px; */
+}
+
+.user-box {
+  position: relative;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 0px;
+  -webkit-transition: .5s;
+  transition: .5s;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+  box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+}
+
+.box .box-body-1.active-tab {
+  display: block;
+}
+
+.box .box-body-1 {
+  display: none;
+}
+
+.custom-select-dropdown {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.3sease-in-out;
+  /* margin: 0.5rem; */
+}
+
+.profile-list a:hover {
+  border: 2px solid var(--fistudy-base);
+  background-color: var(--fistudy-base);
+  color: white;
+  border-radius: 26px;
+  padding: 2px 12px;
+}
+
+.profile-list a {
+  padding: 2px 12px;
+}
+
+.profile-list .active {
+  border: 2px solid var(--fistudy-base);
+  background-color: var(--fistudy-base);
+  color: white;
+  border-radius: 26px;
+  padding: 2px 12px;
 }

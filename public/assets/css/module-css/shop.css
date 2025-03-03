@@ -1389,6 +1389,21 @@ Product Details
 .cart-table .product-box {
     display: flex;
     align-items: center;
+    
+}
+.cart-table .product-box img {
+    width: 150px;
+    border-radius: 15px;  
+}
+.cart-table .product-box p {
+    font-size: 15px;
+    line-height: 22px; 
+    color: var(--fistudy-black);
+}
+.cart-table .product-box span {
+    font-size: 14px;
+    line-height: 20px; 
+    color: var(--fistudy-black);
 }
 
 .cart-table .product-box .img-box {
@@ -1475,6 +1490,9 @@ Product Details
 .cart-table .cross-icon {
     position: relative;
     display: block;
+}
+.cart-table .cross-icon i {
+    cursor: pointer;
 }
 
 .cart-table .cross-icon i:before {

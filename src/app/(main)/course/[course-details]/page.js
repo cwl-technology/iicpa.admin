@@ -3,17 +3,26 @@
 
 
 import BreadCrumb from '@/_component/main/BreadCrumb';
+import { CartContext } from '@/_context/CartContext';
+import CurrencyFormatter from '@/_helper/frontend/CurrencyFormatter';
 import axios from 'axios';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 const Page = () => {
     const [activeTab, setActiveTab] = useState('1');
     const [courseData, setCourseData] = useState();
+    const [alreadyAdded, setAlreadyAdded] = useState(false);
     const pathname = usePathname()
     const courseSlug = pathname.split("/")[2];
+    const session = useSession();
+    const userId = session?.data?.user?.id;
+    const { setCartNumber } = useContext(CartContext);
+
 
     const [accrodionactive, setAccrodionActive] = useState()
     const handleAccrodionClick = (tabIndex) => {
@@ -35,13 +44,50 @@ const Page = () => {
         }
     }
 
+    const handleAddToCart = async (e, courseId) => {
+        try {
+            e.preventDefault();
+            const res = await axios.post("/api/cart/addToCart", {
+                userId: userId,
+                courseId: courseId
+            })
+            if (res.data.status == 1) {
+                toast.success(res.data.message);
+                setAlreadyAdded(true);
+                setCartNumber(res.data.cartNumber)
+
+            } else {
+                toast.error(res.data.message);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     useEffect(() => {
         if (courseSlug) {
             getCourseData();
         }
     }, [courseSlug])
 
-    console.log(courseData);
+    const isItemInCart = async () => {
+        try {
+            const res = await axios.post("/api/cart/alreadyAdded", { userId: userId, courseId: courseData?._id });
+            if (res.data.status == 1) {
+                setAlreadyAdded(true);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        if (userId && courseData) {
+            isItemInCart();
+        }
+    }, [userId, courseData])
+
+
     return (
 
 
@@ -50,7 +96,7 @@ const Page = () => {
                     <h2>Detailed syllabus</h2>
                 </div> */}
 
-                <BreadCrumb title={courseData?.courseName}/>
+            <BreadCrumb title={courseData?.courseName} />
 
 
             <section className="course-details">
@@ -203,14 +249,20 @@ const Page = () => {
                                     </div>
                                     <div className="course-details__doller-and-btn-box">
                                         <div className='d-flex flex-column'>
-                                            <h3 className="course-details__doller"><i className="bi bi-currency-rupee"></i>{courseData?.priceAfterDiscount}</h3>
-                                            <del><i className="bi bi-currency-rupee"></i>{courseData?.actualPrice}</del>
+                                            <h3 className="course-details__doller">{<CurrencyFormatter price={courseData?.priceAfterDiscount} />}</h3>
+                                            <del>{<CurrencyFormatter price={courseData?.actualPrice} />}</del>
                                         </div>
                                         <div className="course-details__doller-btn-box">
-                                            <a href="course-details.html" className="thm-btn-two">
-                                                <span>Enroll Now</span>
-                                                <i className="icon-angles-right"></i>
-                                            </a>
+                                            {
+                                                alreadyAdded ? <a href="#" className="thm-btn-two pe-none opacity-50" onClick={(e) => handleAddToCart(e, courseData._id)}>
+                                                    <span>Added</span>
+                                                    <i className="bi bi-cart2"></i>
+                                                </a> : <a href="#" className="thm-btn-two" onClick={(e) => handleAddToCart(e, courseData?._id)}>
+                                                    <span>Add to Cart</span>
+                                                    <i className="bi bi-cart2"></i>
+                                                </a>
+                                            }
+
                                         </div>
                                     </div>
 

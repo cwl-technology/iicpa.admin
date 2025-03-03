@@ -11,10 +11,10 @@ export const GET = async (request) => {
         let data = await courseModel.find({ status: 1 }).lean();
 
         const courseCategoryData = await courseCategoryModel.find({ status: 1 });
+       
 
         data = data.map((ele) => {
             const category = courseCategoryData.find((e) => e._id == ele.courseCategory);
-            console.log(category);
             ele.courseCategoryName = category ? category.categoryName : "Unknown Category";
             return ele;
         })

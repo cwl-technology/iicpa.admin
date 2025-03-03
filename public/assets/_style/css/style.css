@@ -39447,7 +39447,7 @@ ul.flexbox {
   color: #7f839a;
   font-weight: 400;
   padding: 10px 15px;
-  width: auto;
+  width: 100%;
   margin: 5px;
   border-radius: 5px;
   -webkit-transition: 0.15s linear;

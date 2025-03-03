@@ -6,8 +6,8 @@ import adminModel from "@/_models/adminModel";
 export const POST = async (request) => {
     connectDB();
     try {
-        const { name, email, password, id, roleId } = await request.json();
-        if (!name || !email || !password || !roleId) {
+        let { name, email,password, id, roleId } = await request.json();
+        if (!name || !email || !roleId) {
             return NextResponse.json({ message: "Please fill all the fields", status: 0 })
         }
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -19,8 +19,13 @@ export const POST = async (request) => {
             return NextResponse.json({ message: "Staff already exist.", status: 0 })
         }
 
-        const hassedPassword = await bcrypt.hash(password, 10);
-        const data = await adminModel.findByIdAndUpdate({ _id: id }, { name, email, password: hassedPassword, roleId });
+        if (!password) {
+            const currentData = await adminModel.findOne({ _id: id });
+            password = currentData?.password;
+        } else {
+            password = await bcrypt.hash(password, 10);
+        }
+        const data = await adminModel.findByIdAndUpdate({ _id: id }, { name, email, password, roleId });
         if (!data) {
             return NextResponse.json({ message: "Unable to update Staff.", status: 0 })
         }
