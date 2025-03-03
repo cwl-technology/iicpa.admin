@@ -1,10 +1,12 @@
 "use client"
-
-
+import { useSession } from 'next-auth/react'
+import Link from 'next/link'
 import React, { useState } from 'react'
 
 const Header = ({ toggleSidebar, toggleTheme,sidebar }) => {
     const [notifications, setNotification] = useState(false)
+    const session = useSession();
+    
     const toggleNotification = () => {
         setNotification((prevState) => !prevState)
     };
@@ -24,7 +26,7 @@ const Header = ({ toggleSidebar, toggleTheme,sidebar }) => {
             <header className="main-header">
                 <div className="d-flex align-items-center logo-box justify-content-start">
                     {/* <!-- Logo --> */}
-                    <a href="#" className="logo">
+                    <Link href="/" className="logo">
                         {/* <!-- logo--> */}
                         <div className={`logo-mini w-40 ${!sidebar?"d-none":""}`}>
                             <span className="light-logo"><img src="\assets\images\iicpa\logo-1 new.webp" alt="logo" /></span>
@@ -34,7 +36,7 @@ const Header = ({ toggleSidebar, toggleTheme,sidebar }) => {
                             <span className="light-logo"><img src="\assets\images\iicpa\logo-2 new.webp" alt="logo" /></span>
                             <span className="dark-logo"><img src="\assets\images\iicpa\logo-2 new.webp" alt="logo" /></span>
                         </div>
-                    </a>
+                    </Link>
                 </div>
                 {/* <!-- Header Navbar --> */}
                 <nav className="navbar navbar-static-top">
@@ -152,16 +154,16 @@ const Header = ({ toggleSidebar, toggleTheme,sidebar }) => {
                                 >
                                     <div className="d-flex pt-1  align-items-center">
                                         <img src="/assets/images/avatar/avatar-13.png"
-                                            className="avatar rounded-circle bg-primary-light h-40 w-40"
+                                            className="avatar rounded-circle bg-primary-light h-40 w-40 me-2"
                                             alt="" />
                                         <div className="text-end me-10 ">
-                                            <p className="pt-5 fs-14 mb-1 fw-700">Nil Yeager</p>
-                                            <small className="fs-10 mb-0  text-uppercase text-mute">Admin</small>
+                                            <p className="pt-5 fs-14 mb-1 fw-700">{session?.data?.user?.name.split(" ")[0]}</p>
+                                            <small className="fs-10 mb-0  text-uppercase text-mute">Student</small>
                                         </div>
 
                                     </div>
                                 </a>
-                                {isOpen && (
+                                {/* {isOpen && (
                                     <ul className="dropdown-menu dropdown-menu-end show">
                                         <li>
                                             <button className="dropdown-item" onClick={handleLogout}>
@@ -169,7 +171,7 @@ const Header = ({ toggleSidebar, toggleTheme,sidebar }) => {
                                             </button>
                                         </li>
                                     </ul>
-                                )}
+                                )} */}
                             </li>
 
                         </ul>

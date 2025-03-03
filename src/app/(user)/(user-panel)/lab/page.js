@@ -38,7 +38,7 @@ const page = () => {
                     <section className="content">
                         <div className="card bg-primary-light">
                             <div className="card-header">
-                                <h4 className="card-title">Course</h4>
+                                <h4 className="card-title">Purchased Course</h4>
                             </div>
                         </div>
 

@@ -4,11 +4,13 @@ import React from 'react'
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useState } from 'react';
 import { signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const page = () => {
 
     const [activeTab, setActiveTab] = useState(1);
     const session = useSession();
+    const router = useRouter();
     const handleTabClick = (tabIndex) => {
         setActiveTab(tabIndex);
     };
@@ -26,8 +28,9 @@ const page = () => {
 
 
     const handleLogout = async () => {
-        await signOut()
-      }
+        await signOut({ redirect: false });
+        router.push("/")
+    }
 
     return (
         <>
@@ -52,7 +55,7 @@ const page = () => {
                                         <div className='user-information'>
                                             <h3 className='user-name text-center'>{session?.data?.user?.name}</h3>
                                             <p className='user-email text-center'>rb41786898@gmail.com</p>
-                                            
+
                                         </div>
                                         <div className='user-btn text-center'>
                                             <div className="about-two__btn-box mt-3">
@@ -69,11 +72,11 @@ const page = () => {
 
                                     <div className='box-profile'>
                                         <ul className='profile-list' type="none">
-                                            <a href='#' className={`${activeTab == 1 ?"active":""}`}>
+                                            <a href='#' className={`${activeTab == 1 ? "active" : ""}`}>
                                                 <li onClick={() => handleTabClick(1)}>Basic Profile</li>
                                             </a>
 
-                                            <a href='#' className={`${activeTab == 2 ?"active":""}`}>
+                                            <a href='#' className={`${activeTab == 2 ? "active" : ""}`}>
                                                 <li onClick={() => handleTabClick(2)}>Billing Information</li>
                                             </a>
 
