@@ -4,15 +4,16 @@ import ButtonLoader from '@/_component/global/ButtonLoader'
 import axios from 'axios'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 const page = () => {
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm()
-
     const [showPassword, setShowPassword] = useState(false);
+    const [centerData, setCenterData] = useState();
     const router = useRouter()
+
 
     const onSubmit = async (data) => {
         try {
@@ -27,6 +28,21 @@ const page = () => {
             console.log(err);
         }
     }
+
+    const getCenterData = async () => {
+        try {
+            const res = await axios.get("/api/center/getAllActiveCenter");
+            if (res.data.status == 1) {
+                setCenterData(res.data.data);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        getCenterData();
+    }, [])
     return (
         <>
 
@@ -96,6 +112,29 @@ const page = () => {
                                             {
                                                 errors.phone && <p className='text-danger small'>{errors.phone.message}</p>
                                             }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='col-xl-12'>
+                                    <div className='form-group'>
+                                        <div className='input-box'>
+                                            <select className="custom-select-dropdown-1" {...register("centerId", {
+                                                required: {
+                                                    value: true,
+                                                    message: "Center is required!"
+                                                }
+                                            })}>
+                                                <option defaultChecked hidden value={""}>Select Center</option>
+                                                {
+                                                    centerData?.map((ele, ind) => (
+                                                        <option value={ele._id} key={ind} title={ele.name}>
+                                                            {ele.name.length > 50 ? ele.name.substring(0, 50) + "..." : ele.name}
+                                                        </option>
+                                                    ))
+                                                }
+
+
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

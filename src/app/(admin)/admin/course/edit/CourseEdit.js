@@ -107,7 +107,7 @@ const CourseEdit = () => {
 
     const onSubmit = async (data) => {
         try {
-            console.log(actualPrice);
+            
             const formdata = new FormData();
             formdata.append("courseCategory", data.courseCategory);
             formdata.append("courseName", data.courseName);

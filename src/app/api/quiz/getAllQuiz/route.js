@@ -3,8 +3,8 @@ import quizModel from "@/_models/quizModel";
 import { NextResponse } from "next/server"
 
 export const POST = async (request) => {
+    connectDB();
     try {
-        connectDB();
         const { courseId, chapterId, topicId, subTopicId } = await request.json();
         if (!courseId || !chapterId || !topicId || !subTopicId) {
             return NextResponse.json({ message: "Please provide all the fields!", status: 0 });

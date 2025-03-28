@@ -20,19 +20,22 @@ const page = () => {
     const router = useRouter();
     const [description, setDescription] = useState();
     const [courseData, setCourseData] = useState();
-    const editor = useRef(null);
-    const config = useMemo(() => ({
-        readonly: false,
-        placeholder: 'Start typings...',
-        height: "300px"
-    }),
-    );
+    const [image, setImage] = useState();
 
 
     const onSubmit = async (data) => {
         try {
-            data.description = description;
-            const res = await axios.post("/api/livesessions/createLiveSession", data);
+            const formdata = new FormData();
+            formdata.append("description", data.description)
+            formdata.append("courseId", data.courseId)
+            formdata.append("date", data.date)
+            formdata.append("startTime", data.startTime)
+            formdata.append("endTime", data.endTime)
+            formdata.append("image", data.image[0])
+            formdata.append("price", data.price)
+            formdata.append("link", data.link)
+
+            const res = await axios.post("/api/livesessions/createLiveSession", formdata);
             if (res.data.status == 1) {
                 toast.success(res.data.message);
                 router.push("/admin/live-session");
@@ -73,7 +76,7 @@ const page = () => {
                                         </a>
                                     </li>
                                     <li className="nav-item">
-                                        <Link href="/live-session" className="btn btn-primary mb-2 me-2"> View Live Sessions</Link>
+                                        <Link href="/admin/live-session" className="btn btn-primary mb-2 me-2"> View Live Sessions</Link>
                                     </li>
                                 </ul>
                                 <div className="tab-content">
@@ -108,9 +111,40 @@ const page = () => {
                                                         }
                                                     </div>
                                                 </div>
-                                                
-                                                <div className='col-md-6'></div>
                                                 <div className="col-md-4">
+                                                    <div className="mb-3">
+                                                        <label htmlFor="example-fileinput" className="form-label">Image</label>
+                                                        <input type="file"
+                                                            id="example-fileinput" className={`form-control ${errors.image ? "border-danger" : ""}`}
+                                                            {...register("image", {
+                                                                required: {
+                                                                    value: true,
+                                                                    message: "Image is required!"
+                                                                }
+                                                            })}
+                                                            accept="image/*"
+                                                            onChange={(e) => setImage(e.target.files[0])}
+                                                        />
+                                                        {
+                                                            errors.image && <span className="help-block text-danger"><small>{errors.image.message}</small></span>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-2 d-flex align-items-center">
+                                                    {
+                                                        image && <img src={URL.createObjectURL(image)} alt="error" width={"100px"} />
+                                                    }
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <label className='form-label mt-2'>
+                                                        Content
+                                                    </label>
+                                                    <input
+                                                        {...register("description")}
+                                                        type="text" id="simpleinput" className={`form-control`}
+                                                        placeholder='Enter the content' />
+                                                </div>
+                                                <div className="col-md-6">
 
                                                     <div className="mb-3">
                                                         <label htmlFor="simpleinput" className="form-label">Date</label>
@@ -126,7 +160,7 @@ const page = () => {
                                                     </div>
 
                                                 </div>
-                                                <div className="col-md-4">
+                                                <div className="col-md-6">
 
                                                     <div className="mb-3">
                                                         <label htmlFor="simpleinput" className="form-label">Start Time</label>
@@ -142,8 +176,7 @@ const page = () => {
                                                     </div>
 
                                                 </div>
-                                                <div className="col-md-4">
-
+                                                <div className="col-md-6">
                                                     <div className="mb-3">
                                                         <label htmlFor="simpleinput" className="form-label">End Time</label>
                                                         <input
@@ -158,17 +191,34 @@ const page = () => {
                                                     </div>
 
                                                 </div>
-                                                <div className="col-md-12">
-                                                    <label className='form-label mt-2'>
-                                                        Description
-                                                    </label>
-                                                    <JoditEditor
-                                                        ref={editor}
-                                                        value={description}
-                                                        config={config}
-                                                        tabIndex={1}
-                                                        onBlur={newContent => setDescription(newContent)}
-                                                    />
+                                                <div className="col-md-6">
+                                                    <div className="mb-3">
+                                                        <label htmlFor="simpleinput" className="form-label">Link</label>
+                                                        <input
+                                                            {...register("link")}
+                                                            type="text" id="simpleinput" className={`form-control`}
+                                                            placeholder='Enter the link' />
+                                                    </div>
+
+                                                </div>
+                                                <div className="col-md-6">
+
+                                                    <div className="mb-3">
+                                                        <label htmlFor="simpleinput" className="form-label">Price (In Rupees)</label>
+                                                        <input
+                                                            {...register("price",
+                                                                {
+                                                                    required: { value: true, message: "Price is required!" },
+                                                                    min: { value: 0, message: "Price cannot be less than 0!" }
+                                                                }
+                                                            )}
+                                                            type="number" min={0} id="simpleinput" className={`form-control ${errors.price ? "border-danger" : ""}`}
+                                                            placeholder='Enter the price' />
+                                                        {
+                                                            errors.price && <span className="help-block text-danger"><small>{errors.price.message}</small></span>
+                                                        }
+                                                    </div>
+
                                                 </div>
 
                                             </div>
@@ -177,7 +227,7 @@ const page = () => {
                                 </div>
 
                                 <button className='mt-4 btn btn-primary' onClick={handleSubmit(onSubmit)} disabled={isSubmitting}>
-                                    {isSubmitting ? <ButtonLoader/> : "Create"}
+                                    {isSubmitting ? <ButtonLoader /> : "Create"}
                                 </button>
                             </div>
                         </div>

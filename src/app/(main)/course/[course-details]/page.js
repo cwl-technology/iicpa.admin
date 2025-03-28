@@ -49,7 +49,8 @@ const Page = () => {
             e.preventDefault();
             const res = await axios.post("/api/cart/addToCart", {
                 userId: userId,
-                courseId: courseId
+                itemId: courseId,
+                type: 1
             })
             if (res.data.status == 1) {
                 toast.success(res.data.message);

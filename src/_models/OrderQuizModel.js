@@ -49,6 +49,14 @@ const orderQuizSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+    submittedAnswer: {
+        type: String,
+        default: null
+    },
+    quizPoints: {
+        type: Number,
+        default: 0
+    },
     status: {
         type: Number,
         default: 1

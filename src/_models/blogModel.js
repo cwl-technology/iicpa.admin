@@ -29,9 +29,21 @@ const blogSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+    title: {
+        type: String,
+        default: null
+    },
+    keywords: {
+        type: String,
+        default: null
+    },
+    metaDescription: {
+        type: String,
+        default: null
+    },
     status: {
         type: Number,
-        default: null
+        default: 1
     }
 })
 

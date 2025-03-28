@@ -55,7 +55,7 @@ const page = () => {
 
     const handlePaginationNext = (e) => {
         e.preventDefault();
-        if (pagiEndInd < courseData?.length - 1) {
+        if (pagiEndInd < staffData?.length - 1) {
             setPagiStartInd((prev) => prev + 10);
             setPagiEndInd((prev) => prev + 10);
             setCurrentPageNum(currentPageNum + 1)
@@ -73,13 +73,13 @@ const page = () => {
 
     console.log(staffData);
 
-    // useEffect(() => {
-    //     if (courseData) {
-    //         let total = courseData?.length;
-    //         let count = Math.ceil(total / 10);
-    //         setTotalPageNum(count)
-    //     }
-    // }, [courseData])
+    useEffect(() => {
+        if (staffData) {
+            let total = staffData?.length;
+            let count = Math.ceil(total / 10);
+            setTotalPageNum(count)
+        }
+    }, [staffData])
 
     useEffect(() => {
         if (staffData) {

@@ -174,13 +174,14 @@ text-align: center;
   position: relative;
   display: flex;
   float: left;
-  width: 70px;
+  /* width: 70px; */
   height: 100%;
   align-items: center;
   justify-content: center;
   line-height: 1;
   cursor: pointer;
   border-right: 1px solid #cccccc;
+  padding: 0 15px;
 }
 .c-header-icon i {
   font-size: 25px;

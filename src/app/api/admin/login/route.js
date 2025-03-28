@@ -7,8 +7,6 @@ export const POST = async (request) => {
     connectDB();
     try {
         const { email, password } = await request.json();
-
-    
         if (!email || !password) {
             return NextResponse.json({ message: "Please fill all the fields", status: 0 });
         }

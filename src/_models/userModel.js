@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: null
     },
-    phoneNumber: {
+    phone: {
         type: String,
         default: null
     },
@@ -16,6 +16,22 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         default: null
+    },
+    centerId: {
+        type: String,
+        default: null
+    },
+    teacherId: {
+        type: String,
+        default: null
+    },
+    batchId: {
+        type: String,
+        default: null
+    },
+    earningPoints: {
+        type: Number,
+        default: 0
     },
     role: {
         type: String,

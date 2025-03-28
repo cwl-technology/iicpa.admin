@@ -6,6 +6,7 @@ import Header from "@/_component/user/Header";
 import Sidebar from "@/_component/user/Sidebar";
 import { SessionProvider } from "next-auth/react";
 import { useState } from "react";
+import { ToastContainer } from "react-toastify";
 
 
 export default function RootLayout({ children }) {
@@ -49,7 +50,20 @@ export default function RootLayout({ children }) {
             <Sidebar />
             {children}
           </div>
+
         </SessionProvider>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </body>
     </html >
   );

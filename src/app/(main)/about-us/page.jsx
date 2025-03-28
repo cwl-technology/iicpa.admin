@@ -1,7 +1,7 @@
 "use client"
 
 
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -10,11 +10,13 @@ import { Autoplay } from 'swiper/modules';
 import CountUp from 'react-countup';
 import BreadCrumb from '@/_component/main/BreadCrumb';
 
-
 const Page = () => {
+    const [tabs, setTabs] = useState(true);
+    console.log(tabs);
+
     return (
         <>
-            <BreadCrumb title={"About us"}/>
+            <BreadCrumb title={"About us"} />
 
             <section className="about-three">
                 <div className="about-three__shape-2 rotate-me"></div>
@@ -39,9 +41,9 @@ const Page = () => {
                                             <div className="about-three__experience-icon">
                                                 <img src="/assets/images/icon/about-three-experience-icon.png" alt="" />
                                             </div>
-                                            <div className="about-three__experience-count-box">
-                                                <div className="about-three__experience-count">
-                                                    <h3 className="odometer" data-count="25">00</h3>
+                                            <div className="banner-two__experience-count-box">
+                                                <div className="banner-two__experience-count">
+                                                    <CountUp start={0} end={25} duration={2.5} />
                                                     <span>+</span>
                                                     <p>Years</p>
                                                 </div>
@@ -72,12 +74,12 @@ const Page = () => {
                                 <div className="about-three__mission-vission">
                                     <div className="about-three__tab-box tabs-box">
                                         <ul className="tab-buttons clearfix list-unstyled">
-                                            <li data-tab="#mission" className="tab-btn active-btn"><span>Our Mission</span></li>
-                                            <li data-tab="#vission" className="tab-btn"><span>Our Vision</span></li>
+                                            <li data-tab="#mission" className={`tab-btn ${tabs ? "active-btn" : ""}`} onClick={() => setTabs(!tabs)}><span>Our Mission</span></li>
+                                            <li data-tab="#vission" className={`tab-btn ${tabs ? "" : "active-btn"}`} onClick={() => setTabs(!tabs)}><span>Our Vision</span></li>
                                         </ul>
                                         <div className="tabs-content">
-                                            {/* <!--tab--> */}
-                                            <div className="tab active-tab" id="mission">
+
+                                            <div className={`tab ${tabs ? "active-tab" : ""}`} id="mission">
                                                 <div className="tabs-content__inner">
                                                     <ul className="list-unstyled about-three__mission-vission-list">
                                                         <li>
@@ -102,14 +104,13 @@ const Page = () => {
                                                     </ul>
                                                 </div>
                                             </div>
-                                            {/* <!--tab--> */}
-                                            {/* <!--tab--> */}
-                                            <div className="tab" id="vission">
+
+                                            <div className={`tab ${tabs ? "" : "active-tab"}`} id="vission">
                                                 <div className="tabs-content__inner">
                                                     <ul className="list-unstyled about-three__mission-vission-list">
                                                         <li>
                                                             <div className="about-three__mission-vission-content">
-                                                                <h4 className="about-three__mission-vission-title">It provides
+                                                                <h4 className="about-three__mission-vission-title">
                                                                     tools for course creation</h4>
                                                                 <p className="about-three__mission-vission-text">enrollment
                                                                     management, and tracking learner progress, ensuring a
@@ -129,7 +130,7 @@ const Page = () => {
                                                     </ul>
                                                 </div>
                                             </div>
-                                            {/* <!--tab--> */}
+
                                         </div>
                                     </div>
                                 </div>
@@ -280,7 +281,7 @@ const Page = () => {
                                         <div className="counter-one__count-hover-img" style={{ backgroundImage: "url(/assets/images/resources/counter-one-single-hover-img.jpg)" }}>
                                         </div>
                                         <div className="counter-one__count count-box">
-                                        <CountUp start={0} end={10} duration={2.5}/>
+                                            <CountUp start={0} end={10} duration={2.5} />
                                             <span>k</span>
                                         </div>
                                         <p>Student Trained</p>
@@ -289,7 +290,7 @@ const Page = () => {
                                         <div className="counter-one__count-hover-img" style={{ backgroundImage: "url(/assets/images/resources/counter-one-single-hover-img.jpg)" }}>
                                         </div>
                                         <div className="counter-one__count count-box">
-                                        <CountUp start={0} end={50} duration={2.5}/>
+                                            <CountUp start={0} end={50} duration={2.5} />
                                             <span>+</span>
                                         </div>
                                         <p>Recorded Courses</p>
@@ -298,7 +299,7 @@ const Page = () => {
                                         <div className="counter-one__count-hover-img" style={{ backgroundImage: "url(/assets/images/resources/counter-one-single-hover-img.jpg)" }}>
                                         </div>
                                         <div className="counter-one__count count-box">
-                                        <CountUp start={0} end={15} duration={2.5}/>
+                                            <CountUp start={0} end={15} duration={2.5} />
                                             <span>M</span>
                                         </div>
                                         <p>Satisfaction Rate</p>
@@ -468,38 +469,8 @@ const Page = () => {
                     </div>
                 </div>
             </section>
-         
-            <section className="sliding-text-three sliding-text-four">
-                <div className="sliding-text-three__wrap">
-                    <ul className="sliding-text-three__list list-unstyled marquee_mode">
-                        <li>
-                            <h2 data-hover="20+ Instructor " className="sliding-text-three__title count-box">Testimonial
-                                <img src="/assets/images/shapes/sliding-text-three-shape-1.png" alt="" />
-                            </h2>
-                        </li>
-                        <li>
-                            <h2 data-hover="20+ Instructor " className="sliding-text-three__title count-box">Testimonial
-                                <img src="/assets/images/shapes/sliding-text-three-shape-1.png" alt="" />
-                            </h2>
-                        </li>
-                        <li>
-                            <h2 data-hover="20+ Instructor " className="sliding-text-three__title count-box">Testimonial
-                                <img src="/assets/images/shapes/sliding-text-three-shape-1.png" alt="" />
-                            </h2>
-                        </li>
-                        <li>
-                            <h2 data-hover="20+ Instructor " className="sliding-text-three__title count-box">Testimonial
-                                <img src="/assets/images/shapes/sliding-text-three-shape-1.png" alt="" />
-                            </h2>
-                        </li>
-                        <li>
-                            <h2 data-hover="20+ Instructor " className="sliding-text-three__title count-box">Testimonial
-                                <img src="/assets/images/shapes/sliding-text-three-shape-1.png" alt="" />
-                            </h2>
-                        </li>
-                    </ul>
-                </div>
-            </section>
+
+          
         </>
     )
 }

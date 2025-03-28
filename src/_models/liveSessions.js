@@ -17,9 +17,21 @@ const liveSesstionSchema = new mongoose.Schema({
         type: String,
         default: null
     },
+    image: {
+        type: String,
+        default: null
+    },
     description: {
         type: String,
         default: null
+    },
+    link: {
+        type: String,
+        default: null
+    },
+    price: {
+        type: Number,
+        default: 0
     },
     status: {
         type: Number,

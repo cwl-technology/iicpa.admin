@@ -5,13 +5,12 @@ import { NextResponse } from "next/server";
 export const POST = async (request) => {
     connectDB();
     try {
-        const { courseId, userId } = await request.json();
-
-        const isCourseExist = await cartModel.findOne({ userId: userId, courseId: courseId });
-        if (isCourseExist) {
+        const { itemId, userId, type } = await request.json();
+        const isItemExist = await cartModel.findOne({ userId: userId, itemId: itemId });
+        if (isItemExist) {
             return NextResponse.json({ message: "Already added to the cart!", status: 0 });
         }
-        const data = new cartModel({ userId, courseId });
+        const data = new cartModel({ itemId, userId, type });
         await data.save();
 
         const cartNumber = await cartModel.countDocuments({ userId: userId });

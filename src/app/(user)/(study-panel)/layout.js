@@ -1,4 +1,5 @@
 import { SessionProvider } from "next-auth/react";
+import { ToastContainer } from "react-toastify";
 
 export default function chapterLayout({ children }) {
 
@@ -29,6 +30,18 @@ export default function chapterLayout({ children }) {
         <SessionProvider>
           {children}
         </SessionProvider>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </body>
     </html>
   );

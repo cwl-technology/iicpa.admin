@@ -16,7 +16,7 @@ const QuizCreate = () => {
     const { register, handleSubmit, formState: { isSubmitting, errors } } = useForm()
     const router = useRouter();
     const searchParams = useSearchParams();
-    
+
     const courseId = searchParams.get("courseId");
     const chapterId = searchParams.get("chapterId");
     const topicId = searchParams.get("topicId");
@@ -131,7 +131,7 @@ const QuizCreate = () => {
                                                 </div>
                                                 <div className="col-md-6">
                                                     <div className="mb-4">
-                                                        <label htmlFor="example-select" className="form-label">Select course level</label>
+                                                        <label htmlFor="example-select" className="form-label">Select Correct Option</label>
                                                         <select id="example-select"
                                                             {...register("correctAnswer", {
                                                                 required: {
@@ -141,19 +141,41 @@ const QuizCreate = () => {
                                                             })}
                                                             className={`form-select ${errors.correctAnswer ? "border-danger" : ""}`}
                                                         >
-                                                            <option hidden defaultChecked value={""}>Select Correct Answer</option>
+                                                            <option hidden defaultChecked value={""}>Select Option</option>
                                                             <option value="answer1">First Option</option>
                                                             <option value="answer2">Second Option</option>
                                                             <option value="answer3">Third Option</option>
                                                             <option value="answer4">Fourth Option</option>
-                                                            
+
                                                         </select>
                                                         {
                                                             errors.correctAnswer && <span className="help-block text-danger"><small>{errors.correctAnswer.message}</small></span>
                                                         }
                                                     </div>
                                                 </div>
-                                                
+                                                <div className='col-md-6'>
+                                                </div>
+                                                <div className="col-md-6">
+
+                                                    <div className="mb-3">
+                                                        <label htmlFor="simpleinput" className="form-label">Quiz Points</label>
+                                                        <input
+                                                            {...register("quizPoints",
+                                                                {
+                                                                    required: { value: true, message: "Quiz points are required!" },
+                                                                    min: { value: 0, message: "Invalid value!" }
+                                                                }
+                                                            )}
+                                                            type="number" id="simpleinput" className={`form-control ${errors.quizPoints ? "border-danger" : ""}`}
+                                                            min={0} placeholder='Enter the winning points.' />
+                                                        {
+                                                            errors.quizPoints && <span className="help-block text-danger"><small>{errors.quizPoints.message}</small></span>
+                                                        }
+                                                    </div>
+
+                                                </div>
+
+
                                             </div>
                                         </form>
                                     </div>

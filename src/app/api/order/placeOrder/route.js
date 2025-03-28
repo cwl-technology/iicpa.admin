@@ -2,6 +2,7 @@ import connectDB from "@/_config/connect";
 import cartModel from "@/_models/cartModel";
 import chapterModel from "@/_models/chapterModel";
 import courseModel from "@/_models/courseModel";
+import liveSessionModel from "@/_models/liveSessions";
 import orderChapterModel from "@/_models/orderChapterModel";
 import orderCourseModel from "@/_models/orderCourseModel";
 import orderInfoModel from "@/_models/orderInfoModel";
@@ -31,19 +32,25 @@ export const POST = async (request) => {
         await order.save();
 
         const cart = await cartModel.find({ userId: userId });
+        const courseCart = cart.filter((ele) => ele.type == 1);
+        const liveSessionCart = cart.filter((ele) => ele.type == 0);
 
-        //Order Detail or Order Course Model 
+
+        //For Courses Order Detail(courseOrderModel) 
+
         let courseData = await courseModel.find({}).lean();
-        courseData = cart?.map((ele) => {
-            ele = courseData.find((e) => e._id == ele.courseId)
+
+
+        courseData = courseCart?.map((ele) => {
+            ele = courseData.find((e) => e._id == ele.itemId)
             ele.userId = userId;
             ele.orderId = order._id;
+            ele.type = 1
             ele.purchasedCourseId = ele._id;
             return ele;
         })
 
         for (const course of courseData) {
-
             const newCourse = { ...course }
             delete newCourse._id;
             const newCourseData = await orderCourseModel.create(newCourse);
@@ -75,7 +82,7 @@ export const POST = async (request) => {
                     ele.chapterId = newChapterData._id;
                     return ele;
                 })
-                
+
 
                 for (const topic of topicData) {
                     const newTopic = { ...topic }
@@ -85,7 +92,7 @@ export const POST = async (request) => {
 
                     //SubTopic clone
                     let subTopicData = await subTopicModel.find().lean();
-                
+
                     subTopicData = subTopicData.filter((ele) => ele.courseId == course._id && ele.chapterId == chapter._id && ele.topicId == topic._id)
 
                     subTopicData = subTopicData.map((ele) => {
@@ -128,12 +135,24 @@ export const POST = async (request) => {
 
         }
 
- 
+
+        //For Live Session Order Detail(courseOrderModel) 
+        let liveSession = await liveSessionModel.find({}).lean();
+        liveSession = liveSessionCart.map((ele) => {
+            ele = liveSession.find((e) => e._id == ele.itemId)
+            ele.userId = userId
+            ele.orderId = order._id
+            ele.type = 0
+            ele.purchasedSessionId = ele._id
+            delete ele._id
+            return ele;
+        })
+        await orderCourseModel.create(liveSession)
 
         // Delete Cart 
         await cartModel.deleteMany({ userId: userId });
 
-        return NextResponse.json({ message: "Order Placed!", status: 1, data: courseData })
+        return NextResponse.json({ message: "Order Placed!", status: 1 })
 
     } catch (err) {
         console.log(err);

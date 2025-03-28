@@ -13,6 +13,7 @@ export async function middleware(request) {
 
     const excludedPaths = [
         '/admin/admin-login',
+        '/center/center-login',
     ];
 
     if (excludedPaths.includes(pathname)) {
@@ -23,6 +24,9 @@ export async function middleware(request) {
         if (pathname.startsWith("/admin")) {
             return NextResponse.redirect(new URL('/admin/admin-login', request.url))
         }
+        if (pathname.startsWith("/center")) {
+            return NextResponse.redirect(new URL('/center/center-login', request.url))
+        }
         if (pathname.startsWith("/course") || pathname.startsWith("/jobs") || pathname.startsWith("/cart")) {
             return NextResponse.redirect(new URL('/login', request.url))
         }
@@ -30,11 +34,15 @@ export async function middleware(request) {
 
     if (token.role !== "Admin" && pathname.startsWith("/admin")) {
         return NextResponse.redirect(new URL('/admin/admin-login', request.url))
+    } else if (token.role !== "Center" && pathname.startsWith("/center")) {
+        return NextResponse.redirect(new URL('/center/center-login', request.url))
     } else if (token.role !== "User" && (pathname.startsWith("/course") || pathname.startsWith("/cart") || pathname.startsWith("/jobs"))) {
         return NextResponse.redirect(new URL('/login', request.url))
+    } else if (token.role == "Center" && token.userType != "Center" && pathname.startsWith("/center/teacher")) {
+        return NextResponse.redirect(new URL('/center', request.url))
     }
 }
 
 export const config = {
-    matcher: ['/admin/:path*', '/course/:path*', '/cart/:path*', '/jobs/:path*',]
+    matcher: ['/admin/:path*', '/center/:path*', '/course/:path*', '/cart/:path*', '/jobs/:path*',]
 }

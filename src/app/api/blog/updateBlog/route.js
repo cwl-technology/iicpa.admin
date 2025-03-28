@@ -7,9 +7,23 @@ import { NextResponse } from "next/server";
 export const POST = async (request) => {
     connectDB();
     try {
-        const { blogName, blogSlug, blogContent, blogImage, blogDate, publisherName, blogDescription, id } = await request.json();
+        const incomingData = await request.formData();
+        const blogName = incomingData.get("blogName")
+        const blogSlug = incomingData.get("blogSlug")
+        const blogContent = incomingData.get("blogContent")
+        const blogDate = incomingData.get("blogDate")
+        const publisherName = incomingData.get("publisherName")
+        const blogDescription = incomingData.get("blogDescription")
+        const title = incomingData.get("title")
+        const keywords = incomingData.get("keywords")
+        const metaDescription = incomingData.get("metaDescription")
+        const id = incomingData.get("id")
 
-        if (!blogName || !blogSlug || !blogContent || !blogImage || !blogDate || !publisherName || !blogDescription) {
+        
+        const currentData = await blogModel.findOne({ _id: id });
+        const blogImage = incomingData.get("blogImage") == "undefined" ? currentData.blogImage : incomingData.get("blogImage");
+
+        if (!blogName || !blogSlug || !blogContent || !blogImage || !blogDate) {
             return NextResponse.json({ message: "Please fill all the fields.", status: 0 })
         }
 
@@ -19,9 +33,9 @@ export const POST = async (request) => {
             return NextResponse.json({ message: "Blog already exist!", status: 0 });
         }
 
-        const blogImagePath = await updateImage(blogImage)
+        const blogImagePath = await updateImage(blogImage, currentData?.blogImage);
 
-        const data = await blogModel.findByIdAndUpdate({ _id: id }, { blogName, blogSlug: formattedSlug, blogContent, blogImage: blogImagePath, blogDate, publisherName, blogDescription });
+        const data = await blogModel.findByIdAndUpdate({ _id: id }, { blogName, blogSlug: formattedSlug, blogContent, blogImage: blogImagePath, blogDate, publisherName, blogDescription, title, keywords, metaDescription });
         if (!data) {
             return NextResponse.json({ message: "Unable to update data!", status: 0 });
         }

@@ -62,7 +62,7 @@ const page = () => {
 
                                                 <div className="custom-card-header">
                                                     <h3>
-                                                        <span className="custom-step-number">{i + 1}.</span>{e.chapterName}
+                                                        <span className="custom-step-number">{i + 1}. </span>{e.chapterName}
                                                     </h3>
                                                 </div>
                                                 <div className="custom-card-body">

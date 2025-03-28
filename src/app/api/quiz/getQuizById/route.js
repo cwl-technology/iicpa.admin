@@ -3,8 +3,8 @@ import quizModel from "@/_models/quizModel";
 import { NextResponse } from "next/server"
 
 export const POST = async (request) => {
+    connectDB();
     try {
-        connectDB();
         const { id } = await request.json();
 
         const data = await quizModel.findOne({ _id: id });

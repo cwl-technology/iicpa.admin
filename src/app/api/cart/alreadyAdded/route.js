@@ -6,9 +6,7 @@ export const POST = async (request) => {
     connectDB();
     try {
         const { courseId, userId } = await request.json();
-        console.log(courseId)
-        console.log(userId)
-        const isCourseExist = await cartModel.findOne({ userId: userId, courseId: courseId });
+        const isCourseExist = await cartModel.findOne({ userId: userId, itemId: courseId });
 
         if (!isCourseExist) {
             return NextResponse.json({ message: "Item is not added.", status: 0 });

@@ -18,7 +18,7 @@ export default function Header() {
     setNavMenuOpen((prev) => !prev);
   };
 
-  
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 100) {
@@ -39,8 +39,8 @@ export default function Header() {
     try {
       const res = await axios.post("/api/cart/getCartData", { userId: userId });
       if (res.data.status == 1) {
-        console.log(res.data.data.length);
-        setCartNumber(res.data.data.length);
+        console.log(res.data);
+        setCartNumber(res.data.cartNumber)
       }
     } catch (err) {
       console.log(err);
@@ -94,6 +94,9 @@ export default function Header() {
                       <Link href="/course">Course</Link>
                     </li>
                     <li>
+                      <Link href="/live-session">Live Session</Link>
+                    </li>
+                    <li>
                       <Link href="/blog">Blog</Link>
                     </li>
                     <li>
@@ -136,7 +139,7 @@ export default function Header() {
                             <span className="px-3 py-1 ms-1">Lab</span>
                           </Link>
                         </div>
-                        
+
                       </div>
                     // : <div className="main-menu-two__signin-reg">
                     //   <div className="main-menu-two__signin-reg-icon">
@@ -213,6 +216,9 @@ export default function Header() {
                         <Link href="/course">Course</Link>
                       </li>
                       <li>
+                        <Link href="/live-session">Live Session</Link>
+                      </li>
+                      <li>
                         <Link href="/blog">Blog</Link>
                       </li>
                       <li>
@@ -247,16 +253,16 @@ export default function Header() {
                           </div>
                         </div>
                         : <div>
-                        <div className="courses-three__btn-box">
-                          <Link href="/profile" className="thm-btn-two">
-                            <span className="px-3 py-1">Profile</span>
-                          </Link>
-                          <Link href="/lab" className="thm-btn-two">
-                            <span className="px-3 py-1 ms-1">Lab</span>
-                          </Link>
+                          <div className="courses-three__btn-box">
+                            <Link href="/profile" className="thm-btn-two">
+                              <span className="px-3 py-1">Profile</span>
+                            </Link>
+                            <Link href="/lab" className="thm-btn-two">
+                              <span className="px-3 py-1 ms-1">Lab</span>
+                            </Link>
+                          </div>
+
                         </div>
-                        
-                      </div>
                     }
                     <div className="main-menu-two__support-box">
                       <p className="main-menu-two__support-text">

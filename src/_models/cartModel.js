@@ -5,8 +5,12 @@ const cartSchema = new mongoose.Schema({
         type: String,
         default: null
     },
-    courseId: {
+    itemId: {
         type: String,
+        default: null
+    },
+    type: {
+        type: Number,
         default: null
     }
 });

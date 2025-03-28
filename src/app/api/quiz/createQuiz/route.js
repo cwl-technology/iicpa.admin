@@ -3,14 +3,14 @@ import quizModel from "@/_models/quizModel";
 import { NextResponse } from "next/server"
 
 export const POST = async (request) => {
+    connectDB();
     try {
-        connectDB();
-        const { question, answer1, answer2, answer3, answer4, correctAnswer, courseId, chapterId, topicId, subTopicId } = await request.json();
+        const { question, answer1, answer2, answer3, answer4, correctAnswer, courseId, chapterId, topicId, subTopicId, quizPoints } = await request.json();
         if (!question || !answer1 || !answer2 || !correctAnswer) {
             return NextResponse.json({ message: "Please provide all the fields!", status: 0 });
         }
 
-        const data = new quizModel({ question, answer1, answer2, answer3, answer4, correctAnswer, courseId, chapterId, topicId, subTopicId });
+        const data = new quizModel({ question, answer1, answer2, answer3, answer4, correctAnswer, courseId, chapterId, topicId, subTopicId, quizPoints });
         await data.save();
         return NextResponse.json({ message: "Quiz created successfully.", status: 1 });
     } catch (err) {

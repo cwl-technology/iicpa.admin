@@ -1,8 +1,10 @@
+import connectDB from "@/_config/connect";
 import permissionsModel from "@/_models/permissionsModel";
 import roleModel from "@/_models/roleModel";
 import { NextResponse } from "next/server"
 
 export const POST = async (request) => {
+    connectDB();
     try {
         const { id } = await request.json();
         const data1 = await roleModel.findByIdAndDelete({ _id: id });

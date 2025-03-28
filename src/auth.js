@@ -8,7 +8,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             name: "credentials",
             id: "credentials",
             authorize: async (credentials) => {
-                const user = { id: credentials.id, name: credentials.name, role: credentials.role,roleId:credentials.roleId }
+                const user = { id: credentials.id, name: credentials.name, role: credentials.role, roleId: credentials.roleId, userType: credentials.userType }
                 if (user) {
                     return user
                 } else {
@@ -24,6 +24,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 token.name = user.name
                 token.role = user.role
                 token.roleId = user.roleId
+                token.userType = user.userType
             }
             return token;
         },
@@ -32,6 +33,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             session.user.name = token.name
             session.user.role = token.role
             session.user.roleId = token.roleId
+            session.user.userType = token.userType
             return session;
         }
     }

@@ -110,6 +110,10 @@ const page = () => {
         }
     }
 
+
+    console.log(new Date() > new Date("2025-03-09"));
+
+
     return (
         <>
             <div className="content-wrapper">
@@ -135,121 +139,243 @@ const page = () => {
                                         <div className='row g-4 px-3'>
                                             {
                                                 liveSessionData?.map((ele, ind) => {
-                                                    if (ind % 3 == 0) {
-                                                        return (
-                                                            <div className='col-4' key={ind}>
-                                                                <div className='p-4 left-border left-border-1'>
-                                                                    <div className='d-flex justify-content-between'>
-                                                                        <div>
-                                                                            <h6 className='my-0 dashboad-bold-font'>{getCourseNameById(ele.courseId)}</h6>
-                                                                            <span className='text-muted d-block mb-2'><DateFormatter date={ele.date} /> </span>
+                                                    if(new Date() < new Date(ele.date)){
+                                                        if (ind % 3 == 0) {
+                                                            return (
+                                                                <div className='col-4' key={ind}>
+                                                                    <div className='p-4 left-border left-border-1'>
+                                                                        <div className='d-flex justify-content-between'>
+                                                                            <div>
+                                                                                <h6 className='my-0 dashboad-bold-font'>{getCourseNameById(ele.courseId)}</h6>
+                                                                                <span className='text-muted d-block mb-2'><DateFormatter date={ele.date} /> </span>
+                                                                            </div>
+                                                                            <div className=''>
+                                                                                <a href={`/${ele.link}`} target="_blank" className='btn btn-sm dashboad-badge-1 jobs-grid-icons'>
+                                                                                    <i className="bi bi-box-arrow-up-right"></i>
+                                                                                </a>
+                                                                            </div>
                                                                         </div>
-                                                                        <div className=''>
-                                                                            <a href={ele.jobLink} target="_blank" className='btn btn-sm dashboad-badge-1 jobs-grid-icons'>
-                                                                                <i className="bi bi-box-arrow-up-right"></i>
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                    <p className='dashboad-badge-1 dashboad-bold-font d-inline'><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
-                                                                    <div className='my-4'>
-                                                                        <div className=''>
-                                                                            <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
-                                                                                {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
-
-                                                                            </a>
-                                                                            <Link href={{
-                                                                                pathname: "/admin/live-session/edit",
-                                                                                query: {
-                                                                                    id: ele._id
-                                                                                }
-                                                                            }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
-                                                                                <i className="bi bi-pencil"></i>
-                                                                            </Link>
-                                                                            <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
-                                                                                <i className="bi bi-trash"></i>
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        )
-                                                    } else if (ind % 3 == 1) {
-                                                        return (
-                                                            <div className='col-4' key={ind}>
-                                                                <div className='p-4 left-border left-border-2'>
-                                                                    <div className='d-flex justify-content-between'>
-                                                                        <div>
-                                                                            <h6 className='my-0 dashboad-bold-font'>{getCourseNameById(ele.courseId)}</h6>
-                                                                            <span className='text-muted d-block mb-2'><DateFormatter date={ele.date} /></span>
-                                                                        </div>
-                                                                        <div className=''>
-                                                                            <a href={ele.jobLink} target="_blank" className='btn btn-sm dashboad-badge-2 jobs-grid-icons'>
-                                                                                <i className="bi bi-box-arrow-up-right"></i>
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                    <p className='dashboad-badge-2 dashboad-bold-font d-inline'><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
-                                                                    <div className='my-4'>
-                                                                    <div className=''>
-                                                                            <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
-                                                                                {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
-
-                                                                            </a>
-                                                                            <Link href={{
-                                                                                pathname: "/admin/live-session/edit",
-                                                                                query: {
-                                                                                    id: ele._id
-                                                                                }
-                                                                            }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
-                                                                                <i className="bi bi-pencil"></i>
-                                                                            </Link>
-                                                                            <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
-                                                                                <i className="bi bi-trash"></i>
-                                                                            </a>
+                                                                        <p className='dashboad-badge-1 dashboad-bold-font d-inline'><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
+                                                                        <div className='my-4'>
+                                                                            <div className=''>
+                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
+                                                                                    {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
+    
+                                                                                </a>
+                                                                                <Link href={{
+                                                                                    pathname: "/admin/live-session/edit",
+                                                                                    query: {
+                                                                                        id: ele._id
+                                                                                    }
+                                                                                }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
+                                                                                    <i className="bi bi-pencil"></i>
+                                                                                </Link>
+                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
+                                                                                    <i className="bi bi-trash"></i>
+                                                                                </a>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                        )
-                                                    } else {
-                                                        return (
-                                                            <div className='col-4' key={ind}>
-                                                                <div className='p-4 left-border left-border-3'>
-                                                                    <div className='d-flex justify-content-between'>
-                                                                        <div>
-                                                                            <h6 className='my-0 dashboad-bold-font'>{getCourseNameById(ele.courseId)}</h6>
-                                                                            <span className='text-muted d-block mb-2'><DateFormatter date={ele.date} /></span>
+                                                            )
+                                                        } else if (ind % 3 == 1) {
+                                                            return (
+                                                                <div className='col-4' key={ind}>
+                                                                    <div className='p-4 left-border left-border-2'>
+                                                                        <div className='d-flex justify-content-between'>
+                                                                            <div>
+                                                                                <h6 className='my-0 dashboad-bold-font'>{getCourseNameById(ele.courseId)}</h6>
+                                                                                <span className='text-muted d-block mb-2'><DateFormatter date={ele.date} /></span>
+                                                                            </div>
+                                                                            <div className=''>
+                                                                                <a href={ele.link} target="_blank" className='btn btn-sm dashboad-badge-2 jobs-grid-icons'>
+                                                                                    <i className="bi bi-box-arrow-up-right"></i>
+                                                                                </a>
+                                                                            </div>
                                                                         </div>
-                                                                        <div className=''>
-                                                                            <a href={ele.jobLink} target="_blank" className='btn btn-sm dashboad-badge-3 jobs-grid-icons'>
-                                                                                <i className="bi bi-box-arrow-up-right"></i>
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
-                                                                    <p className='dashboad-badge-3 dashboad-bold-font d-inline'><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
-                                                                    <div className='my-4'>
-                                                                    <div className=''>
-                                                                            <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
-                                                                                {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
-
-                                                                            </a>
-                                                                            <Link href={{
-                                                                                pathname: "/admin/live-session/edit",
-                                                                                query: {
-                                                                                    id: ele._id
-                                                                                }
-                                                                            }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
-                                                                                <i className="bi bi-pencil"></i>
-                                                                            </Link>
-                                                                            <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
-                                                                                <i className="bi bi-trash"></i>
-                                                                            </a>
+                                                                        <p className='dashboad-badge-2 dashboad-bold-font d-inline'><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
+                                                                        <div className='my-4'>
+                                                                            <div className=''>
+                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
+                                                                                    {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
+    
+                                                                                </a>
+                                                                                <Link href={{
+                                                                                    pathname: "/admin/live-session/edit",
+                                                                                    query: {
+                                                                                        id: ele._id
+                                                                                    }
+                                                                                }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
+                                                                                    <i className="bi bi-pencil"></i>
+                                                                                </Link>
+                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
+                                                                                    <i className="bi bi-trash"></i>
+                                                                                </a>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                        )
+                                                            )
+                                                        } else {
+                                                            return (
+                                                                <div className='col-4' key={ind}>
+                                                                    <div className='p-4 left-border left-border-3'>
+                                                                        <div className='d-flex justify-content-between'>
+                                                                            <div>
+                                                                                <h6 className='my-0 dashboad-bold-font'>{getCourseNameById(ele.courseId)}</h6>
+                                                                                <span className='text-muted d-block mb-2'><DateFormatter date={ele.date} /></span>
+                                                                            </div>
+                                                                            <div className=''>
+                                                                                <a href={ele.link} target="_blank" className='btn btn-sm dashboad-badge-3 jobs-grid-icons'>
+                                                                                    <i className="bi bi-box-arrow-up-right"></i>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <p className='dashboad-badge-3 dashboad-bold-font d-inline'><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
+                                                                        <div className='my-4'>
+                                                                            <div className=''>
+                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
+                                                                                    {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
+    
+                                                                                </a>
+                                                                                <Link href={{
+                                                                                    pathname: "/admin/live-session/edit",
+                                                                                    query: {
+                                                                                        id: ele._id
+                                                                                    }
+                                                                                }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
+                                                                                    <i className="bi bi-pencil"></i>
+                                                                                </Link>
+                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
+                                                                                    <i className="bi bi-trash"></i>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        }
+                                                    }else{
+                                                        if (ind % 3 == 0) {
+                                                            return (
+                                                                <div className='col-4' key={ind}>
+                                                                    <div className='p-4 left-border left-border-1'>
+                                                                        <div className='d-flex justify-content-between'>
+                                                                            <div>
+                                                                                <h6 className='my-0 dashboad-bold-font'>{getCourseNameById(ele.courseId)}</h6>
+                                                                                <span className='text-muted d-block mb-2'><DateFormatter date={ele.date} /> </span>
+                                                                            </div>
+                                                                            <div className=''>
+                                                                                <a href={ele.link} target="_blank" className='btn btn-sm dashboad-badge-1 jobs-grid-icons'>
+                                                                                    <i className="bi bi-box-arrow-up-right"></i>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <p className='dashboad-badge-1 dashboad-bold-font d-inline'><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
+                                                                        <div className='my-4'>
+                                                                            <div className=''>
+                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
+                                                                                    {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
+    
+                                                                                </a>
+                                                                                <Link href={{
+                                                                                    pathname: "/admin/live-session/edit",
+                                                                                    query: {
+                                                                                        id: ele._id
+                                                                                    }
+                                                                                }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
+                                                                                    <i className="bi bi-pencil"></i>
+                                                                                </Link>
+                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
+                                                                                    <i className="bi bi-trash"></i>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <span className='badge badge-danger'>Session Ended</span>
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        } else if (ind % 3 == 1) {
+                                                            return (
+                                                                <div className='col-4' key={ind}>
+                                                                    <div className='p-4 left-border left-border-2'>
+                                                                        <div className='d-flex justify-content-between'>
+                                                                            <div>
+                                                                                <h6 className='my-0 dashboad-bold-font'>{getCourseNameById(ele.courseId)}</h6>
+                                                                                <span className='text-muted d-block mb-2'><DateFormatter date={ele.date} /></span>
+                                                                            </div>
+                                                                            <div className=''>
+                                                                                <a href={ele.link} target="_blank" className='btn btn-sm dashboad-badge-2 jobs-grid-icons'>
+                                                                                    <i className="bi bi-box-arrow-up-right"></i>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <p className='dashboad-badge-2 dashboad-bold-font d-inline'><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
+                                                                        <div className='my-4'>
+                                                                            <div className=''>
+                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
+                                                                                    {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
+    
+                                                                                </a>
+                                                                                <Link href={{
+                                                                                    pathname: "/admin/live-session/edit",
+                                                                                    query: {
+                                                                                        id: ele._id
+                                                                                    }
+                                                                                }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
+                                                                                    <i className="bi bi-pencil"></i>
+                                                                                </Link>
+                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
+                                                                                    <i className="bi bi-trash"></i>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <span className='badge badge-danger'>Session Ended</span>
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        } else {
+                                                            return (
+                                                                <div className='col-4' key={ind}>
+                                                                    <div className='p-4 left-border left-border-3'>
+                                                                        <div className='d-flex justify-content-between'>
+                                                                            <div>
+                                                                                <h6 className='my-0 dashboad-bold-font'>{getCourseNameById(ele.courseId)}</h6>
+                                                                                <span className='text-muted d-block mb-2'><DateFormatter date={ele.date} /></span>
+                                                                            </div>
+                                                                            <div className=''>
+                                                                                <a href={ele.link} target="_blank" className='btn btn-sm dashboad-badge-3 jobs-grid-icons'>
+                                                                                    <i className="bi bi-box-arrow-up-right"></i>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <p className='dashboad-badge-3 dashboad-bold-font d-inline'><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
+                                                                        <div className='my-4'>
+                                                                            <div className=''>
+                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
+                                                                                    {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
+    
+                                                                                </a>
+                                                                                <Link href={{
+                                                                                    pathname: "/admin/live-session/edit",
+                                                                                    query: {
+                                                                                        id: ele._id
+                                                                                    }
+                                                                                }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
+                                                                                    <i className="bi bi-pencil"></i>
+                                                                                </Link>
+                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
+                                                                                    <i className="bi bi-trash"></i>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                        <span className='badge badge-danger'>Session Ended</span>
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        }
                                                     }
+                                                    
                                                 }
 
                                                 )
