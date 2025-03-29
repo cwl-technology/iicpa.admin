@@ -8,6 +8,7 @@ import axios from "axios";
 import Link from 'next/link';
 import ButtonLoader from '@/_component/global/ButtonLoader';
 import { toast } from 'react-toastify';
+import usePermission from '@/_helper/frontend/Permission';
 
 
 const CenterEdit = () => {
@@ -55,6 +56,17 @@ const CenterEdit = () => {
             getCenterData();
         }
     }, [id])
+
+    
+    //Permission Logic
+    const menuId = "67e63771a8f1f1d5d225046f"
+    const getPermissionsBymenuId = usePermission(menuId);
+
+    useEffect(() => {
+        if (!getPermissionsBymenuId("service_2")) {
+            router.push("/admin")
+        }
+    }, [])
 
 
     return (

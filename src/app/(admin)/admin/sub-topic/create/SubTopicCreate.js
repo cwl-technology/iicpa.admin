@@ -10,6 +10,7 @@ import ButtonLoader from '@/_component/global/ButtonLoader';
 import { toast } from 'react-toastify';
 import "bootstrap-icons/font/bootstrap-icons.css";
 import dynamic from "next/dynamic";
+import usePermission from '@/_helper/frontend/Permission';
 const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false })
 
 
@@ -23,6 +24,7 @@ const SubTopicCreate = () => {
     const topicId = searchParams.get("topicId");
 
     const [image, setImage] = useState();
+    
 
     const editor = useRef(null);
     const config = useMemo(() => ({
@@ -57,6 +59,16 @@ const SubTopicCreate = () => {
             console.log(err);
         }
     }
+
+    //Permission Logic
+    const menuId = "67a1c4aabaf5937f5c93a983"
+    const getPermissionsBymenuId = usePermission(menuId);
+
+    useEffect(() => {
+        if (!getPermissionsBymenuId("service_2")) {
+            router.push("/admin")
+        }
+    }, [])
  
 
     return (

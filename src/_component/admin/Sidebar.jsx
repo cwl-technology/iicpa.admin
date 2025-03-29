@@ -31,7 +31,6 @@ const Sidebar = () => {
     }
 
 
-    // console.log(permission);
     const getPermissionsBymenuId = (menuId) => {
         const permissions = permission?.find((ele) => ele.menuId == menuId)
         return permissions?.service_2 || null;
@@ -43,6 +42,7 @@ const Sidebar = () => {
         }
     }, [roleId])
 
+    console.log(permission)
 
     return (
 
@@ -79,13 +79,19 @@ const Sidebar = () => {
                                     </li>
                                 }
 
-                                <li>
-                                    <Link href="/admin/center" className={pathname === '/admin/center' || pathname === '/admin/center/create' || pathname === '/admin/center/edit' ? 'sidebar-active' : ''}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>Center</span></Link>
-                                </li>
+                                {
+                                    getPermissionsBymenuId("67e63771a8f1f1d5d225046f") &&
+                                    <li>
+                                        <Link href="/admin/center" className={pathname === '/admin/center' || pathname === '/admin/center/create' || pathname === '/admin/center/edit' ? 'sidebar-active' : ''}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>Center</span></Link>
+                                    </li>
+                                }
 
-                                <li>
-                                    <Link href="/admin/teacher" className={pathname === '/admin/teacher' || pathname === '/admin/teacher/create' || pathname === '/admin/teacher/edit' ? 'sidebar-active' : ''}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>Teacher</span></Link>
-                                </li>
+                                {
+                                    getPermissionsBymenuId("67e63797a8f1f1d5d2250475") &&
+                                    <li>
+                                        <Link href="/admin/teacher" className={pathname === '/admin/teacher' || pathname === '/admin/teacher/create' || pathname === '/admin/teacher/edit' ? 'sidebar-active' : ''}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>Teacher</span></Link>
+                                    </li>
+                                }
 
                                 {
                                     getPermissionsBymenuId("67b6f80560e29568dd1f730c") &&
@@ -94,27 +100,6 @@ const Sidebar = () => {
                                     </li>
                                 }
 
-                                {/* {
-                                    getPermissionsBymenuId("67a1c491baf5937f5c93a982") &&
-                                    <li>
-                                        <Link href="#" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>Partners</span></Link>
-                                    </li>
-                                } */}
-
-                                {/* {
-                                    getPermissionsBymenuId("67a1c491baf5937f5c93a982") &&
-                                    <li>
-                                        <Link href="#" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>Users</span></Link>
-                                    </li>
-                                } */}
-
-                                {/* {
-                                    getPermissionsBymenuId("67a1c491baf5937f5c93a982") &&
-                                    <li>
-                                        <Link href="#" ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>Blogs</span></Link>
-                                    </li>
-                                } */}
-
 
                                 {
                                     getPermissionsBymenuId("67b6f84060e29568dd1f7311") &&
@@ -122,29 +107,45 @@ const Sidebar = () => {
                                         <Link href="/admin/role" className={pathname === '/admin/role' || pathname === '/admin/role/create' ? 'sidebar-active' : ''}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>Manage Roles</span></Link>
                                     </li>
                                 }
-                                <li>
-                                    <Link href="/admin/staff" className={pathname === '/admin/staff' || pathname === '/admin/staff/create' || pathname === '/admin/staff/edit' ? 'sidebar-active' : ''}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>Staff Management</span></Link>
-                                </li>
+                                {
+                                    getPermissionsBymenuId("67e637d6a8f1f1d5d225048d") &&
+                                    <li>
+                                        <Link href="/admin/staff" className={pathname === '/admin/staff' || pathname === '/admin/staff/create' || pathname === '/admin/staff/edit' ? 'sidebar-active' : ''}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>Staff Management</span></Link>
+                                    </li>
+                                }
 
-                                <li>
-                                    <Link href="/admin/calendar" className={pathname === '/admin/calendar' || pathname === '/admin/calendar/create' || pathname === '/admin/staff/edit' ? 'sidebar-active' : ''}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>Calendar</span></Link>
-                                </li>
+                                {
+                                    getPermissionsBymenuId("67e63835a8f1f1d5d2250499") &&
+                                    <li>
+                                        <Link href="/admin/calendar" className={pathname === '/admin/calendar' || pathname === '/admin/calendar/create' || pathname === '/admin/staff/edit' ? 'sidebar-active' : ''}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>Calendar</span></Link>
+                                    </li>
+                                }
 
-                                <li>
-                                    <Link href="/admin/blog" className={pathname === '/admin/blog' || pathname === '/admin/blog/create' || pathname === '/admin/blog/edit' ? 'sidebar-active' : ''}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>Blogs</span></Link>
-                                </li>
+                                {
+                                    getPermissionsBymenuId("67e6384ea8f1f1d5d225049d") &&
+                                    <li>
+                                        <Link href="/admin/blog" className={pathname === '/admin/blog' || pathname === '/admin/blog/create' || pathname === '/admin/blog/edit' ? 'sidebar-active' : ''}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>Blogs</span></Link>
+                                    </li>
+                                }
+                                {
+                                    getPermissionsBymenuId("67e6387aa8f1f1d5d22504a4") &&
+                                    <li>
+                                        <Link href="/admin/team" className={pathname === '/admin/team' || pathname === '/admin/team/create' || pathname === '/admin/team/edit' ? 'sidebar-active' : ''}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>Our Team</span></Link>
+                                    </li>
+                                }
+                                {
+                                    getPermissionsBymenuId("67e638bca8f1f1d5d22504ad") &&
+                                    <li>
+                                        <Link href="/admin/about-us" className={pathname === '/admin/about-us' ? 'sidebar-active' : ''}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>About us</span></Link>
+                                    </li>
+                                }
 
-                                <li>
-                                    <Link href="/admin/team" className={pathname === '/admin/team' || pathname === '/admin/team/create' || pathname === '/admin/team/edit' ? 'sidebar-active' : ''}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>Our Team</span></Link>
-                                </li>
-
-                                <li>
-                                    <Link href="/admin/about-us" className={pathname === '/admin/about-us' ? 'sidebar-active' : ''}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>About us</span></Link>
-                                </li>
-
-                                <li>
-                                    <Link href="/admin/testimonial" className={pathname === '/admin/testimonial' || pathname === '/admin/testimonial/create' || pathname === '/admin/testimonial/edit' ? 'sidebar-active' : ''}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>Testimonials</span></Link>
-                                </li>
+                                {
+                                    getPermissionsBymenuId("67e638d9a8f1f1d5d22504b2") &&
+                                    <li>
+                                        <Link href="/admin/testimonial" className={pathname === '/admin/testimonial' || pathname === '/admin/testimonial/create' || pathname === '/admin/testimonial/edit' ? 'sidebar-active' : ''}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>Testimonials</span></Link>
+                                    </li>
+                                }
 
                                 <li>
                                     <Link href="/admin/support-requests" className={pathname === '/admin/support-requests' || pathname === '/admin/support-requests/view' || pathname === '/admin/support-requests/reply' ? 'sidebar-active' : ''}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-command"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg><span>Support Requests</span></Link>

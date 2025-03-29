@@ -8,6 +8,7 @@ import axios from "axios";
 import Link from 'next/link';
 import ButtonLoader from '@/_component/global/ButtonLoader';
 import { toast } from 'react-toastify';
+import usePermission from '@/_helper/frontend/Permission';
 
 
 const page = () => {
@@ -44,6 +45,16 @@ const page = () => {
     useEffect(() => {
         getRolesData();
     }, []);
+
+    //Permission Logic
+        const menuId = "67e637d6a8f1f1d5d225048d"
+        const getPermissionsBymenuId = usePermission(menuId);
+    
+        useEffect(() => {
+            if (!getPermissionsBymenuId("service_2")) {
+                router.push("/admin")
+            }
+        }, [])
 
     return (
         <>

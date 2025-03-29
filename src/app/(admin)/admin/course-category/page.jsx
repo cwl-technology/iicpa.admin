@@ -32,6 +32,7 @@ const page = () => {
             router.push("/admin")
         }
     }, [])
+    
 
     const getCorseCategoryData = async () => {
         try {

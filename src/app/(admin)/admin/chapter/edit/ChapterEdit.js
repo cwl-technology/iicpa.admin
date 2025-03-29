@@ -9,6 +9,7 @@ import Link from 'next/link';
 import ButtonLoader from '@/_component/global/ButtonLoader';
 import { toast } from 'react-toastify';
 import "bootstrap-icons/font/bootstrap-icons.css";
+import usePermission from '@/_helper/frontend/Permission';
 
 
 const ChapterEdit = () => {
@@ -19,6 +20,17 @@ const ChapterEdit = () => {
     const courseId = searchParams.get("courseId");
     const courseName = searchParams.get("courseName");
     const id = searchParams.get("id");
+
+
+    //Permission Logic
+    const menuId = "67a1c4aabaf5937f5c93a983"
+    const getPermissionsBymenuId = usePermission(menuId);
+
+    useEffect(() => {
+        if (!getPermissionsBymenuId("service_2")) {
+            router.push("/admin")
+        }
+    }, [])
 
     const createQueryString = (name, value) => {
         const params = new URLSearchParams()

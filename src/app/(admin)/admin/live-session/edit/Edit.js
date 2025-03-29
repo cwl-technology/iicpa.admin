@@ -9,6 +9,7 @@ import axios from "axios";
 import Link from 'next/link';
 import ButtonLoader from '@/_component/global/ButtonLoader';
 import { toast } from 'react-toastify';
+import usePermission from '@/_helper/frontend/Permission';
 
 const Edit = () => {
 
@@ -24,6 +25,16 @@ const Edit = () => {
     const id = searchParams.get("id");
     const [image, setImage] = useState();
     const [currentImage, setCurrentImage] = useState();
+
+    //Permission Logic
+    const menuId = "67b6f77c60e29568dd1f72a9"
+    const getPermissionsBymenuId = usePermission(menuId);
+
+    useEffect(() => {
+        if (!getPermissionsBymenuId("service_2")) {
+            router.push("/admin")
+        }
+    }, [])
 
 
     const onSubmit = async (data) => {

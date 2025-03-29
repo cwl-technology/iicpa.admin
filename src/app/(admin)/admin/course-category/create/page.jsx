@@ -8,6 +8,8 @@ import axios from "axios";
 import Link from 'next/link';
 import ButtonLoader from '@/_component/global/ButtonLoader';
 import { toast } from 'react-toastify';
+import { useContext } from 'react';
+import { PermissionContext } from '@/_context/PermissionContext';
 
 const page = () => {
 
@@ -28,6 +30,21 @@ const page = () => {
             console.log(err);
         }
     }
+
+
+    //Permission Logic
+    const menuId = "67a1c491baf5937f5c93a982"
+    const { permission } = useContext(PermissionContext);
+    const getPermissionsBymenuId = (serviceNumber) => {
+        const permissions = permission?.find((ele) => ele.menuId == menuId)
+        return permissions?.[serviceNumber] || null;
+    }
+
+    useEffect(() => {
+        if (!getPermissionsBymenuId("service_2")) {
+            router.push("/admin")
+        }
+    }, [])
 
 
 

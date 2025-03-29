@@ -9,6 +9,7 @@ import ButtonLoader from '@/_component/global/ButtonLoader';
 import { toast } from 'react-toastify';
 import "bootstrap-icons/font/bootstrap-icons.css";
 import dynamic from "next/dynamic";
+import usePermission from '@/_helper/frontend/Permission';
 const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false })
 
 
@@ -80,6 +81,16 @@ const Edit = () => {
     }, [id])
     useEffect(() => {
         getExperienceData();
+    }, [])
+
+    //Permission Logic
+    const menuId = "67b6f80560e29568dd1f730c"
+    const getPermissionsBymenuId = usePermission(menuId);
+
+    useEffect(() => {
+        if (!getPermissionsBymenuId("service_2")) {
+            router.push("/admin")
+        }
     }, [])
     return (
         <>

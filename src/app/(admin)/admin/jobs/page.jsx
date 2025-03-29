@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
 import { PermissionContext } from '@/_context/PermissionContext';
 import { useRouter } from 'next/navigation';
+import usePermission from '@/_helper/frontend/Permission';
 
 const page = () => {
     const [jobData, setJobData] = useState();
@@ -107,16 +108,12 @@ const page = () => {
 
 
     //Permission Logic
-    const menuId = "67a1c4aabaf5937f5c93a983"
-    const { permission } = useContext(PermissionContext);
-    const getPermissionsBymenuId = (serviceNumber) => {
-        const permissions = permission?.find((ele) => ele.menuId == menuId)
-        return permissions?.[serviceNumber] || null;
-    }
+    const menuId = "67b6f80560e29568dd1f730c"
+    const getPermissionsBymenuId = usePermission(menuId);
 
     useEffect(() => {
         if (!getPermissionsBymenuId("service_2")) {
-            router.replace("/admin")
+            router.push("/admin")
         }
     }, [])
 
@@ -144,7 +141,7 @@ const page = () => {
                                             <div className="col-xl-4">
                                                 <div className="add-live-sesssion text-xl-end mt-xl-0 mt-2">
                                                     {
-                                                        getPermissionsBymenuId("67b6f80560e29568dd1f730c", "service_1") &&
+                                                        getPermissionsBymenuId("service_1") &&
                                                         <Link href="/admin/jobs/create" className="btn btn-primary mb-2 me-2"><i className="bi bi-plus-lg"></i> Add Jobs</Link>
                                                     }
                                                 </div>
@@ -182,21 +179,29 @@ const page = () => {
                                                                                 <span className='text-muted'>Experience</span>
                                                                             </div>
                                                                             <div className=''>
-                                                                                <a href="#" className='btn btn-sm dashboad-badge-1 jobs-grid-icons mx-2' onClick={() => handleChangeStatus(ele._id, ele.status)}>
-                                                                                    {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
-
-                                                                                </a>
-                                                                                <Link href={{
-                                                                                    pathname: "/admin/jobs/edit",
-                                                                                    query: {
-                                                                                        id: ele._id
-                                                                                    }
-                                                                                }} className='btn btn-sm dashboad-badge-1 jobs-grid-icons mx-2'>
-                                                                                    <i className="bi bi-pencil"></i>
-                                                                                </Link>
-                                                                                <a href="#" className='btn btn-sm dashboad-badge-1 jobs-grid-icons ' onClick={() => handleDelete(ele._id)}>
-                                                                                    <i className="bi bi-trash"></i>
-                                                                                </a>
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_5") &&
+                                                                                    <a href="#" className='btn btn-sm dashboad-badge-1 jobs-grid-icons mx-2' onClick={() => handleChangeStatus(ele._id, ele.status)}>
+                                                                                        {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
+                                                                                    </a>
+                                                                                }
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_3") &&
+                                                                                    <Link href={{
+                                                                                        pathname: "/admin/jobs/edit",
+                                                                                        query: {
+                                                                                            id: ele._id
+                                                                                        }
+                                                                                    }} className='btn btn-sm dashboad-badge-1 jobs-grid-icons mx-2'>
+                                                                                        <i className="bi bi-pencil"></i>
+                                                                                    </Link>
+                                                                                }
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_4") &&
+                                                                                    <a href="#" className='btn btn-sm dashboad-badge-1 jobs-grid-icons ' onClick={() => handleDelete(ele._id)}>
+                                                                                        <i className="bi bi-trash"></i>
+                                                                                    </a>
+                                                                                }
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -229,21 +234,29 @@ const page = () => {
                                                                                 <span className='text-muted'>Experience</span>
                                                                             </div>
                                                                             <div className=''>
-                                                                                <a href="#" className='btn btn-sm dashboad-badge-2 jobs-grid-icons mx-2' onClick={() => handleChangeStatus(ele._id, ele.status)}>
-                                                                                    {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
-
-                                                                                </a>
-                                                                                <Link href={{
-                                                                                    pathname: "/admin/jobs/edit",
-                                                                                    query: {
-                                                                                        id: ele._id
-                                                                                    }
-                                                                                }} className='btn btn-sm dashboad-badge-2 jobs-grid-icons mx-2'>
-                                                                                    <i className="bi bi-pencil"></i>
-                                                                                </Link>
-                                                                                <a href="#" className='btn btn-sm dashboad-badge-2 jobs-grid-icons ' onClick={() => handleDelete(ele._id)}>
-                                                                                    <i className="bi bi-trash"></i>
-                                                                                </a>
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_5") &&
+                                                                                    <a href="#" className='btn btn-sm dashboad-badge-2 jobs-grid-icons mx-2' onClick={() => handleChangeStatus(ele._id, ele.status)}>
+                                                                                        {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
+                                                                                    </a>
+                                                                                }
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_3") &&
+                                                                                    <Link href={{
+                                                                                        pathname: "/admin/jobs/edit",
+                                                                                        query: {
+                                                                                            id: ele._id
+                                                                                        }
+                                                                                    }} className='btn btn-sm dashboad-badge-2 jobs-grid-icons mx-2'>
+                                                                                        <i className="bi bi-pencil"></i>
+                                                                                    </Link>
+                                                                                }
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_4") &&
+                                                                                    <a href="#" className='btn btn-sm dashboad-badge-2 jobs-grid-icons ' onClick={() => handleDelete(ele._id)}>
+                                                                                        <i className="bi bi-trash"></i>
+                                                                                    </a>
+                                                                                }
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -276,21 +289,29 @@ const page = () => {
                                                                                 <span className='text-muted'>Experience</span>
                                                                             </div>
                                                                             <div className=''>
-                                                                                <a href="#" className='btn btn-sm dashboad-badge-3 jobs-grid-icons mx-2' onClick={() => handleChangeStatus(ele._id, ele.status)}>
-                                                                                    {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
-
-                                                                                </a>
-                                                                                <Link href={{
-                                                                                    pathname: "/admin/jobs/edit",
-                                                                                    query: {
-                                                                                        id: ele._id
-                                                                                    }
-                                                                                }} className='btn btn-sm dashboad-badge-3 jobs-grid-icons mx-2'>
-                                                                                    <i className="bi bi-pencil"></i>
-                                                                                </Link>
-                                                                                <a href="#" className='btn btn-sm dashboad-badge-3 jobs-grid-icons ' onClick={() => handleDelete(ele._id)}>
-                                                                                    <i className="bi bi-trash"></i>
-                                                                                </a>
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_5") &&
+                                                                                    <a href="#" className='btn btn-sm dashboad-badge-3 jobs-grid-icons mx-2' onClick={() => handleChangeStatus(ele._id, ele.status)}>
+                                                                                        {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
+                                                                                    </a>
+                                                                                }
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_3") &&
+                                                                                    <Link href={{
+                                                                                        pathname: "/admin/jobs/edit",
+                                                                                        query: {
+                                                                                            id: ele._id
+                                                                                        }
+                                                                                    }} className='btn btn-sm dashboad-badge-3 jobs-grid-icons mx-2'>
+                                                                                        <i className="bi bi-pencil"></i>
+                                                                                    </Link>
+                                                                                }
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_4") &&
+                                                                                    <a href="#" className='btn btn-sm dashboad-badge-3 jobs-grid-icons ' onClick={() => handleDelete(ele._id)}>
+                                                                                        <i className="bi bi-trash"></i>
+                                                                                    </a>
+                                                                                }
                                                                             </div>
                                                                         </div>
                                                                     </div>

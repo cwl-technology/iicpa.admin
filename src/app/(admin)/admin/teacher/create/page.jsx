@@ -8,6 +8,7 @@ import axios from "axios";
 import Link from 'next/link';
 import ButtonLoader from '@/_component/global/ButtonLoader';
 import { toast } from 'react-toastify';
+import usePermission from '@/_helper/frontend/Permission';
 
 
 const page = () => {
@@ -58,6 +59,15 @@ const page = () => {
         getCourseData();
     }, []);
 
+    //Permission Logic
+    const menuId = "67e63797a8f1f1d5d2250475"
+    const getPermissionsBymenuId = usePermission(menuId);
+
+    useEffect(() => {
+        if (!getPermissionsBymenuId("service_2")) {
+            router.push("/admin")
+        }
+    }, [])
     return (
         <>
             <div className="content-wrapper">

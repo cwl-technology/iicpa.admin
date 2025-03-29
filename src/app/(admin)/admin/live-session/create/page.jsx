@@ -11,6 +11,7 @@ import dynamic from "next/dynamic";
 import Link from 'next/link';
 import ButtonLoader from '@/_component/global/ButtonLoader';
 import { toast } from 'react-toastify';
+import usePermission from '@/_helper/frontend/Permission';
 const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false })
 
 const page = () => {
@@ -21,6 +22,16 @@ const page = () => {
     const [description, setDescription] = useState();
     const [courseData, setCourseData] = useState();
     const [image, setImage] = useState();
+
+    //Permission Logic
+        const menuId = "67b6f77c60e29568dd1f72a9"
+        const getPermissionsBymenuId = usePermission(menuId);
+    
+        useEffect(() => {
+            if (!getPermissionsBymenuId("service_2")) {
+                router.push("/admin")
+            }
+        }, [])
 
 
     const onSubmit = async (data) => {

@@ -11,25 +11,21 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { PermissionContext } from '@/_context/PermissionContext';
 import { useRouter } from 'next/navigation';
+import usePermission from '@/_helper/frontend/Permission';
 
 const page = () => {
     const [testimonialData, setTestimonialData] = useState();
     const router = useRouter();
 
-
     //Permission Logic
-    const menuId = "67a1c4aabaf5937f5c93a983"
-    const { permission } = useContext(PermissionContext);
-    const getPermissionsBymenuId = (serviceNumber) => {
-        const permissions = permission?.find((ele) => ele.menuId == menuId)
-        return permissions?.[serviceNumber] || null;
-    }
+    const menuId = "67e638d9a8f1f1d5d22504b2"
+    const getPermissionsBymenuId = usePermission(menuId);
 
-    // useEffect(() => {
-    //     if (!getPermissionsBymenuId("service_2")) {
-    //         router.push("/admin")
-    //     }
-    // }, [])
+    useEffect(() => {
+        if (!getPermissionsBymenuId("service_2")) {
+            router.push("/admin")
+        }
+    }, [])
 
 
     const getTestimonialsData = async () => {
@@ -194,7 +190,10 @@ const page = () => {
                                                             getPermissionsBymenuId("service_5") &&
                                                             <th>Status</th>
                                                         }
-                                                        <th style={{ width: "125px" }}>Action</th>
+                                                        {
+                                                            (getPermissionsBymenuId("service_3") || getPermissionsBymenuId("service_4")) &&
+                                                            <th>Action</th>
+                                                        }
 
                                                     </tr>
                                                 </thead>
@@ -219,22 +218,24 @@ const page = () => {
 
                                                                             </td>
                                                                         }
-
-                                                                        <td >
-                                                                            <div className='d-flex align-items-center'>
-                                                                                {
-                                                                                    getPermissionsBymenuId("service_3") &&
-                                                                                    <Link href={{
-                                                                                        pathname: "/admin/testimonial/edit",
-                                                                                        query: { id: ele._id }
-                                                                                    }} className="btn btn-primary btn-sm ms-2"><i className="bi bi-pencil"></i></Link>
-                                                                                }
-                                                                                {
-                                                                                    getPermissionsBymenuId("service_4") &&
-                                                                                    <Link href="#" className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(ele._id)}><i className="bi bi-trash"></i></Link>
-                                                                                }
-                                                                            </div>
-                                                                        </td>
+                                                                        {
+                                                                            (getPermissionsBymenuId("service_3") || getPermissionsBymenuId("service_4")) &&
+                                                                            <td >
+                                                                                <div className='d-flex align-items-center'>
+                                                                                    {
+                                                                                        getPermissionsBymenuId("service_3") &&
+                                                                                        <Link href={{
+                                                                                            pathname: "/admin/testimonial/edit",
+                                                                                            query: { id: ele._id }
+                                                                                        }} className="btn btn-primary btn-sm ms-2"><i className="bi bi-pencil"></i></Link>
+                                                                                    }
+                                                                                    {
+                                                                                        getPermissionsBymenuId("service_4") &&
+                                                                                        <Link href="#" className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(ele._id)}><i className="bi bi-trash"></i></Link>
+                                                                                    }
+                                                                                </div>
+                                                                            </td>
+                                                                        }
                                                                     </tr>)
                                                         })
                                                     }

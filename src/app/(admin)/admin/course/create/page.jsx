@@ -11,6 +11,7 @@ import ButtonLoader from '@/_component/global/ButtonLoader';
 import { toast } from 'react-toastify';
 import "bootstrap-icons/font/bootstrap-icons.css";
 import dynamic from "next/dynamic";
+import usePermission from '@/_helper/frontend/Permission';
 const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false })
 
 
@@ -133,6 +134,16 @@ const page = () => {
     useEffect(() => {
         getCourseCategoryList();
     }, []);
+
+    //Permission Logic
+    const menuId = "67a1c4aabaf5937f5c93a983"
+    const getPermissionsBymenuId = usePermission(menuId);
+
+    useEffect(() => {
+        if (!getPermissionsBymenuId("service_2")) {
+            router.push("/admin")
+        }
+    }, [])
 
     return (
         <>
@@ -405,7 +416,7 @@ const page = () => {
                                                                     <div className='experiment-box p-4'>
                                                                         <h3>{ele.heading}</h3>
                                                                         <p>{ele.content}</p>
-                                                                        <a href='#' className="btn btn-primary btn-sm  ms-2" onClick={(e) => deleteExperiment(e,ind)}><i className="bi bi-trash"></i></a>
+                                                                        <a href='#' className="btn btn-primary btn-sm  ms-2" onClick={(e) => deleteExperiment(e, ind)}><i className="bi bi-trash"></i></a>
                                                                     </div>
                                                                 </div>)
                                                         }

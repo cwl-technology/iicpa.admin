@@ -10,6 +10,7 @@ import Link from 'next/link';
 import ButtonLoader from '@/_component/global/ButtonLoader';
 import { toast } from 'react-toastify';
 import "bootstrap-icons/font/bootstrap-icons.css";
+import usePermission from '@/_helper/frontend/Permission';
 
 
 
@@ -21,6 +22,16 @@ const TeamEdit = () => {
     const [currrentImage, setCurrentImage] = useState();
     const searchParams = useSearchParams();
     const id = searchParams.get("id");
+
+     //Permission Logic
+     const menuId = "67e6387aa8f1f1d5d22504a4"
+     const getPermissionsBymenuId = usePermission(menuId);
+ 
+     useEffect(() => {
+         if (!getPermissionsBymenuId("service_2")) {
+             router.push("/admin")
+         }
+     }, [])
 
 
     const onSubmit = async (data) => {

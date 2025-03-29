@@ -8,12 +8,13 @@ import axios from "axios";
 import Link from 'next/link';
 import ButtonLoader from '@/_component/global/ButtonLoader';
 import { toast } from 'react-toastify';
+import usePermission from '@/_helper/frontend/Permission';
 
 
 const StaffEdit = () => {
     const [roles, setRoles] = useState();
     const [staffData, setStaffData] = useState();
-    const { register, handleSubmit, reset,watch, formState: { isSubmitting, errors } } = useForm({
+    const { register, handleSubmit, reset, watch, formState: { isSubmitting, errors } } = useForm({
         defaultValues: {
             roleId: ""
         }
@@ -21,6 +22,17 @@ const StaffEdit = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const id = searchParams.get("id");
+
+
+    //Permission Logic
+    const menuId = "67e637d6a8f1f1d5d225048d"
+    const getPermissionsBymenuId = usePermission(menuId);
+
+    useEffect(() => {
+        if (!getPermissionsBymenuId("service_2")) {
+            router.push("/admin")
+        }
+    }, [])
 
 
 

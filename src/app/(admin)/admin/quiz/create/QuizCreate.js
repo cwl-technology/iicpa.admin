@@ -2,13 +2,13 @@
 
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { useState } from "react";
+
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
-import Link from 'next/link';
 import ButtonLoader from '@/_component/global/ButtonLoader';
 import { toast } from 'react-toastify';
 import "bootstrap-icons/font/bootstrap-icons.css";
+import usePermission from '@/_helper/frontend/Permission';
 
 
 const QuizCreate = () => {
@@ -39,6 +39,16 @@ const QuizCreate = () => {
             console.log(err);
         }
     }
+
+    //Permission Logic
+    const menuId = "67a1c4aabaf5937f5c93a983"
+    const getPermissionsBymenuId = usePermission(menuId);
+
+    useEffect(() => {
+        if (!getPermissionsBymenuId("service_2")) {
+            router.push("/admin")
+        }
+    }, [])
 
 
     return (

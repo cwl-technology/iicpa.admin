@@ -11,6 +11,8 @@ import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import DateFormatter from '@/_helper/frontend/DateFormatter';
 import TimeFormatter from '@/_helper/frontend/TimeFormatter';
+import usePermission from '@/_helper/frontend/Permission';
+import { useRouter } from 'next/navigation';
 
 const Calender = () => {
     const [show, setShow] = useState(false);
@@ -20,6 +22,18 @@ const Calender = () => {
     const [events, setEvents] = useState();
     const [oneEventData, setOneEventData] = useState();
     const [liveSessionData, setLiveSessionData] = useState();
+    const router = useRouter();
+
+
+    //Permission Logic
+    const menuId = "67e63835a8f1f1d5d2250499"
+    const getPermissionsBymenuId = usePermission(menuId);
+
+    useEffect(() => {
+        if (!getPermissionsBymenuId("service_2")) {
+            router.push("/admin")
+        }
+    }, [])
 
     const getEventData = async () => {
         try {
@@ -93,28 +107,7 @@ const Calender = () => {
         }
     }, [eventData, liveSessionData])
 
-    // useEffect(() => {
-    //     if (liveSessionData) {
-    //         const newevents = liveSessionData?.map((ele) => {
-    //             return {
-    //                 id: ele._id,
-    //                 title: ele.courseName,
-    //                 start: `${ele.date}`,
-    //                 extendedProps: {  // Store additional properties here
-    //                     link: ele.eventLink,
-    //                     type: ele.broadCastType,
-    //                     description: ele.eventDescription,
-    //                     startDate: ele.startDate,
-    //                     endDate: ele.endDate,
-    //                     startTime: ele.startTime
-    //                 }
-    //             }
-    //         })
-    //         setEvents(newevents);
-    //     }
-    // }, [liveSessionData])
-
-
+    
     const handleEventClick = (info) => {
         setShow(true);
         setOneEventData(info.event)
@@ -125,8 +118,6 @@ const Calender = () => {
     }, []);
 
 
-    console.log(events);
-
 
     return (
         <>
@@ -136,11 +127,15 @@ const Calender = () => {
                         <div className="card bg-white-light">
                             <div className="card-header">
                                 <h4 className="card-title">Calendar</h4>
-                                <Link href='/admin/calendar/create-event'>
+                                {
+                                    getPermissionsBymenuId("service_1") && 
+                                    <Link href='/admin/calendar/create-event'>
                                     <button className="btn btn-primary" id="btn-new-event">
                                         Create New Event
                                     </button>
                                 </Link>
+                                }
+                                
                             </div>
                         </div>
                         <div className="row">

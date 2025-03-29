@@ -11,6 +11,7 @@ import ButtonLoader from '@/_component/global/ButtonLoader';
 import { toast } from 'react-toastify';
 import "bootstrap-icons/font/bootstrap-icons.css";
 import dynamic from "next/dynamic";
+import usePermission from '@/_helper/frontend/Permission';
 const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false })
 
 
@@ -20,6 +21,16 @@ const page = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
     const id = searchParams.get("id");
+
+    //Permission Logic
+    const menuId = "67e638d9a8f1f1d5d22504b2"
+    const getPermissionsBymenuId = usePermission(menuId);
+
+    useEffect(() => {
+        if (!getPermissionsBymenuId("service_2")) {
+            router.push("/admin")
+        }
+    }, [])
 
     const onSubmit = async (data) => {
         try {

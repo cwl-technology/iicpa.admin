@@ -6,12 +6,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import usePermission from "@/_helper/frontend/Permission";
+import { useRouter } from "next/navigation";
 
 
 const page = () => {
 
     const [roleData, setRoleData] = useState();
-
+    const router = useRouter();
 
     const getRolesData = async () => {
         try {
@@ -29,6 +31,15 @@ const page = () => {
         getRolesData();
     }, [])
 
+    //Permission Logic
+    const menuId = "67b6f84060e29568dd1f7311"
+    const getPermissionsBymenuId = usePermission(menuId);
+
+    useEffect(() => {
+        if (!getPermissionsBymenuId("service_2")) {
+            router.push("/admin")
+        }
+    }, [])
 
     const handleDelete = async (id) => {
 
@@ -68,8 +79,12 @@ const page = () => {
                 <div className="container-full">
                     <section className="content">
                         <div className="d-flex justify-content-end">
-                            <Link href="/admin/role/create" className="btn btn-primary mb-2 me-2">
-                                <i className="bi bi-plus-lg"></i>Add Role</Link>
+                            {
+                                getPermissionsBymenuId("service_1") &&
+                                <Link href="/admin/role/create" className="btn btn-primary mb-2 me-2">
+                                    <i className="bi bi-plus-lg"></i>Add Role</Link>
+                            }
+
                         </div>
                         <div className="row">
                             <div className="col-12">
@@ -92,7 +107,10 @@ const page = () => {
                                                     <tr className="text-dark">
                                                         <th>Sr. No.</th>
                                                         <th>Role Name</th>
-                                                        <th >Action</th>
+                                                        {
+                                                            getPermissionsBymenuId("service_4") &&
+                                                            <th >Action</th>
+                                                        }
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -102,10 +120,13 @@ const page = () => {
                                                                 <td className="text-dark">{ind + 1}</td>
                                                                 <td>{ele.roleName}</td>
 
-                                                                <td className='d-flex align-items-center'>
+                                                                {
+                                                                    getPermissionsBymenuId("service_4") &&
+                                                                    <td className='d-flex align-items-center'>
+                                                                        <Link href="#" className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(ele._id)}><i className="bi bi-trash"></i></Link>
+                                                                    </td>
+                                                                }
 
-                                                                    <Link href="#" className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(ele._id)}><i className="bi bi-trash"></i></Link>
-                                                                </td>
                                                             </tr>)
                                                     }
                                                 </tbody>

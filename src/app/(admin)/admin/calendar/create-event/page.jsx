@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef, useMemo, useState } from 'react'
+import React, { useRef, useMemo, useState,useEffect } from 'react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import dynamic from "next/dynamic";
@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import { Router } from 'next/router';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import usePermission from '@/_helper/frontend/Permission';
 const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false })
 
 const page = () => {
@@ -41,6 +42,16 @@ const page = () => {
             console.log(err);
         }
     }
+
+     //Permission Logic
+     const menuId = "67e63835a8f1f1d5d2250499"
+     const getPermissionsBymenuId = usePermission(menuId);
+ 
+     useEffect(() => {
+         if (!getPermissionsBymenuId("service_2")) {
+             router.push("/admin")
+         }
+     }, [])
 
     return (
         <>

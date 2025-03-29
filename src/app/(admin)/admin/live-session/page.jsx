@@ -9,12 +9,14 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import axios from 'axios';
 import "bootstrap-icons/font/bootstrap-icons.css";
+import usePermission from '@/_helper/frontend/Permission';
+import { useRouter } from 'next/navigation';
 
 const page = () => {
 
     const [liveSessionData, setLiveSessionData] = useState();
     const [courseData, setCourseData] = useState();
-
+    const router = useRouter();
     useEffect(() => {
         getLiveSessionData();
         getCourseData();
@@ -110,8 +112,15 @@ const page = () => {
         }
     }
 
+    //Permission Logic
+    const menuId = "67b6f77c60e29568dd1f72a9"
+    const getPermissionsBymenuId = usePermission(menuId);
 
-    console.log(new Date() > new Date("2025-03-09"));
+    useEffect(() => {
+        if (!getPermissionsBymenuId("service_2")) {
+            router.push("/admin")
+        }
+    }, [])
 
 
     return (
@@ -130,8 +139,10 @@ const page = () => {
                                             </div>
                                             <div className="col-xl-4">
                                                 <div className="add-live-sesssion text-xl-end mt-xl-0 mt-2">
-
-                                                    <Link href="/admin/live-session/create" className="btn btn-primary mb-2 me-2"><i className="bi bi-plus-lg"></i> Add Live Session</Link>
+                                                    {
+                                                        getPermissionsBymenuId("service_1") &&
+                                                        <Link href="/admin/live-session/create" className="btn btn-primary mb-2 me-2"><i className="bi bi-plus-lg"></i> Add Live Session</Link>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -139,7 +150,7 @@ const page = () => {
                                         <div className='row g-4 px-3'>
                                             {
                                                 liveSessionData?.map((ele, ind) => {
-                                                    if(new Date() < new Date(ele.date)){
+                                                    if (new Date() < new Date(ele.date)) {
                                                         if (ind % 3 == 0) {
                                                             return (
                                                                 <div className='col-4' key={ind}>
@@ -158,21 +169,29 @@ const page = () => {
                                                                         <p className='dashboad-badge-1 dashboad-bold-font d-inline'><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
                                                                         <div className='my-4'>
                                                                             <div className=''>
-                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
-                                                                                    {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
-    
-                                                                                </a>
-                                                                                <Link href={{
-                                                                                    pathname: "/admin/live-session/edit",
-                                                                                    query: {
-                                                                                        id: ele._id
-                                                                                    }
-                                                                                }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
-                                                                                    <i className="bi bi-pencil"></i>
-                                                                                </Link>
-                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
-                                                                                    <i className="bi bi-trash"></i>
-                                                                                </a>
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_5") &&
+                                                                                    <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
+                                                                                        {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
+                                                                                    </a>
+                                                                                }
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_3") &&
+                                                                                    <Link href={{
+                                                                                        pathname: "/admin/live-session/edit",
+                                                                                        query: {
+                                                                                            id: ele._id
+                                                                                        }
+                                                                                    }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
+                                                                                        <i className="bi bi-pencil"></i>
+                                                                                    </Link>
+                                                                                }
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_4") &&
+                                                                                    <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
+                                                                                        <i className="bi bi-trash"></i>
+                                                                                    </a>
+                                                                                }
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -196,21 +215,29 @@ const page = () => {
                                                                         <p className='dashboad-badge-2 dashboad-bold-font d-inline'><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
                                                                         <div className='my-4'>
                                                                             <div className=''>
-                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
-                                                                                    {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
-    
-                                                                                </a>
-                                                                                <Link href={{
-                                                                                    pathname: "/admin/live-session/edit",
-                                                                                    query: {
-                                                                                        id: ele._id
-                                                                                    }
-                                                                                }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
-                                                                                    <i className="bi bi-pencil"></i>
-                                                                                </Link>
-                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
-                                                                                    <i className="bi bi-trash"></i>
-                                                                                </a>
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_5") &&
+                                                                                    <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
+                                                                                        {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
+                                                                                    </a>
+                                                                                }
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_3") &&
+                                                                                    <Link href={{
+                                                                                        pathname: "/admin/live-session/edit",
+                                                                                        query: {
+                                                                                            id: ele._id
+                                                                                        }
+                                                                                    }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
+                                                                                        <i className="bi bi-pencil"></i>
+                                                                                    </Link>
+                                                                                }
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_4") &&
+                                                                                    <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
+                                                                                        <i className="bi bi-trash"></i>
+                                                                                    </a>
+                                                                                }
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -234,28 +261,36 @@ const page = () => {
                                                                         <p className='dashboad-badge-3 dashboad-bold-font d-inline'><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
                                                                         <div className='my-4'>
                                                                             <div className=''>
-                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
-                                                                                    {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
-    
-                                                                                </a>
-                                                                                <Link href={{
-                                                                                    pathname: "/admin/live-session/edit",
-                                                                                    query: {
-                                                                                        id: ele._id
-                                                                                    }
-                                                                                }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
-                                                                                    <i className="bi bi-pencil"></i>
-                                                                                </Link>
-                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
-                                                                                    <i className="bi bi-trash"></i>
-                                                                                </a>
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_5") &&
+                                                                                    <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
+                                                                                        {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
+                                                                                    </a>
+                                                                                }
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_3") &&
+                                                                                    <Link href={{
+                                                                                        pathname: "/admin/live-session/edit",
+                                                                                        query: {
+                                                                                            id: ele._id
+                                                                                        }
+                                                                                    }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
+                                                                                        <i className="bi bi-pencil"></i>
+                                                                                    </Link>
+                                                                                }
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_4") &&
+                                                                                    <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
+                                                                                        <i className="bi bi-trash"></i>
+                                                                                    </a>
+                                                                                }
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                             )
                                                         }
-                                                    }else{
+                                                    } else {
                                                         if (ind % 3 == 0) {
                                                             return (
                                                                 <div className='col-4' key={ind}>
@@ -274,21 +309,29 @@ const page = () => {
                                                                         <p className='dashboad-badge-1 dashboad-bold-font d-inline'><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
                                                                         <div className='my-4'>
                                                                             <div className=''>
-                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
-                                                                                    {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
-    
-                                                                                </a>
-                                                                                <Link href={{
-                                                                                    pathname: "/admin/live-session/edit",
-                                                                                    query: {
-                                                                                        id: ele._id
-                                                                                    }
-                                                                                }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
-                                                                                    <i className="bi bi-pencil"></i>
-                                                                                </Link>
-                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
-                                                                                    <i className="bi bi-trash"></i>
-                                                                                </a>
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_5") &&
+                                                                                    <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
+                                                                                        {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
+                                                                                    </a>
+                                                                                }
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_3") &&
+                                                                                    <Link href={{
+                                                                                        pathname: "/admin/live-session/edit",
+                                                                                        query: {
+                                                                                            id: ele._id
+                                                                                        }
+                                                                                    }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
+                                                                                        <i className="bi bi-pencil"></i>
+                                                                                    </Link>
+                                                                                }
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_4") &&
+                                                                                    <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
+                                                                                        <i className="bi bi-trash"></i>
+                                                                                    </a>
+                                                                                }
                                                                             </div>
                                                                         </div>
                                                                         <span className='badge badge-danger'>Session Ended</span>
@@ -313,21 +356,29 @@ const page = () => {
                                                                         <p className='dashboad-badge-2 dashboad-bold-font d-inline'><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
                                                                         <div className='my-4'>
                                                                             <div className=''>
-                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
-                                                                                    {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
-    
-                                                                                </a>
-                                                                                <Link href={{
-                                                                                    pathname: "/admin/live-session/edit",
-                                                                                    query: {
-                                                                                        id: ele._id
-                                                                                    }
-                                                                                }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
-                                                                                    <i className="bi bi-pencil"></i>
-                                                                                </Link>
-                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
-                                                                                    <i className="bi bi-trash"></i>
-                                                                                </a>
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_5") &&
+                                                                                    <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
+                                                                                        {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
+                                                                                    </a>
+                                                                                }
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_3") &&
+                                                                                    <Link href={{
+                                                                                        pathname: "/admin/live-session/edit",
+                                                                                        query: {
+                                                                                            id: ele._id
+                                                                                        }
+                                                                                    }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
+                                                                                        <i className="bi bi-pencil"></i>
+                                                                                    </Link>
+                                                                                }
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_4") &&
+                                                                                    <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
+                                                                                        <i className="bi bi-trash"></i>
+                                                                                    </a>
+                                                                                }
                                                                             </div>
                                                                         </div>
                                                                         <span className='badge badge-danger'>Session Ended</span>
@@ -352,21 +403,29 @@ const page = () => {
                                                                         <p className='dashboad-badge-3 dashboad-bold-font d-inline'><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
                                                                         <div className='my-4'>
                                                                             <div className=''>
-                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
-                                                                                    {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
-    
-                                                                                </a>
-                                                                                <Link href={{
-                                                                                    pathname: "/admin/live-session/edit",
-                                                                                    query: {
-                                                                                        id: ele._id
-                                                                                    }
-                                                                                }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
-                                                                                    <i className="bi bi-pencil"></i>
-                                                                                </Link>
-                                                                                <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
-                                                                                    <i className="bi bi-trash"></i>
-                                                                                </a>
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_5") &&
+                                                                                    <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleChangeStatus(ele._id, ele.status)}>
+                                                                                        {ele.status == 1 ? <i className="bi bi-check-lg"></i> : <i className="bi bi-x-lg"></i>}
+                                                                                    </a>
+                                                                                }
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_3") &&
+                                                                                    <Link href={{
+                                                                                        pathname: "/admin/live-session/edit",
+                                                                                        query: {
+                                                                                            id: ele._id
+                                                                                        }
+                                                                                    }} className='btn btn-sm border jobs-grid-icons-2 mx-1'>
+                                                                                        <i className="bi bi-pencil"></i>
+                                                                                    </Link>
+                                                                                }
+                                                                                {
+                                                                                    getPermissionsBymenuId("service_4") &&
+                                                                                    <a href="#" className='btn btn-sm border jobs-grid-icons-2 mx-1' onClick={() => handleDelete(ele._id)}>
+                                                                                        <i className="bi bi-trash"></i>
+                                                                                    </a>
+                                                                                }
                                                                             </div>
                                                                         </div>
                                                                         <span className='badge badge-danger'>Session Ended</span>
@@ -375,7 +434,7 @@ const page = () => {
                                                             )
                                                         }
                                                     }
-                                                    
+
                                                 }
 
                                                 )

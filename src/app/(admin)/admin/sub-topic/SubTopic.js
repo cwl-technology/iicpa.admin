@@ -9,12 +9,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import usePermission from '@/_helper/frontend/Permission';
 
 const SubTopic = () => {
 
     const [subTopicData, setSubTopicData] = useState();
     const searchParams = useSearchParams();
+    const router = useRouter();
     const courseName = searchParams.get("courseName");
     const chapterName = searchParams.get("chapterName");
     const topicName = searchParams.get("topicName");
@@ -54,6 +56,17 @@ const SubTopic = () => {
             });
         }
     }, [subTopicData]);
+
+
+    //Permission Logic
+    const menuId = "67a1c4aabaf5937f5c93a983"
+    const getPermissionsBymenuId = usePermission(menuId);
+
+    useEffect(() => {
+        if (!getPermissionsBymenuId("service_2")) {
+            router.push("/admin")
+        }
+    }, [])
 
 
 

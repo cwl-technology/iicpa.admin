@@ -11,6 +11,7 @@ import ButtonLoader from '@/_component/global/ButtonLoader';
 import { toast } from 'react-toastify';
 import "bootstrap-icons/font/bootstrap-icons.css";
 import dynamic from "next/dynamic";
+import usePermission from '@/_helper/frontend/Permission';
 const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false })
 
 
@@ -19,6 +20,7 @@ const BlogEdit = () => {
     const id = searchParams.get("id");
     // Description 
     const [blogDesc, setBlogDesc] = useState('');
+    
 
     // Image 
     const [blogImage, setBlogImage] = useState();
@@ -88,6 +90,16 @@ const BlogEdit = () => {
             getBlogData();
         }
     }, [id])
+
+    //Permission Logic
+    const menuId = "67e6384ea8f1f1d5d225049d"
+    const getPermissionsBymenuId = usePermission(menuId);
+
+    useEffect(() => {
+        if (!getPermissionsBymenuId("service_2")) {
+            router.push("/admin")
+        }
+    }, [])
     return (
         <>
             <div className="content-wrapper">

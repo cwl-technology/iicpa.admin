@@ -9,10 +9,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import usePermission from '@/_helper/frontend/Permission';
+import { useRouter } from 'next/navigation';
 
 const page = () => {
 
     const [centerData, setCenterData] = useState()
+    const router = useRouter();
 
     const getCenterData = async (req, res) => {
         try {
@@ -133,6 +136,17 @@ const page = () => {
             }
         }
     }
+
+    //Permission Logic
+    const menuId = "67e63771a8f1f1d5d225046f"
+    const getPermissionsBymenuId = usePermission(menuId);
+
+    useEffect(() => {
+        if (!getPermissionsBymenuId("service_2")) {
+            router.push("/admin")
+        }
+    }, [])
+
     return (
         <>
             <div className="content-wrapper">
@@ -149,8 +163,10 @@ const page = () => {
                                             </div>
                                             <div className="col-xl-4">
                                                 <div className="add-order text-xl-end mt-xl-0 mt-2">
-
-                                                    <Link href="/admin/center/create" className="btn btn-primary mb-2 me-2"><i className="bi bi-plus-lg"></i> Add Center</Link>
+                                                    {
+                                                        getPermissionsBymenuId("service_1") &&
+                                                        <Link href="/admin/center/create" className="btn btn-primary mb-2 me-2"><i className="bi bi-plus-lg"></i> Add Center</Link>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -168,8 +184,14 @@ const page = () => {
                                                         <th>Email</th>
                                                         <th>Phone</th>
                                                         <th>Auth Letter</th>
-                                                        <th>Status</th>
-                                                        <th style={{ width: "125px" }}>Action</th>
+                                                        {
+                                                            getPermissionsBymenuId("service_5") &&
+                                                            <th>Status</th>
+                                                        }
+                                                        {
+                                                            (getPermissionsBymenuId("service_3") || getPermissionsBymenuId("service_4")) &&
+                                                            <th> Action</th>
+                                                        }
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -187,24 +209,38 @@ const page = () => {
                                                                                 <a href={`/uploads/${ele.authorizationLetter}`} download={`${ele.name}_resume.pdf`} target="_blank"><i className="fas fa-solid fa-download"></i></a>
                                                                             </div>
                                                                         </td>
-                                                                        <td>
-                                                                            {
-                                                                                ele.status == 1 ?
-                                                                                    <p className="mb-0"><span className="badge badge-success-light" style={{ cursor: "pointer" }} onClick={() => handleChangeStatus(ele._id, ele.status)}> Active</span></p>
-                                                                                    :
-                                                                                    <p className="mb-0"><span className="badge badge-danger-light" style={{ cursor: "pointer" }} onClick={() => handleChangeStatus(ele._id, ele.status)}> Inctive</span></p>
-                                                                            }
+                                                                        {
+                                                                            getPermissionsBymenuId("service_5") &&
+                                                                            <td>
+                                                                                {
+                                                                                    ele.status == 1 ?
+                                                                                        <p className="mb-0"><span className="badge badge-success-light" style={{ cursor: "pointer" }} onClick={() => handleChangeStatus(ele._id, ele.status)}> Active</span></p>
+                                                                                        :
+                                                                                        <p className="mb-0"><span className="badge badge-danger-light" style={{ cursor: "pointer" }} onClick={() => handleChangeStatus(ele._id, ele.status)}> Inctive</span></p>
+                                                                                }
 
-                                                                        </td>
-                                                                        <td >
-                                                                            <div className='d-flex align-items-center'>
-                                                                                <Link href={{
-                                                                                    pathname: "/admin/center/edit",
-                                                                                    query: { id: ele._id }
-                                                                                }} className="btn btn-primary btn-sm ms-2"><i className="bi bi-pencil"></i></Link>
-                                                                                <Link href="#" className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(ele._id)}><i className="bi bi-trash"></i></Link>
-                                                                            </div>
-                                                                        </td>
+                                                                            </td>
+                                                                        }
+                                                                        {
+                                                                            (getPermissionsBymenuId("service_3") || getPermissionsBymenuId("service_4")) &&
+                                                                            <td >
+                                                                                <div className='d-flex align-items-center'>
+                                                                                    {
+                                                                                        getPermissionsBymenuId("service_3") &&
+                                                                                        <Link href={{
+                                                                                            pathname: "/admin/center/edit",
+                                                                                            query: { id: ele._id }
+                                                                                        }} className="btn btn-primary btn-sm ms-2"><i className="bi bi-pencil"></i></Link>
+                                                                                    }
+                                                                                    {
+                                                                                        getPermissionsBymenuId("service_4") &&
+                                                                                        <Link href="#" className="btn btn-danger btn-sm ms-2" onClick={() => handleDelete(ele._id)}><i className="bi bi-trash"></i></Link>
+                                                                                    }
+
+                                                                                </div>
+                                                                            </td>
+                                                                        }
+
                                                                     </tr>)
                                                         })
                                                     }
@@ -228,8 +264,8 @@ const page = () => {
                             </div>
                         </div>
                     </section>
-                </div>
-            </div>
+                </div >
+            </div >
         </>
     )
 }

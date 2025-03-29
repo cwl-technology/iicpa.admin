@@ -32,7 +32,7 @@ const page = () => {
         }
     }, [userId])
 
-    console.log(sessionData);
+
     return (
         <>
             <div className="content-wrapper">
@@ -135,30 +135,68 @@ const page = () => {
                                 <div className="row">
                                     <div className="col-lg-12 col-md-6">
                                         {
-                                            sessionData?.map((ele, ind) =>
-                                                <div className="custom-box" key={ind}>
-                                                    <div>
-                                                        <div className="row live-img">
-                                                            <div className="col-4">
-                                                                <img alt="" className="mt-2" src={`/uploads/${ele.image}`} />
-                                                            </div>
-                                                            <div className="col-8">
-                                                                <div className="live-session mt-2 d-flex align-items-between flex-column" >
-                                                                    <div>
-                                                                        <p className="dashboad-badge-live dashboad-bold-font"><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
-                                                                        <span className="date mb-2"><DateFormatter date={ele.date}/></span>
+                                            sessionData?.map((ele, ind) => {
+                                                if (new Date() < new Date(ele.date)) {
+                                                    return (
+                                                        <div className="custom-box" key={ind}>
+                                                            <div>
+                                                                <div className="row live-img">
+                                                                    <div className="col-4">
+                                                                        <img alt="" className="mt-2" src={`/uploads/${ele.image}`} />
                                                                     </div>
-                                                                    <h4>{ele.courseName}</h4>
-                                                                    <p className="text-muted live-session-text">{ele.description} </p>
+                                                                    <div className="col-8">
+                                                                        <div className="live-session mt-2 d-flex align-items-between flex-column" >
+                                                                            <div>
+                                                                                <p className="dashboad-badge-live dashboad-bold-font"><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
+                                                                                <span className="date mb-2"><DateFormatter date={ele.date} /></span>
+                                                                            </div>
+                                                                            <h4>{ele.courseName}</h4>
+                                                                            <p className="text-muted live-session-text">{ele.description} </p>
 
-                                                                    <a href={`/${ele.link}`}  target='_blank' className="thm-btn-two live-btn">
-                                                                        Get Access
-                                                                    </a>
+                                                                            <a href={`/${ele.link}`} target='_blank' className="thm-btn-two live-btn">
+                                                                                    Get Access
+                                                                                </a>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>)
+                                                    )
+                                                } else {
+                                                    return (
+                                                        <div className="custom-box" key={ind}>
+                                                            <div>
+                                                                <div className="row live-img">
+                                                                    <div className="col-4">
+                                                                        <img alt="" className="mt-2" src={`/uploads/${ele.image}`} />
+                                                                    </div>
+                                                                    <div className="col-8">
+                                                                        <div className="live-session mt-2 d-flex align-items-between flex-column" >
+                                                                            <div>
+                                                                                <p className="dashboad-badge-live dashboad-bold-font"><TimeFormatter time={ele.startTime} /> - <TimeFormatter time={ele.endTime} /></p>
+                                                                                <span className="date mb-2"><DateFormatter date={ele.date} /></span>
+                                                                            </div>
+                                                                            <h4>{ele.courseName}</h4>
+                                                                            <p className="text-muted live-session-text">{ele.description} </p>
+
+                                                                            <div className='d-flex justify-content-between align-items-center'>
+                                                                                {/* <a href={`/${ele.link}`} target='_blank' className="thm-btn-two live-btn pe-none">
+                                                                                    Get Access
+                                                                                </a> */}
+                                                                                <div>
+                                                                                    <span className='badge badge-danger'>Session Ended</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                }
+                                            }
+
+                                            )
                                         }
 
                                     </div>

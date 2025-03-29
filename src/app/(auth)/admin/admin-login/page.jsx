@@ -38,11 +38,11 @@ const page = () => {
             <div className="row justify-content-center g-0">
               <div className="col-lg-5 col-md-5 col-12">
                 <div className="bg-white rounded10 shadow-lg">
-                  <div className="content-top-agile p-20 pb-0">
-                    <span className="light-logo mt-4"><img src="\assets\images\iicpa\logo-2 new.webp" alt="logo" width={"230px"} /></span>
-                    <h5 className="py-2 pt-4 text-fade">Sign in to continue to IICPA Admin</h5>
+                  <div className="content-top-agile p-40 pb-0">
+                    <span className="light-logo mt-4"><img src="\assets\images\iicpa\logo-2 new.webp" alt="logo" width={"270px"} /></span>
+                    {/* <h5 className="py-2 pt-4 text-fade">Sign in to continue to IICPA Admin</h5> */}
                   </div>
-                  <div className="p-40 pt-0">
+                  <div className="p-30 mt-0">
                     <form action="https://edulearn-lms-admin-template.multipurposethemes.com/template/vertical/main/index.html" method="post">
                       <div className="form-group">
                         <div className={`${errors.email ? "input-group mb-0" : "input-group mb-3"}`}>
