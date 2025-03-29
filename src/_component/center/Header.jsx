@@ -1,9 +1,10 @@
 "use client"
 
 
+import { signOut } from 'next-auth/react';
 import React, { useState } from 'react'
 
-const Header = ({ toggleSidebar, toggleTheme,sidebar }) => {
+const Header = ({ toggleSidebar, toggleTheme, sidebar }) => {
     const [notifications, setNotification] = useState(false)
     const toggleNotification = () => {
         setNotification((prevState) => !prevState)
@@ -15,8 +16,8 @@ const Header = ({ toggleSidebar, toggleTheme,sidebar }) => {
         setIsOpen(!isOpen);
     };
 
-    const handleLogout = () => {
-        window.location.href = "/logout";
+    const handleLogout = async () => {
+        await signOut({redirect:"/center/center-login"})
     };
 
     return (
@@ -26,7 +27,7 @@ const Header = ({ toggleSidebar, toggleTheme,sidebar }) => {
                     {/* <!-- Logo --> */}
                     <a href="#" className="logo">
                         {/* <!-- logo--> */}
-                        <div className={`logo-mini w-40 ${!sidebar?"d-none":""}`}>
+                        <div className={`logo-mini w-40 ${!sidebar ? "d-none" : ""}`}>
                             <span className="light-logo"><img src="/assets/images/iicpa/logo-1-white.webp" alt="logo" /></span>
                             <span className="dark-logo"><img src="/assets/images/iicpa/logo-1-white.webp" alt="logo" /></span>
                         </div>
@@ -144,7 +145,7 @@ const Header = ({ toggleSidebar, toggleTheme,sidebar }) => {
                             </li>
 
                             {/* <!-- User Account--> */}
-                            {/* <li className="dropdown user user-menu">
+                            <li className="dropdown user user-menu">
                                 <a
                                     className="waves-effect waves-light dropdown-toggle w-auto l-h-12 bg-transparent p-0 no-shadow"
                                     title="User"
@@ -152,10 +153,10 @@ const Header = ({ toggleSidebar, toggleTheme,sidebar }) => {
                                 >
                                     <div className="d-flex pt-1  align-items-center">
                                         <img src="/assets/images/avatar/avatar-13.png"
-                                            className="avatar rounded-circle bg-primary-light h-40 w-40"
+                                            className="avatar rounded-circle bg-primary-light h-40 w-40 me-2 "
                                             alt="" />
                                         <div className="text-end me-10 ">
-                                            <p className="pt-5 fs-14 mb-1 fw-700">Nil Yeager</p>
+                                            <p className="pt-5 fs-14 mb-1 fw-700">IICPA</p>
                                             <small className="fs-10 mb-0  text-uppercase text-mute">Center</small>
                                         </div>
 
@@ -164,13 +165,13 @@ const Header = ({ toggleSidebar, toggleTheme,sidebar }) => {
                                 {isOpen && (
                                     <ul className="dropdown-menu dropdown-menu-end show">
                                         <li>
-                                            <button className="dropdown-item" onClick={handleLogout}>
+                                            <button className="dropdown-item user-logout" onClick={handleLogout}>
                                                 <i className="fas fa-sign-out-alt me-2"></i> Logout
                                             </button>
                                         </li>
                                     </ul>
                                 )}
-                            </li> */}
+                            </li>
 
                         </ul>
                     </div>

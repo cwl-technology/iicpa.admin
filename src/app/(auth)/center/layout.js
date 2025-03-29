@@ -2,7 +2,7 @@ import { SessionProvider } from "next-auth/react"
 import { Toaster } from "react-hot-toast";
 
 export const metadata = {
-    title: 'Admin Login | IICPA'
+    title: 'Center Login | IICPA'
 }
 
 
