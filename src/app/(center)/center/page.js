@@ -2,7 +2,7 @@ import React from 'react'
 import Home from './Home'
 
 export const metadata = {
-  title: 'Admin | IICPA',
+  title: 'Center | IICPA',
   description: '...',
 }
 
