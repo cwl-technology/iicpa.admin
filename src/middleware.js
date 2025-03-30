@@ -16,6 +16,7 @@ export async function middleware(request) {
         '/center/center-login',
     ];
 
+    console.log("test")
     if (excludedPaths.includes(pathname)) {
         return NextResponse.next();
     }
