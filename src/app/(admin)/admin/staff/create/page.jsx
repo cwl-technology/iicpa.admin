@@ -47,14 +47,14 @@ const page = () => {
     }, []);
 
     //Permission Logic
-        const menuId = "67e637d6a8f1f1d5d225048d"
-        const getPermissionsBymenuId = usePermission(menuId);
-    
-        useEffect(() => {
-            if (!getPermissionsBymenuId("service_2")) {
-                router.push("/admin")
-            }
-        }, [])
+    const menuId = "67e637d6a8f1f1d5d225048d"
+    const getPermissionsBymenuId = usePermission(menuId);
+
+    useEffect(() => {
+        if (!getPermissionsBymenuId("service_2")) {
+            router.push("/admin")
+        }
+    }, [])
 
     return (
         <>
