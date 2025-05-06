@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 import Link from 'next/link';
@@ -24,7 +24,7 @@ const SubTopicCreate = () => {
     const topicId = searchParams.get("topicId");
 
     const [image, setImage] = useState();
-    
+
 
     const editor = useRef(null);
     const config = useMemo(() => ({
@@ -39,14 +39,14 @@ const SubTopicCreate = () => {
     const onSubmit = async (data) => {
         try {
             const formdata = new FormData();
-            formdata.append("courseId",courseId);
-            formdata.append("chapterId",chapterId);
-            formdata.append("topicId",topicId);
-            formdata.append("subTopicName",data.subTopicName);
-            formdata.append("subTopicSlug",data.subTopicSlug);
-            formdata.append("subTopicImage",data.subTopicImage[0]);
-            formdata.append("subTopicVideo",data.subTopicVideo[0]);
-            formdata.append("subTopicDescription",subTopicDescription);
+            formdata.append("courseId", courseId);
+            formdata.append("chapterId", chapterId);
+            formdata.append("topicId", topicId);
+            formdata.append("subTopicName", data.subTopicName);
+            formdata.append("subTopicSlug", data.subTopicSlug);
+            formdata.append("subTopicImage", data.subTopicImage[0]);
+            formdata.append("subTopicVideo", data.subTopicVideo[0]);
+            formdata.append("subTopicDescription", subTopicDescription);
 
             const res = await axios.post("/api/chapterSubTopic/createSubTopic", formdata);
             if (res.data.status == 1) {
@@ -69,7 +69,7 @@ const SubTopicCreate = () => {
             router.push("/admin")
         }
     }, [])
- 
+
 
     return (
         <>
